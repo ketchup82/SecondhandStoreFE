@@ -28,19 +28,19 @@ import { ProductLogged } from "../screens/common/components/ProductLogged";
 
 export const appRouter = createBrowserRouter([
     {
-        path: '',
+        path: 'userhome',
         element: <UserHome/>
     },
     {
-        path: '',
+        path: 'homelogged',
         element: <HomeLogged/>
     },
     {
-        path: '',
+        path: 'product',
         element: <AdminProduct/>
     },
     {
-        path: '',
+        path: 'productlogged',
         element: <ProductLogged/>
     },
     {

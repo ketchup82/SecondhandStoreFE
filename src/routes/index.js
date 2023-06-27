@@ -4,7 +4,7 @@ import { SignUp } from "../screens/auth/components/SignUp";
 import { SignIn } from "../screens/auth/components/SignIn";
 import { RecoveryRequest } from "../screens/auth/components/RecoverRequest";
 import { RecoveryNotify } from "../screens/auth/components/RecoverNotify";
-import Home from "../screens/Home";
+import { UserHome } from "../screens/common/components/Home";
 import { Admin } from "../screens/admin/Admin";
 import { Deactive } from "../screens/admin/components/Deactive";
 import { AdminHome } from "../screens/admin/components/AdminHome";
@@ -15,13 +15,33 @@ import { ReportList } from "../screens/admin/components/ReportList";
 import { RevenueManagement } from "../screens/admin/components/RevenueManagement";
 import { UserManagement } from "../screens/admin/components/UserManagement";
 import { UserProfile } from "../screens/admin/components/UserProfile";
+import { HomeLogged } from "../screens/common/components/HomeLogged"; 
+import { AdminProduct } from "../screens/common/components/Product";
+import { ProductLogged } from "../screens/common/components/ProductLogged";
+
+
+
+
+
 
 
 
 export const appRouter = createBrowserRouter([
     {
         path: '',
-        element: <Home/>
+        element: <UserHome/>
+    },
+    {
+        path: '',
+        element: <HomeLogged/>
+    },
+    {
+        path: '',
+        element: <AdminProduct/>
+    },
+    {
+        path: '',
+        element: <ProductLogged/>
     },
     {
         path: "/auth",

@@ -1,0 +1,22 @@
+.admin__home_banner {
+  height: 270px;
+  background: linear-gradient(
+    180deg,
+    #fec401 0%,
+    rgba(255, 255, 255, 0.58) 69.78%,
+    #fff 100%,
+    #fff 100%
+  );
+}
+.banner_title {
+  font-size: 35px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 42px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.card-color_linear {
+    background: linear-gradient(180deg, #FEC401 0%, #FFFFFF 80.21%, #FFFFFF 100%);
+}

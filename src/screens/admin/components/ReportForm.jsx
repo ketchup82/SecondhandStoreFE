@@ -1,10 +1,12 @@
 import React from 'react'
 import Avatar from "../../../assets/images/user.png";
-
+import { Link } from 'react-router-dom';
 export const ReportForm = () => {
     return (
         <div className='p-5'>
-            <button type="button" className="btn btn-light fw-medium text-uppercase mb-5">←Back</button>
+            <button type="button" className="btn btn-light fw-medium text-uppercase mb-5">
+            <Link to="/admin/admin-home">←Back</Link>
+            </button>
             <div className="row g-3 px-5 h-100">
                 <div className="col-md-6 flex-grow-1 overflow-auto">
                     <div className="col card h-100 bg-body-tertiary">
@@ -43,7 +45,9 @@ export const ReportForm = () => {
                         </div>
                     </div>
                     <div className="d-flex justify-content-center">
-                        <button type="button" className="btn btn-danger text-uppercase mb-5 mt-5">Deactive this user</button>
+                        <button type="button" className="btn btn-danger text-uppercase mb-5 mt-5">
+                        <Link to="/admin/deactive">Deactive this user</Link>
+                        </button>
                     </div>
                 </div>
             </div>

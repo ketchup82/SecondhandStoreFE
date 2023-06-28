@@ -1,13 +1,14 @@
 import { Container, Col, Row } from "react-bootstrap";
 import Navbar from 'react-bootstrap/Navbar'
+import Logo from "../assets/images/logo1.png"
 export default function FooterFE() {
     return (
-        <Container fluid className="footer ">
+        <Container fluid className="footer">
             <Container>
                 <Row>
                     <Col md={4} sm={12}>
                         <div className="footer-left">
-                            <Navbar.Brand href="#home" className='logo-container'><img src='assets/images/logo.png' alt='SeconhandStore' /></Navbar.Brand>
+                            <Navbar.Brand href="#home" className='logo-container'><img className="logo_footer" src={Logo} alt='SeconhandStore'/></Navbar.Brand>
                             <div className="left-content">
                                
                             </div>

@@ -1,10 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import Avatar from "../../../assets/images/user.png";
 
 export const UserProfile = () => {
     return (
         <div className='p-5'>
-            <button type="button" className="btn btn-light fw-medium text-uppercase mb-5">←Back</button>
+            <button type="button" className="btn btn-light fw-medium text-uppercase mb-5">
+            <Link to="/admin/admin-home">←Back</Link>
+            </button>
             <div className="row g-3 px-5 h-100">
                 <div className="col-md-6 flex-grow-1 overflow-auto">
                     <div className="col card h-100 bg-body-tertiary">

@@ -2,12 +2,14 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import { Form, Button } from 'react-bootstrap'
+import Logo from "../assets/images/logo1.png";
+
 export default function HeaderFE() {
     return (
         <>
             <Navbar className='header' >
                 <Container>
-                    <Navbar.Brand href="#home" className='logo-container'><img src='assets/images/logo.png' alt='SecondhandStore' /></Navbar.Brand>
+                    <Navbar.Brand href="#home" className='logo-container'><img className='logo_header' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className='me-auto col-md-8'>

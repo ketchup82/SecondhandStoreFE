@@ -6,7 +6,7 @@ export const Menu = () => {
     const logout = () => {
         cookies.remove('jwt_authorization', { path: '/' });
         alert("Successfully logged out!")
-        navigate('/', { replaced: true })
+        navigate('/home', { replaced: true })
     }
     return (
         <div classsName="">

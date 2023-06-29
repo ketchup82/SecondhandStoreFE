@@ -15,9 +15,7 @@ import { ReportList } from "../screens/admin/components/ReportList";
 import { RevenueManagement } from "../screens/admin/components/RevenueManagement";
 import { UserManagement } from "../screens/admin/components/UserManagement";
 import { UserProfile } from "../screens/admin/components/UserProfile";
-import { HomeLogged } from "../screens/common/components/HomeLogged"; 
 import { AdminProduct } from "../screens/common/components/Product";
-import { ProductLogged } from "../screens/common/components/ProductLogged";
 
 
 
@@ -28,20 +26,12 @@ import { ProductLogged } from "../screens/common/components/ProductLogged";
 
 export const appRouter = createBrowserRouter([
     {
-        path: '',
+        path: '/home',
         element: <UserHome/>
     },
     {
-        path: 'homelogged',
-        element: <HomeLogged/>
-    },
-    {
-        path: 'product',
+        path: '/product',
         element: <AdminProduct/>
-    },
-    {
-        path: 'productlogged',
-        element: <ProductLogged/>
     },
     {
         path: "/auth",

@@ -40,7 +40,7 @@ export const AdminProduct = () => {
             </div>
 
             <h1 className="fw-bold fs-1 m-5">Newest</h1>
-            <div class="row row-cols-3 g-5 m-5">
+            <div class="row row-cols-2 g-5 m-5">
                 <div class="col">
                     <div class="card h-100 border-0 text-center">
                         <img src={ShirtMU} class="card-img-top h-100" alt="..." />

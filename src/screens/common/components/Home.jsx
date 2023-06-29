@@ -3,10 +3,13 @@ import ShirtMU from "../../../assets/images/shirt-mu.png";
 import ShirtGame from "../../../assets/images/shirt-game.png";
 import ShirtT1 from "../../../assets/images/shirt-t1.png";
 import Headphone from "../../../assets/images/headphone.png";
+import HeaderFE from "../../../components/HeaderFE";
+import FooterFE from "../../../components/FooterFE";
 
 export const UserHome = () => {
     return (
         <>
+            <HeaderFE />
             <div className="position-relative admin__home_banner">
                 <h3 className="p-5 banner_title">
                     Second hand exchange where you can find amazing things
@@ -40,37 +43,37 @@ export const UserHome = () => {
             </div>
 
             <h1 className="fw-bold fs-1 m-5">Newest</h1>
-            <div class="row row-cols-3 g-5 m-5">
-                <div class="col">
+            <div class="row row-cols-2 g-5 m-5">
+                <div class="col p-3">
                     <div class="card h-100 border-0 text-center">
-                        <img src={ShirtMU} class="card-img-top h-100" alt="..." />
+                        <img src={ShirtMU} class="card-img-top" alt="..." />
                         <div class="card-body">
                             <h1 class="card-title">Victory Shirt</h1>
                             <h3 class="card-text">$200</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col p-3">
                     <div class="card h-100 border-0 text-center">
-                        <img src={ShirtGame} class="card-img-top h-100" alt="..." />
+                        <img src={ShirtGame} class="card-img-top" alt="..." />
                         <div class="card-body">
                             <h1 class="card-title">Victory Shirt</h1>
                             <h3 class="card-text">$200</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card h-100 border-0 text-center">
-                        <img src={ShirtT1} class="card-img-top h-100" alt="..." />
+                <div class="col p-3">
+                    <div class="card border-0 text-center">
+                        <img src={ShirtT1} class="card-img-top" alt="..." />
                         <div class="card-body">
                             <h1 class="card-title">Victory Shirt</h1>
                             <h3 class="card-text">$200</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col p-3">
                     <div class="card h-100 border-0 text-center">
-                        <img src={Headphone} class="card-img-top h-100" alt="..." />
+                        <img src={Headphone} class="card-img-top" alt="..." />
                         <div class="card-body">
                             <h1 class="card-title">Victory Shirt</h1>
                             <h3 class="card-text">$200</h3>
@@ -78,6 +81,7 @@ export const UserHome = () => {
                     </div>
                 </div>
             </div>
+            <FooterFE />
         </>
 
     );

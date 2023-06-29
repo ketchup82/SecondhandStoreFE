@@ -6,7 +6,7 @@ import Cookies from 'universal-cookie'
 import axios from "axios"
 
 export const UserProfile = () => {
-    axios.defaults.baseURL = 'https://localhost:7115';
+    axios.defaults.baseURL = 'https://localhost:7115'
     const location = useLocation()
     const id = location.state
     const navigate = useNavigate();

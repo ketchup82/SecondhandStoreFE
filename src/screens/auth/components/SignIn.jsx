@@ -20,7 +20,7 @@ export const SignIn = () => {
         if (cookie !== undefined) {
             let decoded = jwt(cookie)
             if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "US") {
-                navigate('/', { replace: true })
+                navigate('/home', { replace: true })
             }
             else if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "AD") {
                 navigate('/admin/admin-home', { replace: true })
@@ -42,7 +42,7 @@ export const SignIn = () => {
             setTimeout(() => {
                 let decoded = jwt(token)
                 if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "US") {
-                    navigate('/auth', { replace: true })
+                    navigate('/home', { replace: true })
                 }
                 else if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "AD") {
                     navigate('/admin/admin-home', { replace: true })

@@ -1,46 +1,104 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo } from 'react'
+import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
+import { Pagination } from '../../../components/pagination/Pagination';
+import Cookies from 'universal-cookie'
+import axios from "axios"
+import { Menu } from "../Sidebar";
+let itemPerPage = 10
+
 export const PostListManagement = () => {
+    axios.defaults.baseURL = 'https://localhost:7115';
+
+    const navigate = useNavigate()
+    const cookies = new Cookies()
+    const [posts, setPosts] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [isError, setIsError] = useState(false)
+    const [currentPage, setCurrentPage] = useState(NaN)
+
+    const fetchData = async () => {
+        await axios.get('/posts/get-post-list')
+            .then((data) => {
+                setPosts(data.data)
+                setCurrentPage(1)
+                setIsLoading(false)
+            })
+            .catch(e => setIsError(e))
+    }
+
+    useEffect(() => {
+        setIsLoading(true)
+        let cookie = cookies.get('jwt_authorization')
+        axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
+        fetchData()
+    }, [])
+
+    const lastPage = Math.ceil(posts.length / itemPerPage);
+    const currTableData = useMemo(() => {
+        let firstPageIndex = (currentPage - 1) * itemPerPage;
+        let lastPageIndex = firstPageIndex + itemPerPage;
+        console.log(firstPageIndex)
+        console.log(lastPageIndex)
+        console.log(posts.slice(firstPageIndex, lastPageIndex))
+        return posts.slice(firstPageIndex, lastPageIndex)
+    }, [currentPage])
+
+    const errorMessage = (
+        <div className='grey-screen row g-3 mt-3'>Something went wrong. Check connection</div>
+    )
+
+    const renderPost = (
+        <>
+            <table className="table custom-table">
+                <thead>
+                    <tr className='mb-1'>
+                        <th scope="col">Post id</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Post type</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Priority score</th>
+                        <th scope="col">Post date</th>
+                        <th scope="col">Expire date</th>
+                        <th scope="col">View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {currTableData.map((post) => (
+                        <tr>
+                            <td>{post.postId}</td>
+                            <td>{post.productName}</td>
+                            <td>{post.pointCost}</td>
+                            <td>{post.postType}</td>
+                            <td>{post.categoryName}</td>
+                            <td>{post.postStatus}</td>
+                            <td>{post.postPriority}</td>
+                            <td>{post.postDate}</td>
+                            <td>{post.postExpiryDate}</td>
+                            <td className='text-center text-warning'>
+                                {/* Need product link */}
+                                <Link to='' state={post.postId}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                    </svg>
+                                </Link>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table >
+            <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
+        </>
+    )
+
     return (
         <div className='d-flex'>
-            <div classsName="">
-                <div className="sidebar list-group rounded-0 min-vh-100">
-                    <h3 className='text-center my-3'>Menu</h3>
-                    <button type="button" className="list-group-item list-group-item-action active" aria-current="true">
-                        <svg className='me-3' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z" />
-                        </svg>
-                        <Link to="/admin/admin-home">Overview</Link>
-                    </button>
-                    <button type="button" className="list-group-item list-group-item-action text-secondary">
-
-                        <svg className='me-3' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                        </svg>
-                        <Link to="/admin/user-management">Registered user</Link>                    </button>
-                    <button type="button" className="list-group-item list-group-item-action text-secondary">
-                        <svg className='me-3' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6V4.5Zm4 1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5Zm0 5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5ZM4 8a1 1 0 0 0 1 1h6a1 1 0 1 0 0-2H5a1 1 0 0 0-1 1Z" />
-                        </svg>
-                        <Link to="/admin/revenue">Revenue</Link>
-                    </button>
-                    <button type="button" className="list-group-item list-group-item-action text-secondary">
-                        <svg className='me-3' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M6 1h6v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8V1z" />
-                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
-                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
-                        </svg>
-                        <Link to="/admin/report-list">Registed posts</Link></button>
-                    <button type="button" className="list-group-item list-group-item-action text-secondary">
-                        <svg className='me-3' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001" />
-                        </svg>
-                        <Link to="/admin/report">Reported user</Link></button>
-                    <button type="button" className="list-group-item list-group-item-action text-secondary">
-                    <Link to="/user-home">Logout</Link></button>   
-                </div>
-            </div>
+            <Menu />
             <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
+                {isError && errorMessage}
                 <div className="row g-3 mt-3">
                     <div className="col text-center m-3 rounded d-flex justify-content-center align-items-center flex-column p-3 bg-danger">
                         <h5>Rejected Post</h5>
@@ -64,69 +122,7 @@ export const PostListManagement = () => {
                     <input type="text" className="form-control border-0 rounded-pill bg-body-secondary" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
                 </div>
                 <h5 className='text-dark m-3'>Register post list</h5>
-                <table className="table custom-table">
-                    <thead>
-                        <tr className='mb-1'>
-                            <th scope="col">Post id</th>
-                            <th scope="col">Product name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Post type</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Priority score</th>
-                            <th scope="col">Post date</th>
-                            <th scope="col">Expire date</th>
-                            <th scope="col">View</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row" className='text-center'>1</th>
-                            <td>Nike Bag</td>
-                            <td>100.000 vnd</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td className='text-sencondary'>08-12-2023</td>
-                            <td className='text-center text-warning'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                            </svg></td>
-                        </tr>
-                        <tr>
-                            <th scope="row" className='text-center'>2</th>
-                            <td>Gucci Clothes</td>
-                            <td>100.000 vnd</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td className='text-sencondary'>08-12-2023</td>
-                            <td className='text-center text-warning'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                            </svg></td>
-                        </tr>
-                        <tr>
-                            <th scope="row" className='text-center'>1</th>
-                            <td>Adidas underwear</td>
-                            <td>100.000 vnd</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td>_</td>
-                            <td className='text-sencondary'>08-12-2023</td>
-                            <td className='text-center text-warning'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                            </svg></td>
-                        </tr>
-                    </tbody>
-                </table>
+                {isLoading ? <LoadingSpinner /> : renderPost}
             </div>
         </div>
     )

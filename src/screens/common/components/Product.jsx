@@ -4,7 +4,9 @@ import ShirtGame from "../../../assets/images/shirt-game.png";
 import ShirtT1 from "../../../assets/images/shirt-t1.png";
 import Headphone from "../../../assets/images/headphone.png";
 
+
 export const AdminProduct = () => {
+    
     return (
         <>
             <div className="position-relative admin__home_banner">

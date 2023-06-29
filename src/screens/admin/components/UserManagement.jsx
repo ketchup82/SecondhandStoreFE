@@ -1,18 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from 'react'
 import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
 import { Pagination } from '../../../components/pagination/Pagination';
 import Cookies from 'universal-cookie'
 import axios from "axios"
-import { Menu } from "../Sidebar";
+import Menu from "../Sidebar";
 
 let itemPerPage = 10
 export const UserManagement = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
-    const navigate = useNavigate();
     const cookies = new Cookies();
     const [accounts, setAccounts] = useState([])
-    const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const [isError, setIsError] = useState(false)
     const [currentPage, setCurrentPage] = useState(NaN)
@@ -34,14 +32,12 @@ export const UserManagement = () => {
         axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
         fetchData()
     }, [])
-
     const lastPage = Math.ceil(accounts.length / itemPerPage);
     const currTableData = useMemo(() => {
         let firstPageIndex = (currentPage - 1) * itemPerPage;
         let lastPageIndex = firstPageIndex + itemPerPage;
         return accounts.slice(firstPageIndex, lastPageIndex)
     }, [currentPage])
-
     const errorMessage = (
         <div className='grey-screen row g-3 mt-3'>Something went wrong. Check connection</div>
     )
@@ -89,7 +85,7 @@ export const UserManagement = () => {
 
     return (
         <div className='d-flex'>
-            <Menu />
+            <Menu selected='user-management' />
             <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
                 {isError && errorMessage}
                 <div className="input-group col-3 border rounded-pill bg-body-secondary search-field my-3">
@@ -98,7 +94,7 @@ export const UserManagement = () => {
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                         </svg>
                     </span>
-                    <input type="text" className="form-control border-0 rounded-pill bg-body-secondary" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
+                    <input type="text" className="form-control border-0 rounded-pill bg-body-secondary" on placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
                 </div>
                 <h5 className='text-dark m-3 text-capitalize'>Registered user list</h5>
                 {isLoading ? <LoadingSpinner /> : renderAccount}

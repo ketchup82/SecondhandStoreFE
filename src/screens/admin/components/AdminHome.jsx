@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { VictoryBar } from 'victory'
 import DashboardImage from "../../../assets/images/dashboard_img.png"
 import axios from 'axios';
-import { Menu } from '../Sidebar';
+import Menu from '../Sidebar';
 import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
 import Cookies from 'universal-cookie';
 const data = [
@@ -14,7 +14,6 @@ const data = [
 
 export const AdminHome = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
-
     const cookies = new Cookies()
     const [isError, setIsError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -81,7 +80,7 @@ export const AdminHome = () => {
     return (
         <>
             <div className='d-flex'>
-                <Menu />
+                <Menu selected='overview'/>
                 <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
                     {isError && errorMessage}
                     <div className="col text-dark rounded p-3 m-2" style={{ background: "#FFDB58" }}>

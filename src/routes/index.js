@@ -16,6 +16,8 @@ import { RevenueManagement } from "../screens/admin/components/RevenueManagement
 import { UserManagement } from "../screens/admin/components/UserManagement";
 import { UserProfile } from "../screens/admin/components/UserProfile";
 import { AdminProduct } from "../screens/common/components/Product";
+import { ProductDetail } from "../screens/common/components/ProductDetail";
+import { PostDetail } from "../screens/admin/components/Post";
 
 
 
@@ -70,6 +72,10 @@ export const appRouter = createBrowserRouter([
             {
                 path: "post-list",
                 element: <PostListManagement/>
+            },
+            {
+                path: 'post',
+                element: <PostDetail/>
             },
             {
                 path: "post-verify",

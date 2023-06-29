@@ -1,16 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from 'react'
 import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
 import { Pagination } from '../../../components/pagination/Pagination';
 import Cookies from 'universal-cookie'
 import axios from "axios"
-import { Menu } from "../Sidebar";
+import Menu from "../Sidebar";
 let itemPerPage = 10
 
 export const PostListManagement = () => {
     axios.defaults.baseURL = 'https://localhost:7115';
-
-    const navigate = useNavigate()
     const cookies = new Cookies()
     const [posts, setPosts] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -73,13 +71,12 @@ export const PostListManagement = () => {
                             <td>{post.pointCost}</td>
                             <td>{post.postType}</td>
                             <td>{post.categoryName}</td>
-                            <td>{post.postStatus}</td>
+                            <td>{post.postStatus ? <div>Approved</div> : <div>Pending</div>}</td>
                             <td>{post.postPriority}</td>
                             <td>{post.postDate}</td>
                             <td>{post.postExpiryDate}</td>
                             <td className='text-center text-warning'>
-                                {/* Need product link */}
-                                <Link to='' state={post.postId}>
+                                <Link to="/admin/post" state={post.postId}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -96,7 +93,7 @@ export const PostListManagement = () => {
 
     return (
         <div className='d-flex'>
-            <Menu />
+            <Menu selected='post-list' />
             <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
                 {isError && errorMessage}
                 <div className="row g-3 mt-3">

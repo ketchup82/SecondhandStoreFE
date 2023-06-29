@@ -8,14 +8,14 @@ import axios from "axios"
 export const UserProfile = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
     const location = useLocation()
-    const id = location.state
+    const accountId = location.state
     const navigate = useNavigate();
     const cookies = new Cookies();
     const [isLoading, setIsLoading] = useState(true)
     const [account, setAccount] = useState([])
 
     const fetchData = async () => {
-        await axios.get('/account/get-account-by-id?id=' + id)
+        await axios.get('/account/get-account-by-id', { params: { id: accountId } })
             .then((data) => {
                 setAccount(data.data)
                 setIsLoading(false)

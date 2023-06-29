@@ -1,23 +1,19 @@
-import { useNavigate } from 'react-router-dom';
 import { VictoryBar, VictoryTheme } from 'victory';
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
 import { Pagination } from '../../../components/pagination/Pagination';
-import { Menu } from '../Sidebar';
+import Menu from '../Sidebar';
 import Cookies from 'universal-cookie'
 import axios from "axios"
 let itemPerPage = 10
 
 export const RevenueManagement = () => {
     axios.defaults.baseURL = 'https://localhost:7115';
-
-    const navigate = useNavigate();
     const cookies = new Cookies();
     const [posts, setPosts] = useState([])
     const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(NaN)
-
 
     useEffect(() => {
         setIsLoading(true)
@@ -76,7 +72,7 @@ export const RevenueManagement = () => {
 
     return (
         <div className='d-flex'>
-            <Menu />
+            <Menu selected='revenue' />
             <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
                 {error && errorMessage}
                 <div className="row g-3 mt-3">
@@ -135,7 +131,6 @@ export const RevenueManagement = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }

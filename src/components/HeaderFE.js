@@ -47,7 +47,7 @@ export default function HeaderFE() {
         <>
             <Navbar className='header' >
                 <Container>
-                    <Navbar.Brand href="#home" className='logo-container'><img className='logo_header' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
+                    <Navbar.Brand href="/home" className='logo-container'><img className='logo_header' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className='me-auto col-md-8'>
@@ -63,7 +63,7 @@ export default function HeaderFE() {
                         </Nav>
 
                         <Nav className='col-md-4 contact'>
-                            <Nav.Link href="#home" className='contact-detail'> Contact</Nav.Link>
+                            <Nav.Link href="/home" className='contact-detail'> Contact</Nav.Link>
                             {isFetched ? logged :
                                 <>
                                     <Nav.Link href="/auth/login" className='contact-detail'>Login</Nav.Link>

@@ -28,6 +28,10 @@ import { PostDetail } from "../screens/admin/components/Post";
 
 export const appRouter = createBrowserRouter([
     {
+        path: '/',
+        element: <UserHome/>
+    },
+    {
         path: '/home',
         element: <UserHome/>
     },

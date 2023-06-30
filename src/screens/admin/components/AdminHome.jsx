@@ -19,6 +19,7 @@ export const AdminHome = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [accounts, setAccount] = useState([])
     const [posts, setPosts] = useState([])
+    const [revenues, setRevenues] = useState([])
     const fetchAccount = async () => {
         await axios.get('/account/get-account-list')
             .then(data => {
@@ -35,12 +36,24 @@ export const AdminHome = () => {
             })
             .catch(e => setIsError(true))
     }
+    const fetchRevenue = async () => {
+        await axios.get("/topup")
+            .then((data) => {
+                setRevenues(data.data)
+
+            })
+            .catch((e) => {
+                console.log(e)
+                setIsError(true)
+            })
+    }
     useEffect(() => {
         setIsLoading(true)
         let cookie = cookies.get('jwt_authorization')
         axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
         fetchAccount()
         fetchPost()
+        fetchRevenue()
         setIsLoading(false)
     }, [])
 
@@ -61,7 +74,7 @@ export const AdminHome = () => {
                 </div>
                 <div className="col text-dark rounded m-3" style={{ background: "#12e265" }}>
                     <h5 className='m-3'>Total Revenue</h5>
-                    <h1 className='m-3'>2,000</h1>
+                    <h1 className='m-3'>{revenues.map(revenue => revenue.price).reduce((acc, amount) => acc + amount, 0)}</h1>
                 </div>
             </div>
 
@@ -80,7 +93,7 @@ export const AdminHome = () => {
     return (
         <>
             <div className='d-flex'>
-                <Menu selected='overview'/>
+                <Menu selected='overview' />
                 <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
                     {isError && errorMessage}
                     <div className="col text-dark rounded p-3 m-2" style={{ background: "#FFDB58" }}>

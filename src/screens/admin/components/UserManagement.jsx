@@ -44,42 +44,44 @@ export const UserManagement = () => {
 
     const renderAccount = (
         <>
-            <table className="table custom-table">
-                <thead>
-                    <tr className='mb-1'>
-                        <th scope="col" className='text-center'>Account Id</th>
-                        <th scope="col">Full name</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone number</th>
-                        <th scope="col">Credibility score</th>
-                        <th scope="col">Status</th>
-                        <th scope="col" style={{ textAlign: "center" }}>Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currTableData.map((account) => (
-                        <tr>
-                            <td>{account.accountId}</td>
-                            <td>{account.fullname}</td>
-                            <td>{account.address}</td>
-                            <td>{account.email}</td>
-                            <td>{account.phoneNo}</td>
-                            <td>{account.pointBalance}</td>
-                            <td>{account.isActive ? <div>True</div> : <div>False</div>}</td>
-                            <td className='text-center text-warning'>
-                                <Link to="/admin/user-view" state={account.accountId}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                    </svg>
-                                </Link>
-                            </td>
+            {currTableData.length > 0 ? <>
+                <table className="table custom-table">
+                    <thead>
+                        <tr className='mb-1'>
+                            <th scope="col" className='text-center'>Account Id</th>
+                            <th scope="col">Full name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone number</th>
+                            <th scope="col">Credibility score</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" style={{ textAlign: "center" }}>Edit</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table >
-            <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
+                    </thead>
+                    <tbody>
+                        {currTableData.map((account) => (
+                            <tr>
+                                <td>{account.accountId}</td>
+                                <td>{account.fullname}</td>
+                                <td>{account.address}</td>
+                                <td>{account.email}</td>
+                                <td>{account.phoneNo}</td>
+                                <td>{account.pointBalance}</td>
+                                <td>{account.isActive ? <div>True</div> : <div>False</div>}</td>
+                                <td className='text-center text-warning'>
+                                    <Link to="/admin/user-view" state={account.accountId}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                        </svg>
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table >
+                <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
+            </> : <h5 className="text-dark m-3 text-capitalize">There's no user!</h5>}
         </>
     )
 

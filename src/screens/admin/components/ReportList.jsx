@@ -48,23 +48,26 @@ export const ReportList = () => {
 
     const renderList = (
         <>
-            <table className="table custom-table">
-                <thead>
-                    <tr className='mb-1'>
-                        <th scope="col" className='text-center'>Report Id</th>
-                        <th scope="col">Report user</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone number</th>
-                        <th scope="col">Reason</th>
-                        <th scope="col">Status</th>
-                        <th scope="col" className='text-center'>Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
+            {currTableData.length > 0 ? <>
+                <table className="table custom-table">
+                    <thead>
+                        <tr className='mb-1'>
+                            <th scope="col" className='text-center'>Report Id</th>
+                            <th scope="col">Report user</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone number</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" className='text-center'>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                </tbody>
-            </table >
-            <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
+                    </tbody>
+                </table >
+                <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
+
+            </> : <h5 className="text-dark m-3 text-capitalize">There's no reported user!</h5>}
         </>
     )
     return (

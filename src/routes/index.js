@@ -14,99 +14,105 @@ import { ReportForm } from "../screens/admin/components/ReportForm";
 import { ReportList } from "../screens/admin/components/ReportList";
 import { RevenueManagement } from "../screens/admin/components/RevenueManagement";
 import { UserManagement } from "../screens/admin/components/UserManagement";
-import { UserProfile } from "../screens/admin/components/UserProfile";
+import { AdminUserProfile } from "../screens/admin/components/AdminUserProfile";
 import { AdminProduct } from "../screens/common/components/Product";
-import { ProductDetail } from "../screens/common/components/ProductDetail";
-import { PostDetail } from "../screens/admin/components/Post";
-
-
-
-
-
+import { ProductLogged } from "../screens/common/components/ProductLogged";
+import { UserProfile } from "../screens/common/components/UserProfile";
+import { Transaction } from "../screens/common/components/Transaction";
 
 
 
 export const appRouter = createBrowserRouter([
     {
-        path: '/',
-        element: <UserHome/>
+        path: '',
+        element: <UserHome />
     },
     {
-        path: '/home',
-        element: <UserHome/>
+        path: 'home',
+        element: <UserHome />
     },
     {
-        path: '/product',
-        element: <AdminProduct/>
+        path: 'product',
+        element: <AdminProduct />
+    },
+    {
+        path: 'productlogged',
+        element: <ProductLogged />
+    },
+    {
+        path: 'user-edit',
+        element: <UserProfile />
+    },
+    {
+        path: 'user-profile',
+        element: <UserProfile />
+    },
+    {
+        path: 'transaction',
+        element: <Transaction />
     },
     {
         path: "/auth",
-        element: <Auth/>,
+        element: <Auth />,
         children: [
             {
                 path: "register",
-                element: <SignUp/>
+                element: <SignUp />
             },
             {
                 path: "login",
-                element: <SignIn/>
+                element: <SignIn />
             },
             {
                 path: "recovery-request",
-                element: <RecoveryRequest/>
+                element: <RecoveryRequest />
             },
             {
                 path: "recovery-notify",
-                element: <RecoveryNotify/>
+                element: <RecoveryNotify />
             }
         ]
     },
     {
         path: "/admin",
-        element: <Admin/>,
+        element: <Admin />,
         children: [
             {
                 path: "deactive",
-                element: <Deactive/>
+                element: <Deactive />
             },
             {
                 path: "admin-home",
-                element: <AdminHome/>
+                element: <AdminHome />
             },
             {
                 path: "post-list",
-                element: <PostListManagement/>
-            },
-            {
-                path: 'post',
-                element: <PostDetail/>
+                element: <PostListManagement />
             },
             {
                 path: "post-verify",
-                element: <PostVerification/>
+                element: <PostVerification />
             },
             {
                 path: "report",
-                element: <ReportForm/>
+                element: <ReportForm />
             },
             {
                 path: "report-list",
-                element: <ReportList/>
+                element: <ReportList />
             },
             {
                 path: "revenue",
-                element: <RevenueManagement/>
+                element: <RevenueManagement />
             },
             {
                 path: "user-management",
-                element: <UserManagement/>
+                element: <UserManagement />
             },
             {
-                path: "user-view",
-                element: <UserProfile/>
+                path: "user-profile",
+                element: <AdminUserProfile />
             },
         ]
     }
-
-    
 ])

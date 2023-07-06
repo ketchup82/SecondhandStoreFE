@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
@@ -14,40 +14,41 @@ export default function HeaderFE() {
     const cookies = new Cookies()
     axios.defaults.baseURL = "https://localhost:7115"
     const [isFetched, setIsFetched] = useState(false)
-    const [account, setAccount] = useState([])
-
+    const [decoded, setDecoded] = useState([])
     const logout = () => {
         cookies.remove('jwt_authorization', { path: '/' });
         alert("Successfully logged out!")
         navigate(0)
     }
-
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
         if (cookie !== undefined) {
             axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
-            const decoded = jwt(cookie)
+            setDecoded(jwt(cookie))
             setIsFetched(true)
         }
     }, [])
 
     const logged = (
-        <div class="dropdown contact-detail">
-            <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img className='profile-avt' src={Avatar} alt="" />
+        <Nav className='dropdown contact-detail user-avt'>
+            <button className='btn btn-default dropdown-toggle' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img draggable='false' className='dropdown-toggle profile-avt' src={Avatar} alt="" />
+                <span class="caret"></span>
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Profile </a>
-                <a class="dropdown-item" href="#">Settings</a>
-                <a class="dropdown-item" onClick={() => { logout() }}>Log out</a>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <Link className="dropdown-item" to="/user-profile" state={decoded['accountId']}>Profile</Link>
+                {decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] == 'AD' &&
+                    <a className="dropdown-item" href="/admin/admin-home">Admin Dashboard</a>
+                }
+                <a className="dropdown-item" onClick={() => { logout() }}>Log out</a>
             </div>
-        </div>
+        </Nav>
     )
     return (
         <>
             <Navbar className='header' >
                 <Container>
-                    <Navbar.Brand href="/home" className='logo-container'><img className='logo_header' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
+                    <Navbar.Brand draggable='false' href="/home" className='logo-container'><img draggable='false' className='logo_header' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className='me-auto col-md-8'>

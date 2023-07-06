@@ -12,9 +12,9 @@ export const UserHome = () => {
             <HeaderFE />
             <div className="position-relative admin__home_banner">
                 <h3 className="p-5 banner_title">
-                    Second hand exchange where you can find amazing things
+                    OSE website where you can find amazing things
                 </h3>
-                <img className="admin__home_banner_image position-absolute top-0 end-0 h-100" src={ImageBanner} alt="" />
+                <img draggable="false" className="admin__home_banner_image position-absolute top-0 end-0 h-100" src={ImageBanner} alt="" />
             </div>
 
             <div class="container text-center mt-5">

@@ -48,8 +48,13 @@ export const SignIn = () => {
                     navigate('/admin/admin-home', { replace: true })
                 }
             }, 5000)
-        }).catch(e => {
-            alert("Wrong email or password")
+        }).catch((error) => {
+            if (!error.response) {
+                // network error
+                alert("Can't connect to server. Try again later!")
+            } else {
+                alert("Wrong email or password")
+            }
             setIsLoading(false)
         })
     }

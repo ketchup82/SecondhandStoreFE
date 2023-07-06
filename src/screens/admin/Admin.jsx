@@ -2,6 +2,7 @@ import "./styles/style.css"
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+import jwt from 'jwt-decode'
 import Cookies from 'universal-cookie'
 export const Admin = () => {
     const navigate = useNavigate();
@@ -10,7 +11,9 @@ export const Admin = () => {
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
         if (cookie !== undefined) {
-            setIsLogged(true)
+            const decoded = jwt(cookie)
+            if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "AD") setIsLogged(true)
+            else navigate('/auth/login', { replace: true })
         }
         else {
             navigate('/auth/login', { replace: true })

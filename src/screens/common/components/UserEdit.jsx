@@ -1,8 +1,21 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
-import Avatar from "../../../assets/images/user.png";
+import { Link } from 'react-router-dom'
+import Avatar from "../../../assets/images/user.png"
+import Cookies from "universal-cookie"
+import axios from "axios"
+import jwt from "jwt-decode"
 
 export const UserEdit = () => {
+    const navigate = useNavigate()
+    const cookies = new Cookies()
+    axios.defaults.baseURL = "https://localhost:7115"
+
+    useEffect(() => {
+        let cookie = cookies.get('jwt_authorization')
+        if (cookie === undefined) {
+            navigate('/home', { replace: true })
+        }
+    }, [])
     return (
         <div className='p-5'>
             <button type="button" className="btn btn-light fw-medium text-uppercase mb-5">

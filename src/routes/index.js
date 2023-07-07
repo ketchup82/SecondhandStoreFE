@@ -4,22 +4,23 @@ import { SignUp } from "../screens/auth/components/SignUp";
 import { SignIn } from "../screens/auth/components/SignIn";
 import { RecoveryRequest } from "../screens/auth/components/RecoverRequest";
 import { RecoveryNotify } from "../screens/auth/components/RecoverNotify";
-import { UserHome } from "../screens/common/components/Home";
+
 import { Admin } from "../screens/admin/Admin";
 import { Deactive } from "../screens/admin/components/Deactive";
 import { AdminHome } from "../screens/admin/components/AdminHome";
-import { PostListManagement } from "../screens/admin/components/PostListManagement";
 import { PostVerification } from "../screens/admin/components/PostVerification";
 import { ReportForm } from "../screens/admin/components/ReportForm";
 import { ReportList } from "../screens/admin/components/ReportList";
 import { RevenueManagement } from "../screens/admin/components/RevenueManagement";
 import { UserManagement } from "../screens/admin/components/UserManagement";
 import { AdminUserProfile } from "../screens/admin/components/AdminUserProfile";
-import { AdminProduct } from "../screens/common/components/Product";
-import { ProductLogged } from "../screens/common/components/ProductLogged";
+import { AdminPostDetail } from "../screens/admin/components/PostDetail";
+
 import { UserProfile } from "../screens/common/components/UserProfile";
 import { Transaction } from "../screens/common/components/Transaction";
-
+import { UserHome } from "../screens/common/components/Home";
+import { PostDetail } from "../screens/common/components/PostDetail";
+import { PostListManagement } from "../screens/common/components/PostListManagement";
 
 
 export const appRouter = createBrowserRouter([
@@ -32,12 +33,12 @@ export const appRouter = createBrowserRouter([
         element: <UserHome />
     },
     {
-        path: 'product',
-        element: <AdminProduct />
+        path: 'post-detail',
+        element: <PostDetail />
     },
     {
-        path: 'productlogged',
-        element: <ProductLogged />
+        path: 'post-list',
+        element: <PostListManagement />
     },
     {
         path: 'user-edit',
@@ -88,6 +89,10 @@ export const appRouter = createBrowserRouter([
             {
                 path: "post-list",
                 element: <PostListManagement />
+            },
+            {
+                path: "post-detail",
+                element: <AdminPostDetail />
             },
             {
                 path: "post-verify",

@@ -8,7 +8,7 @@ import axios from "axios"
 export const SignUp = () => {
     axios.defaults.baseURL = 'https://localhost:7115';
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const cookies = new Cookies()
     const [isLoading, setIsLoading] = useState(true)
     const [isSubmitted, setIsSubmitted] = useState(false)

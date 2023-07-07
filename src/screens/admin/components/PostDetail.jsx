@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import Cookies from 'universal-cookie'
 import axios from "axios"
 
-export const PostDetail = () => {
+export const AdminPostDetail = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
     const location = useLocation()
     const postId = location.state

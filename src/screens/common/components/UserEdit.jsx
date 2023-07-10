@@ -1,9 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Avatar from "../../../assets/images/user.png"
 import Cookies from "universal-cookie"
 import axios from "axios"
 import jwt from "jwt-decode"
+import { useEffect } from 'react'
 
 export const UserEdit = () => {
     const navigate = useNavigate()
@@ -13,7 +14,7 @@ export const UserEdit = () => {
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
         if (cookie === undefined) {
-            navigate('/home', { replace: true })
+            navigate('/', { replace: true })
         }
     }, [])
     return (

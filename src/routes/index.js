@@ -21,6 +21,11 @@ import { Transaction } from "../screens/common/components/Transaction";
 import { UserHome } from "../screens/common/components/Home";
 import { PostDetail } from "../screens/common/components/PostDetail";
 import { PostListManagement } from "../screens/common/components/PostListManagement";
+import { UserEdit } from "../screens/common/components/UserEdit";
+import { HomeFilter } from "../screens/common/components/HomeFilter";
+import { Payment } from "../screens/common/components/Payment";
+import { PaymentWithPoint } from "../screens/common/components/PaymentWithPoint";
+import { PostCreate } from "../screens/common/components/PostCreate";
 
 
 export const appRouter = createBrowserRouter([
@@ -28,21 +33,26 @@ export const appRouter = createBrowserRouter([
         path: '',
         element: <UserHome />
     },
+    // fix element later
     {
-        path: 'home',
-        element: <UserHome />
+        path: 'post-create',
+        element: <PostCreate />
     },
     {
         path: 'post-detail',
         element: <PostDetail />
     },
+    // {
+    //     path: 'post-edit',
+    //     element: <Post />
+    // },
     {
         path: 'post-list',
         element: <PostListManagement />
     },
     {
         path: 'user-edit',
-        element: <UserProfile />
+        element: <UserEdit />
     },
     {
         path: 'user-profile',
@@ -52,6 +62,27 @@ export const appRouter = createBrowserRouter([
         path: 'transaction',
         element: <Transaction />
     },
+    // {
+    //     path: 'exchange-request',
+    //     element: <ExchangeRequest />
+    // },
+    // {
+    //     path: 'exchange-order',
+    //     element: <ExchangeOrder />
+    // },
+    {
+        path: 'home-filter',
+        element: <HomeFilter/>
+    },
+    {
+        path: 'payment',
+        element: <Payment />
+    },
+    {
+        path: 'payment-with-point',
+        element: <PaymentWithPoint />
+    },
+
     {
         path: "/auth",
         element: <Auth />,

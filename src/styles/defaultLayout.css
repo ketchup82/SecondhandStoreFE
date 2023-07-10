@@ -56,10 +56,13 @@ body {
     box-shadow: none;
 }
 
+
 .footer {
     background-color: #212121;
     color: #fff;
     padding: 25px 0 !important;
+    bottom: 0;
+    width: 100%;
 }
 
 .footer-left {

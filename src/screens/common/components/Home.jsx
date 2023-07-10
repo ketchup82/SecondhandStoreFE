@@ -24,7 +24,7 @@ export const UserHome = () => {
                             <div class="card-body">
                                 <h1>Popular</h1>
                                 <div className="d-flex justify-content-end mt-5">
-                                    <button type="button" class="btn btn-success btn-lg">View More</button>
+                                    <button href="/" type="button" class="btn btn-success btn-lg">View More</button>
                                 </div>
                             </div>
                         </div>
@@ -34,7 +34,7 @@ export const UserHome = () => {
                             <div class="card-body">
                                 <h1>Product</h1>
                                 <div className="d-flex justify-content-end mt-5">
-                                    <button type="button" class="btn btn-success btn-lg">View More</button>
+                                    <a href="/"  class="btn btn-success btn-lg">View More</a>
                                 </div>
                             </div>
                         </div>

@@ -29,7 +29,7 @@ export const PostListManagement = () => {
 
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
-        if (cookie === undefined) navigate('/home', { replace: true })
+        if (cookie === undefined) navigate('/', { replace: true })
         setIsLoading(true)
         axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
         fetchData()

@@ -91,17 +91,6 @@ export const PostDetail = () => {
                         <button type="button" className="btn btn-success text-uppercase mb-12 mt-5">Submit Request</button>
 
                     </div>
-                    <h3 className='title'>Review</h3>
-                    <div className="col-md-12 mb-3">
-                        <label for="username" className="form-label text-dark">User review name</label>
-                        <input type="text" className="form-control" id="username" />
-                    </div>
-
-                    <div className="col-md-12 mb-3">
-                        <label for="address" className="form-label text-dark">User review name</label>
-                        <input type="text" className="form-control" id="address" />
-
-                    </div>
                 </div>
             </div>
             <FooterFE />

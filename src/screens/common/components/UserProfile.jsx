@@ -35,7 +35,7 @@ export const UserProfile = () => {
             fetchData()
         }
         else {
-            navigate('/home', { replace: true })
+            navigate('/', { replace: true })
         }
     }, [])
     const errorMessage = (
@@ -50,7 +50,6 @@ export const UserProfile = () => {
                             <div style={{ background: "#FEC401" }} className="card-body rounded text-uppercase card-main d-flex flex-column align-items-center">
                                 <img className='profile-avt' src={Avatar} alt="" />
                                 <h1 className='fs-medium text-center'>{account.fullname}</h1>
-                                <h5 className='text-center'>{account.roleId}</h5>
                             </div>
                         </div>
                     </div>

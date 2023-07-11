@@ -49,7 +49,7 @@ export const SignUp = () => {
             setTimeout(() => {
                 let decoded = jwt(token)
                 if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "US") {
-                    navigate('/home', { replace: true })
+                    navigate('/', { replace: true })
                 }
                 else if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "AD") {
                     navigate('/admin/admin-home', { replace: true })

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import HeaderFE from '../../../components/HeaderFE'
 import FooterFE from '../../../components/FooterFE'
-import '../styles/postCreate.css'
+import '../styles/postcreate.css'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { useNavigate } from 'react-router-dom'

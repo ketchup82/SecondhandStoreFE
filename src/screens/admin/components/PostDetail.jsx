@@ -17,9 +17,10 @@ export const AdminPostDetail = () => {
     const cookies = new Cookies();
     const [post, setPost] = useState([])
     const fetchData = async () => {
-        await axios.get('/posts/'+postId)
+        await axios.get('/posts/get-post-by-id', { params: { id: postId } })
             .then((data) => {
                 setPost(data.data)
+                console.log(post)
             })
             .catch(e => console.log(e))
     }
@@ -44,57 +45,24 @@ export const AdminPostDetail = () => {
                     <div className="col card mb-5 bg-body-tertiary">
                         <div className="card-body text-uppercase card-main">
                             <h1 className='fs-medium text-center'>
-                                <img className='img-thumbnail post-img' src={Headphone} alt="" />
+                                <img  className="img-thumbnail Responsive image" src={post.image}></img>
                             </h1>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col card m-3 bg-body-tertiary">
-                            <div className="card-body text-uppercase card-sub">
-                                <h3 className='fs-regular text-center'>
-                                    <img className='img-thumbnail post-img' src={ShirtGame} alt="" />
-                                </h3>
-                            </div>
-                        </div>
-                        <div className="col card m-3 bg-body-tertiary">
-                            <div className="card-body text-uppercase card-sub">
-                                <h3 className='fs-regular text-center'>
-                                    <img className='img-thumbnail post-img' src={ShirtMU} alt="" />
-                                </h3>
-                            </div>
-                        </div>
-                        <div className="col card m-3 bg-body-tertiary">
-                            <div className="card-body text-uppercase card-sub">
-                                <h3 className='fs-regular text-center'>
-                                    <img className='img-thumbnail post-img' src={ShirtT1} alt="" />
-                                </h3>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-6 px-5">
-                    <h3 className='title'>{post.productName}</h3>
-                    <div className="row">
-                        <h5 className="col">{post.price}</h5>
-                        <h5 className="col">{post.categoryName}</h5>
+                        <h3 className='title'>Product Name: {post.productName}</h3>
+                        <div className="row">
+                            <h5 className="col">Price: {post.price}</h5>
+                            <h5 className="col">Category: {post.categoryName}</h5>
+                        </div>
+                        <h3 className='title'>Description</h3>
+                        <p>{post.description}</p>
+                        <h3 className='text-danger'>Contact: {post.address}</h3>
+                        <h3 className='text-danger'>Phone Number: {post.phoneNo}</h3>
+                        <h3 className='text-danger'>Email: {post.email}</h3>
                     </div>
-                    <h3 className='title'>Description</h3>
-                    <p>{post.description}</p>
-                    <h3 className='text-danger'>Contact: {post.address}</h3>
-                    <h3 className='text-danger'>Phone number: {post.phoneNo}</h3>
-                    <h3 className='text-danger'>Email: {post.email}</h3>
-                </div>
-                <h3 className='title'>Review</h3>
-                <div className="col-md-12 mb-3">
-                    <label for="username" className="form-label text-dark">User 1</label>
-                    <h3>it was perfect. Everything! Right down to the last minute detail.</h3>
-                </div>
-
-                <div className="col-md-12 mb-3">
-                    <label for="address" className="form-label text-dark">User 2</label>
-                    <h3>Amazing. Good job!</h3>
-                </div>
             </div>
-        </div>
+        </div >
     )
 }

@@ -15,6 +15,7 @@ import { RevenueManagement } from "../screens/admin/components/RevenueManagement
 import { UserManagement } from "../screens/admin/components/UserManagement";
 import { AdminUserProfile } from "../screens/admin/components/AdminUserProfile";
 import { AdminPostDetail } from "../screens/admin/components/PostDetail";
+import { AdminPostListManagement } from "../screens/admin/components/PostListManagement";
 
 import { UserProfile } from "../screens/common/components/UserProfile";
 import { Transaction } from "../screens/common/components/Transaction";
@@ -26,6 +27,8 @@ import { HomeFilter } from "../screens/common/components/HomeFilter";
 import { Payment } from "../screens/common/components/Payment";
 import { PaymentWithPoint } from "../screens/common/components/PaymentWithPoint";
 import { PostCreate } from "../screens/common/components/PostCreate";
+import PaymentQRPage from "../screens/common/components/QrPayment";
+import PointExchange from "../screens/common/components/PointExchange";
 
 
 export const appRouter = createBrowserRouter([
@@ -62,17 +65,13 @@ export const appRouter = createBrowserRouter([
         path: 'transaction',
         element: <Transaction />
     },
-    // {
-    //     path: 'exchange-request',
-    //     element: <ExchangeRequest />
-    // },
-    // {
-    //     path: 'exchange-order',
-    //     element: <ExchangeOrder />
-    // },
+    {
+        path: 'point-exchange',
+        element: <PointExchange />
+    },
     {
         path: 'home-filter',
-        element: <HomeFilter/>
+        element: <HomeFilter />
     },
     {
         path: 'payment',
@@ -82,7 +81,10 @@ export const appRouter = createBrowserRouter([
         path: 'payment-with-point',
         element: <PaymentWithPoint />
     },
-
+    {
+        path: 'qrcode',
+        element: <PaymentQRPage />
+    },
     {
         path: "/auth",
         element: <Auth />,
@@ -119,7 +121,7 @@ export const appRouter = createBrowserRouter([
             },
             {
                 path: "post-list",
-                element: <PostListManagement />
+                element: <AdminPostListManagement />
             },
             {
                 path: "post-detail",

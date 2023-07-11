@@ -26,6 +26,7 @@ export const AdminHome = () => {
                 setAccount(data.data)
             })
             .catch((e) => {
+                console.log("failed to fetch accounts")
                 setIsError(true)
             })
     }
@@ -34,16 +35,19 @@ export const AdminHome = () => {
             .then(data => {
                 setPosts(data.data)
             })
-            .catch(e => setIsError(true))
+            .catch(e => {
+                console.log("failed to fetch posts")
+                setIsError(true)
+            })
     }
     const fetchRevenue = async () => {
-        await axios.get("/topup")
+        await axios.get("/topup/get-total-revenue")
             .then((data) => {
                 setRevenues(data.data)
 
             })
             .catch((e) => {
-                console.log(e)
+                console.log("failed to fetch revenue")
                 setIsError(true)
             })
     }
@@ -74,7 +78,7 @@ export const AdminHome = () => {
                 </div>
                 <div className="col text-dark rounded m-3" style={{ background: "#12e265" }}>
                     <h5 className='m-3'>Total Revenue</h5>
-                    <h1 className='m-3'>{revenues.map(revenue => revenue.price).reduce((acc, amount) => acc + amount, 0)}</h1>
+                    <h1 className='m-3'>{revenues}</h1>
                 </div>
             </div>
 

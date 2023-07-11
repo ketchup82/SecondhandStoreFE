@@ -8,7 +8,7 @@ export default function Menu({ selected }) {
     const logout = () => {
         cookies.remove('jwt_authorization', { path: '/' });
         alert("Successfully logged out!")
-        navigate('/home', { replaced: true })
+        navigate('/', { replaced: true })
     }
     useEffect(() => {
     })

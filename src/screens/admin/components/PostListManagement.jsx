@@ -67,9 +67,9 @@ export const AdminPostListManagement = () => {
                                 <td>{post.postId}</td>
                                 <td>{post.productName}</td>
                                 <td>{post.pointCost}</td>
-                                <td>{post.postType}</td>
+                                <td>{post.postTypeName}</td>
                                 <td>{post.categoryName}</td>
-                                <td>{post.postStatus ? <div>Approved</div> : <div>Pending</div>}</td>
+                                <td>{post.postStatusName}</td>
                                 <td>{post.postPriority}</td>
                                 <td>{post.postDate}</td>
                                 <td>{post.postExpiryDate}</td>

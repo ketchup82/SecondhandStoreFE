@@ -23,8 +23,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio1"
-                value="20"
-                label="10,000 VND - Point × 20"
+                value="10"
+                label="10,000 VND - Point × 10"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -33,8 +33,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio2"
-                value="40"
-                label="20,000 VND - Point × 40"
+                value="20"
+                label="20,000 VND - Point × 20"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -43,8 +43,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio3"
-                value="100"
-                label="50,000 VND - Point × 100"
+                value="50"
+                label="50,000 VND - Point × 50"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -53,8 +53,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio4"
-                value="200"
-                label="100,000 VND - Point × 200"
+                value="100"
+                label="100,000 VND - Point × 100"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -63,8 +63,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio5"
-                value="400"
-                label="200,000 VND - Point × 400"
+                value="200"
+                label="200,000 VND - Point × 200"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -73,8 +73,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio6"
-                value="1000"
-                label="500,000 VND - Point × 1,000"
+                value="500"
+                label="500,000 VND - Point × 500"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -83,8 +83,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio7"
-                value="2000"
-                label="1,000,000 VND - Point × 2,000"
+                value="1000"
+                label="1,000,000 VND - Point × 1000"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -93,8 +93,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio8"
-                value="4000"
-                label="2,000,000 VND - Point × 4,000"
+                value="2000"
+                label="2,000,000 VND - Point × 2000"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -103,8 +103,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio9"
-                value="10000"
-                label="5,000,000 VND - Point × 10,000"
+                value="5000"
+                label="5,000,000 VND - Point × 5000"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>
@@ -113,8 +113,8 @@ function PointSelection({ onPackageSelect }) {
                 type="radio"
                 name="pointRadio"
                 id="pointRadio10"
-                value="20000"
-                label="10,000,000 VND - Point × 20,000"
+                value="10000"
+                label="10,000,000 VND - Point × 10,000"
                 onChange={handlePointChange}
               />
             </ListGroup.Item>

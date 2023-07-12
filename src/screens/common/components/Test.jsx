@@ -1,22 +1,25 @@
 import { useState } from "react";
 import { Container, Row, Col, ListGroup, Form, Card, Button } from 'react-bootstrap';
+import FooterFE from "../../../components/FooterFE";
+import HeaderFE from "../../../components/HeaderFE";
+import QRCode from 'react-qr-code';
 
-function PointSelection({ onPackageSelect }) {
+function PaymentSelection({ onPackageSelect }) {
   const [selectedValue, setSelectedValue] = useState("");
 
   function handlePointChange(event) {
     setSelectedValue(event.target.value);
   }
 
-  function handlePackageSelect() {
-    onPackageSelect(selectedValue);
+  function transferMomo() {
+    window.location.replace('https://developers.momo.vn/v3/checkout/')
   }
 
   return (
-    <Col md={5}>
+    <Col md={15}>
       <Card>
         <Card.Body>
-        <h4>Choose Your Package</h4>
+          <h4>Choose Your Package</h4>
           <ListGroup>
             <ListGroup.Item>
               <Form.Check
@@ -119,98 +122,15 @@ function PointSelection({ onPackageSelect }) {
               />
             </ListGroup.Item>
           </ListGroup>
-          <Button variant="primary" onClick={handlePackageSelect} disabled={!selectedValue}>Select Package</Button>
+          <a href="https://developers.momo.vn/v3/checkout/">go to Momo</a>
+          <Button variant="primary" onClick={transferMomo} disabled={!selectedValue}>Confirm</Button>
         </Card.Body>
       </Card>
     </Col>
   );
 }
 
-function TransactionDetails({ selectedPackage }) {
-  return (
-    <Col md={7}>
-      <Card>
-        <Card.Body>
-          <h4>Transaction Details</h4>
-          <hr />
-          <p>Selected Package:    Point x {selectedPackage}</p>
-          <hr />
-          <div className="d-flex flex-row align-items-center mb-4 pb-1">
-            <img className="img-fluid" src="https://img.icons8.com/color/48/000000/mastercard-logo.png" />
-            <div className="flex-fill mx-3">
-              <div className="form-outline">
-                <input
-                  type="text"
-                  id="formControlLgXc"
-                  className="form-control form-control-lg"
-                  defaultValue="**** **** **** 1234"
-                  
-                />
-                <label className="form-label" htmlFor="formControlLgXc">Card Number</label>
-              </div>
-            </div>
-          </div>
-          <p className="fw-bold  pb-1">Or with :</p>
-          <div className="d-flex flex-row align-items-center mb-4 pb-1">
-            <img className="img-fluid" src="https://img.icons8.com/color/48/000000/visa.png" />
-            <div className="flex-fill mx-3">
-              <div className="form-outline">
-                <input
-                  type="text"
-                  id="formControlLgXc"
-                  className="form-control form-control-lg"
-                  defaultValue="**** **** **** 5678"
-                  
-                />
-                <label className="form-label" htmlFor="formControlLgXc">Card Number</label>
-              </div>
-            </div>
-          </div>
-          <div className="form-outline mb-4">
-            <input
-              type="text"
-              id="formControlLgXc"
-              className="form-control form-control-lg"
-              defaultValue="John Doe"
-              
-            />
-            <label className="form-label" htmlFor="formControlLgXc">Cardholder Name</label>
-          </div>
-          <div className="row mb-4">
-            <div className="col-md-6">
-              <div className="form-outline">
-                <input
-                  type="text"
-                  id="formControlLgXc"
-                  className="form-control form-control-lg"
-                  defaultValue="12"
-                  
-                />
-                <label className="form-label" htmlFor="formControlLgXc">Expiration Month</label>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="form-outline">
-                <input
-                  type="text"
-                  id="formControlLgXc"
-                  className="form-control form-control-lg"
-                  defaultValue="2025"
-                 
-                />
-                <label className="form-label" htmlFor="formControlLgXc">Expiration Year</label>
-              </div>
-            </div>
-          </div>
-          <p className="text-muted">Please enter your card details to complete the transaction.</p>
-          <Button variant="primary" >Pay Now</Button>
-        </Card.Body>
-      </Card>
-    </Col>
-  );
-}
-
-function PointExchange() {
+function Test() {
   const [selectedPackage, setSelectedPackage] = useState(null);
 
   function handlePackageSelect(packageValue) {
@@ -218,13 +138,19 @@ function PointExchange() {
   }
 
   return (
-    <Container className="py-5">
-      <Row>
-        <PointSelection onPackageSelect={handlePackageSelect} />
-        {selectedPackage && <TransactionDetails selectedPackage={selectedPackage} />}
-      </Row>
-    </Container>
+    <>
+      <HeaderFE />
+      
+      <h1>THIS IS TEST PAGE</h1>
+      <QRCode value="2|99|0886647866|Nguyen Trung Tin||0|0|0||transfer_myqr|abc" />
+      <Container className="py-12 d-flex justify-content-center">
+        <Row>
+          <PaymentSelection onPackageSelect={handlePackageSelect} />
+        </Row>
+      </Container>
+      <FooterFE />
+    </>
   );
 }
 
-export default PointExchange;
+export default Test;

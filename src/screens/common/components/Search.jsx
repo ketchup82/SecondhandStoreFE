@@ -6,6 +6,8 @@ import ShirtMU from "../../../assets/images/shirt-mu.png";
 import ShirtGame from "../../../assets/images/shirt-game.png";
 import ShirtT1 from "../../../assets/images/shirt-t1.png";
 import Headphone from "../../../assets/images/headphone.png";
+import { useLocation } from 'react-router-dom';
+import axios from "axios"
 
 const data = {
     items: [
@@ -96,9 +98,38 @@ const data = {
     ]
 }
 
-export const HomeFilter = () => {
+export const Search = () => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [isError, setIsError] = useState(false)
+    const location = useLocation()
+    const searchText = location.state
     const [type, setType] = useState("");
     const [items, setItems] = useState([]);
+
+    let VND = new Intl.NumberFormat('vn-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+    
+    function isSearched(value) {
+        return value.toLowerCase().contains(searchText);
+    }
+
+    const fetchData = async () => {
+        await axios.get('/posts/get-post-list')
+            .then((data) => {
+                setItems(data.data)
+                setCurrentPage(1)
+                setIsLoading(false)
+            })
+            .catch(e => setIsError(e))
+    }
+
+    useEffect(() => {
+        fetchData()
+
+    }, [])
+
     useEffect(() => {
         setItems(
             data.items.filter((item) => item.type.includes(type))
@@ -128,7 +159,6 @@ export const HomeFilter = () => {
 
     }
 
-    
     const [paginatedItems, setPaginatedItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
@@ -140,12 +170,59 @@ export const HomeFilter = () => {
         setCurrentPage(newPage);
     };
     useEffect(() => {
+    }, [])
+    useEffect(() => {
         setCurrentPage(1);
         setPaginatedItems(paginate(items, currentPage, itemsPerPage));
     }, [items])
     useEffect(() => {
         setPaginatedItems(paginate(items, currentPage, itemsPerPage));
     }, [currentPage])
+
+    // const renderSearch = (
+    //     <>
+    //         {currTableData.length > 0 ? <>
+    //             <table className="table custom-table">
+    //                 <thead>
+    //                     <tr className='mb-1'>
+    //                         <th scope="col">Product name</th>
+    //                         <th scope="col">Price</th>
+    //                         <th scope="col">Post type</th>
+    //                         <th scope="col">Category</th>
+    //                         <th scope="col">Status</th>
+    //                         <th scope="col">Priority score</th>
+    //                         <th scope="col">Post date</th>
+    //                         <th scope="col">Expire date</th>
+    //                         <th scope="col">View</th>
+    //                     </tr>
+    //                 </thead>
+    //                 <tbody>
+    //                     {currTableData.map((post) => (
+    //                         <tr>
+    //                             <td>{post.productName}</td>
+    //                             <td>{post.pointCost}</td>
+    //                             <td>{post.postTypeName}</td>
+    //                             <td>{post.categoryName}</td>
+    //                             <td>{post.postStatusName}</td>
+    //                             <td>{post.postPriority}</td>
+    //                             <td>{post.postDate}</td>
+    //                             <td>{post.postExpiryDate}</td>
+    //                             <td className='text-center text-warning'>
+    //                                 <Link to="/post-detail" state={post.postId}>
+    //                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
+    //                                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+    //                                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+    //                                     </svg>
+    //                                 </Link>
+    //                             </td>
+    //                         </tr>
+    //                     ))}
+    //                 </tbody>
+    //             </table >
+    //             <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
+    //         </> : <h5 className="text-dark m-3 text-capitalize">You have no post!</h5>}
+    //     </>
+    // )
 
     return (
         <>
@@ -182,7 +259,7 @@ export const HomeFilter = () => {
                 </div>
             </div>
 
-            <h1 className="fw-bold fs-1 m-5 text-center">Result for "{type == "" ? "all" : type}" ({items.length} items found) </h1>
+            <h1 className="fw-bold fs-1 m-5 text-center">Result for {searchText} ({items.length} items found) </h1>
 
             <div className="container">
                 <div className='d-flex'>
@@ -209,30 +286,28 @@ export const HomeFilter = () => {
                         <div className="row row-cols-3 g-5 mx-5">
                             {
                                 paginatedItems.map((item) => {
-                                    return (
-                                        <div key={item.id} className="col p-3">
-                                            <div className="card h-100 border-0 text-center">
-                                                <img src={item.thumbnail} className="card-img-top" alt="..." />
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{item.name}</h5>
-                                                    <p className="card-text">{item.price}$</p>
-                                                </div>
+                                    return (item.productName || '').toLowerCase().includes(searchText) && <div key={item.postId} className="col p-3">
+                                        <div className="card h-100 border-0 text-center">
+                                            <img src={item.image} className="card-img-top" alt="..." />
+                                            <div className="card-body">
+                                                <h5 className="card-title">{item.productName}</h5>
+                                                <p className="card-text">{VND.format(item.price)}</p>
                                             </div>
                                         </div>
-                                    )
+                                    </div>
                                 })
                             }
                             <div className='col-12 d-flex justify-content-center'>
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
                                         <li class="page-item page-link" onClick={() => {
-                                            if(currentPage != 1) {
+                                            if (currentPage != 1) {
                                                 handlePageChange(currentPage - 1)
                                             }
                                         }}>Previous</li>
-                                       
+
                                         <li class="page-item page-link" onClick={() => {
-                                            if(currentPage != Math.round(items.length / 5)) {
+                                            if (currentPage != Math.round(items.length / 5)) {
                                                 handlePageChange(currentPage + 1)
                                             }
                                         }}>Next</li>

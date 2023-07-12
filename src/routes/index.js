@@ -18,23 +18,28 @@ import { AdminPostDetail } from "../screens/admin/components/PostDetail";
 import { AdminPostListManagement } from "../screens/admin/components/PostListManagement";
 
 import { UserProfile } from "../screens/common/components/UserProfile";
-import { Transaction } from "../screens/common/components/Transaction";
 import { UserHome } from "../screens/common/components/Home";
 import { PostDetail } from "../screens/common/components/PostDetail";
 import { PostListManagement } from "../screens/common/components/PostListManagement";
 import { UserEdit } from "../screens/common/components/UserEdit";
-import { HomeFilter } from "../screens/common/components/HomeFilter";
-import { Payment } from "../screens/common/components/Payment";
-import { PaymentWithPoint } from "../screens/common/components/PaymentWithPoint";
 import { PostCreate } from "../screens/common/components/PostCreate";
-import PaymentQRPage from "../screens/common/components/QrPayment";
-import PointExchange from "../screens/common/components/PointExchange";
+import { Topup } from "../screens/common/components/Topup";
+import PaymentRequest from "../screens/common/components/PaymentRequest";
+import { ExchangeOrder } from "../screens/common/components/ExchangeOrder";
+import { ExchangeRequest } from "../screens/common/components/ExchangeRequest";
+import { PaymentHistory } from "../screens/common/components/PaymentHistory";
+import { Search } from "../screens/common/components/Search";
+import Test from "../screens/common/components/Test";
 
 
 export const appRouter = createBrowserRouter([
     {
         path: '',
         element: <UserHome />
+    },
+    {
+        path: '/test',
+        element: <Test />
     },
     // fix element later
     {
@@ -62,28 +67,28 @@ export const appRouter = createBrowserRouter([
         element: <UserProfile />
     },
     {
-        path: 'transaction',
-        element: <Transaction />
+        path: 'search',
+        element: <Search />
     },
     {
-        path: 'point-exchange',
-        element: <PointExchange />
+        path: 'payment-request',
+        element: <PaymentRequest />
     },
     {
-        path: 'home-filter',
-        element: <HomeFilter />
+        path: 'payment-history',
+        element: <PaymentHistory />
     },
     {
-        path: 'payment',
-        element: <Payment />
+        path: 'topup',
+        element: <Topup />
     },
     {
-        path: 'payment-with-point',
-        element: <PaymentWithPoint />
+        path: 'exchange-order',
+        element: <ExchangeOrder />
     },
     {
-        path: 'qrcode',
-        element: <PaymentQRPage />
+        path: 'exchange-request',
+        element: <ExchangeRequest />
     },
     {
         path: "/auth",

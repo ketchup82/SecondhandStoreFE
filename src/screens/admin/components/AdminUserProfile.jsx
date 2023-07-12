@@ -36,11 +36,11 @@ export const AdminUserProfile = () => {
     }
     const updateStatus = async () => {
         const response = await axios({
-            url: 'https://localhost:7115/account/toggle-account-status',
+            url: '/account/toggle-account-status',
             params: { id: accountId },
             method: 'put'
         })
-        if(response.data.body) alert("something went wrong")
+        if (response.data.body) alert("something went wrong")
         else alert("Successfully " + (account.isActive ? "deactivated" : "activated") + " this user")
     }
     useEffect(() => {
@@ -60,7 +60,7 @@ export const AdminUserProfile = () => {
 
     function handleModal() {
         updateStatus()
-        navigate(-1)
+        window.location.reload()
         setIsOpen(false)
     }
     function closeModal() {

@@ -5,7 +5,7 @@ export default function Home() {
         <DefaultLayout>
             {/* Có thể xóa container đi để thêm content vào đấy */}
             <Container fluid >
-                <div className="test" style={{height: '56vh'}}>Middle</div>
+                <div className="test" style={{ height: '56vh' }}>Middle</div>
             </Container>
         </DefaultLayout>
     )

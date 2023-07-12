@@ -34,7 +34,14 @@ export const PostListManagement = () => {
         axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
         fetchData()
     }, [])
+    // const [type, setType] = useState("");
 
+    // useEffect(() => {
+    //     setItems(
+    //         data.items.filter((item) => item.type.includes(type))
+    //     )
+    // }, [type])
+    
     const lastPage = Math.ceil(posts.length / itemPerPage);
     const currTableData = useMemo(() => {
         let firstPageIndex = (currentPage - 1) * itemPerPage;
@@ -52,7 +59,6 @@ export const PostListManagement = () => {
                 <table className="table custom-table">
                     <thead>
                         <tr className='mb-1'>
-                            <th scope="col">Post id</th>
                             <th scope="col">Product name</th>
                             <th scope="col">Price</th>
                             <th scope="col">Post type</th>
@@ -67,12 +73,11 @@ export const PostListManagement = () => {
                     <tbody>
                         {currTableData.map((post) => (
                             <tr>
-                                <td>{post.postId}</td>
                                 <td>{post.productName}</td>
                                 <td>{post.pointCost}</td>
-                                <td>{post.postType}</td>
+                                <td>{post.postTypeName}</td>
                                 <td>{post.categoryName}</td>
-                                <td>{post.postStatus ? <div>Approved</div> : <div>Pending</div>}</td>
+                                <td>{post.postStatusName}</td>
                                 <td>{post.postPriority}</td>
                                 <td>{post.postDate}</td>
                                 <td>{post.postExpiryDate}</td>
@@ -89,7 +94,7 @@ export const PostListManagement = () => {
                     </tbody>
                 </table >
                 <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
-            </> : <h5 className="text-dark m-3 text-capitalize">There's no post!</h5>}
+            </> : <h5 className="text-dark m-3 text-capitalize">You have no post!</h5>}
         </>
     )
 
@@ -98,7 +103,6 @@ export const PostListManagement = () => {
             <HeaderFE />
             <div className='d-flex'>
                 <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
-                    {isError && errorMessage}
                     <h5 className='text-dark m-3'>My Posts</h5>
                     {isLoading ? <LoadingSpinner /> : renderPost}
                 </div>

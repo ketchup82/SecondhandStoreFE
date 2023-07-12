@@ -4,7 +4,7 @@ import { LoadingSpinner } from "../../../components/loading/LoadingSpinner"
 import Cookies from 'universal-cookie'
 import jwt from 'jwt-decode'
 import axios from "axios"
-
+import cn from 'classnames'
 export const SignUp = () => {
     axios.defaults.baseURL = 'https://localhost:7115';
 
@@ -12,14 +12,7 @@ export const SignUp = () => {
     const cookies = new Cookies()
     const [isLoading, setIsLoading] = useState(true)
     const [isSubmitted, setIsSubmitted] = useState(false)
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [email, setEmail] = useState("")
-    const [dob, setDob] = useState(new Date())
-    const [address, setAddress] = useState("")
-    const [phone, setPhone] = useState("")
-    const [pass, setPass] = useState("")
-    const [rePass, setRePass] = useState("")
+    const [aggree, setAggree] = useState(false)
 
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
@@ -35,8 +28,6 @@ export const SignUp = () => {
         setTimeout(() => { setIsLoading(false) }, 2000)
     }, [])
     const fetchToken = async (email, password) => {
-        console.log(email)
-        console.log(password)
         await axios.post("/account/login", {
             email: email,
             password: password
@@ -61,13 +52,13 @@ export const SignUp = () => {
             setIsLoading(false)
         })
     }
-    const fetchData = async () => {
+    const fetchData = async (data) => {
         await axios.post("/account/create-new-account", {
-            email: email,
-            password: pass,
-            fullname: firstName + " " + lastName,
-            address: address,
-            phoneNo: phone
+            email: data['email'],
+            password: data['pass'],
+            fullname: data['firstName'] + " " + data['lastName'],
+            address: data['address'],
+            phoneNo: data['phone']
         }).then((data) => {
             setTimeout(() => {
                 fetchToken(data.data.email, data.data.password)
@@ -80,65 +71,69 @@ export const SignUp = () => {
     }
 
 
-    const handleForm = () => {
-        if (firstName === "" || lastName === "" || dob === "" || email === "" ||
-            pass === "" || rePass === "" || address === "" || phone === ""
-        ) {
-            alert("Please fill in all the blank in the form")
+    const onSubmit = (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const data = Object.fromEntries(formData)
+        const keys = Object.keys(data)
+        for (let i = 0; i < keys.length; i++) {
+            if (data[keys[i]] === '') {
+                alert("Failed to create an account\n" + keys[i] + " is empty.")
+                return
+            }
         }
-        else if (pass !== rePass) {
-            alert("Password and Confirm password field is not the same")
+        if (data['pass'] !== data['rePass']) {
+            alert("Failed to create an account\nConfirm password doesn't match password.")
+            return
         }
-        else {
-            setIsLoading(true)
-            fetchData()
-        }
+        setIsLoading(true)
+        fetchData(data)
     }
 
     const renderForm = (
-        <form className="form row m-3" onSubmit={(e) => {
-            e.preventDefault()
-            handleForm()
-        }}>
+        <form className="form row m-3" onSubmit={onSubmit}>
             <div className="col-md-6 mb-3">
                 <label for="firstName" className="form-label text-white">First name</label>
-                <input type="text" onChange={(e) => setFirstName(e.target.value)} className="form-control" id="firstName" required />
+                <input type="text" className="form-control" name="firstName" required />
             </div>
             <div className="col-md-6 mb-3">
                 <label for="lastName" className="form-label text-white">Last name</label>
-                <input type="text" onChange={(e) => setLastName(e.target.value)} className="form-control" id="lastName" required />
+                <input type="text" className="form-control" name="lastName" required />
             </div>
             <div className="col-md-6 mb-3">
                 <label for="dob" className="form-label text-white">DoB</label>
-                <input type="date" onChange={(e) => setDob(e.target.value)} className="form-control" id="dob" required />
+                <input type="date" className="form-control" name="dob" required />
             </div>
             <div className="col-md-6 mb-3">
                 <label for="phone" className="form-label text-white">Phone number</label>
-                <input type="text" pattern="[0-9]*" placeholder="123456789" onChange={(e) => setPhone(e.target.value)} className="form-control" id="phone" required />
+                <input type="text" pattern="[0-9]*" placeholder="123456789" className="form-control" name="phone" required />
             </div>
             <div className="col-md-12 mb-3">
                 <label for="email" className="form-label text-white">Email</label>
-                <input type="email" placeholder="abc@fpt.edu.vn" onChange={(e) => setEmail(e.target.value)} className="form-control" id="email" required />
+                <input type="email" placeholder="abc@fpt.edu.vn" className="form-control" name="email" required />
             </div>
             <div className="col-md-12 mb-3">
                 <label for="address" className="form-label text-white">Address</label>
-                <input type="text" onChange={(e) => setAddress(e.target.value)} className="form-control" id="address" required />
+                <input type="text" className="form-control" name="address" required />
             </div>
             <div className="col-md-12 mb-3">
                 <label for="pass" className="form-label text-white">Password</label>
-                <input type="password" onChange={(e) => setPass(e.target.value)} className="form-control" id="pass" required />
+                <input type="password" minlength="4" maxlength="8" size="8" className="form-control" name="pass" required />
             </div>
             <div className="col-md-12 mb-3">
                 <label for="rePass" className="form-label text-white">Confirm password</label>
-                <input type="password" onChange={(e) => setRePass(e.target.value)} className="form-control" id="rePass" required />
+                <input type="password" minlength="4" maxlength="8" size="8" className="form-control" name="rePass" required />
             </div>
             <div className="col-md-12 mb-3 flex items-center">
-                <input type="checkbox" className="form-check-input" id="policies" required />
+                <input type="checkbox" className="form-check-input" id="policies" onChange={() => {
+                    const t = aggree
+                    setAggree(!t)
+                    }} />
                 <label className="form__check-label" for="policies">I am aggree with all</label>
                 <a className="form-check-label text-warning" href="/policy"> policies</a>
             </div>
             <div className="col-md-12 d-flex justify-content-center">
-                <button type="submit" className="btn btn-dark">Sign up</button>
+                <button type="submit" className={cn("btn btn-dark", {disabled: !aggree})}>Sign up</button>
             </div>
         </form>
     )

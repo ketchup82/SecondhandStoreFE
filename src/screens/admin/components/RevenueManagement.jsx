@@ -16,7 +16,7 @@ export const RevenueManagement = () => {
     const [currentPage, setCurrentPage] = useState(NaN)
 
     const fetchData = async () => {
-        await axios.get("/topup")
+        await axios.get("/topup/get-all-topup-order")
             .then((data) => {
                 setRevenues(data.data)
                 setCurrentPage(1)

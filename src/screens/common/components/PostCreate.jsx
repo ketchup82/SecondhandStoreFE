@@ -13,12 +13,7 @@ export const PostCreate = () => {
     const cookies = new Cookies()
     const navigate = useNavigate()
     const [selectedImage, setSelectedImage] = useState(null);
-    const [images, setImages] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
-
-    const createPost = async (data) => {
-
-    }
 
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
@@ -30,15 +25,6 @@ export const PostCreate = () => {
     const handle_image = (e) => {
         console.log(e.target.files)
         const imgs = e.target.files
-        // for(let i = 0; i < imgs.length; i ++){
-        //     console.log(imgs[i])
-        //     setSelectedImage(imgs[i])
-        //     setImages(prevImages => [
-        //         ...prevImages,
-        //         imgs[i]
-        //     ])
-        // }
-        // console.log(selectedImage)
         setSelectedImage(imgs[0])
     }
     const onSubmit = async (e) => {

@@ -71,6 +71,10 @@ body {
     padding: 0 10px;
 }
 
+.logo-footer{
+    color: white;
+}
+
 .footer-middle,
 .footer-right {
     margin-top: 30px;

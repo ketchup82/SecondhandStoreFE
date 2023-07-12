@@ -73,7 +73,7 @@ export const AdminHome = () => {
                     <h1 className='m-3'>{accounts.length}</h1>
                 </div>
                 <div className="col text-dark rounded m-3" style={{ background: "#0DB5EA" }}>
-                    <h5 className='m-3'>Total Post</h5>
+                    <h5 className='m-3'>Total Post </h5>
                     <h1 className='m-3'>{posts.length}</h1>
                 </div>
                 <div className="col text-dark rounded m-3" style={{ background: "#12e265" }}>

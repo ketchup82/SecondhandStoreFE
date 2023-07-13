@@ -20,6 +20,12 @@ export const AdminHome = () => {
     const [accounts, setAccount] = useState([])
     const [posts, setPosts] = useState([])
     const [revenues, setRevenues] = useState([])
+    
+    let VND = new Intl.NumberFormat('vn-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+
     const fetchAccount = async () => {
         await axios.get('/account/get-account-list')
             .then(data => {
@@ -78,7 +84,7 @@ export const AdminHome = () => {
                 </div>
                 <div className="col text-dark rounded m-3" style={{ background: "#12e265" }}>
                     <h5 className='m-3'>Total Revenue</h5>
-                    <h1 className='m-3'>{revenues}</h1>
+                    <h1 className='m-3'>{VND.format(revenues)}</h1>
                 </div>
             </div>
 

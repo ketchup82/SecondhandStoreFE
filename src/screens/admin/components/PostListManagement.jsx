@@ -16,7 +16,7 @@ export const AdminPostListManagement = () => {
     const [currentPage, setCurrentPage] = useState(NaN)
 
     const fetchData = async () => {
-        await axios.get('/posts/get-post-list')
+        await axios.get('/posts/get-user-posts')
             .then((data) => {
                 setPosts(data.data)
                 setCurrentPage(1)
@@ -51,13 +51,13 @@ export const AdminPostListManagement = () => {
                         <tr className='mb-1'>
                             <th scope="col">Post id</th>
                             <th scope="col">Product name</th>
+                            <th scope="col">Owner</th>
                             <th scope="col">Price</th>
                             <th scope="col">Post type</th>
                             <th scope="col">Category</th>
                             <th scope="col">Status</th>
                             <th scope="col">Priority score</th>
                             <th scope="col">Post date</th>
-                            <th scope="col">Expire date</th>
                             <th scope="col">View</th>
                         </tr>
                     </thead>
@@ -66,13 +66,13 @@ export const AdminPostListManagement = () => {
                             <tr>
                                 <td>{post.postId}</td>
                                 <td>{post.productName}</td>
+                                <td>{post.fullname}</td>
                                 <td>{post.pointCost}</td>
                                 <td>{post.postTypeName}</td>
                                 <td>{post.categoryName}</td>
                                 <td>{post.postStatusName}</td>
                                 <td>{post.postPriority}</td>
                                 <td>{post.postDate}</td>
-                                <td>{post.postExpiryDate}</td>
                                 <td className='text-center text-warning'>
                                     <Link to="/admin/post-detail" state={post.postId}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">

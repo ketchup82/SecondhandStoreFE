@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, ListGroup, Form, Card, Button } from 'react-bootstrap';
 import FooterFE from "../../../components/FooterFE";
 import HeaderFE from "../../../components/HeaderFE";
 import QRCode from 'react-qr-code'
+import axios from "axios";
+import Cookies from 'universal-cookie'
+import { useNavigate } from 'react-router-dom'
+
+const styles = {
+  qr: {
+    width: "142px",
+    height: "142px",
+    background: "#555",
+  }
+}
 
 function PaymentSelection({ onPackageSelect }) {
   const [selectedValue, setSelectedValue] = useState("");
-
   function handlePointChange(event) {
     setSelectedValue(event.target.value);
   }
@@ -131,10 +141,29 @@ function PaymentSelection({ onPackageSelect }) {
 }
 
 function TransactionDetails({ selectedPackage }) {
+  axios.defaults.baseURL = "https://localhost:7115"
+  const cookies = new Cookies()
+  const navigate = useNavigate()
   let VND = new Intl.NumberFormat('vn-VN', {
     style: 'currency',
     currency: 'VND',
   });
+  const sendRequest = async () => {
+    await axios.get("/topup/send-topup-order")
+    .then((data)=>{alert("You have sent a request!")})
+    .catch((e)=>{console.log(e)})
+  }
+  useEffect(() => {
+    let cookie = cookies.get('jwt_authorization')
+    if (cookie !== undefined) {
+      axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie
+    }
+    else navigate('/auth/login', { replace: true })
+  }, [])
+
+
+  useEffect(() => { setIsConfirmed(false) }, [selectedPackage])
+  const [isConfirmed, setIsConfirmed] = useState()
   return (
     <Col md={7}>
       <Card>
@@ -142,11 +171,23 @@ function TransactionDetails({ selectedPackage }) {
           <div className="col-md-12">
             <div className="card">
               <div className="card-body text-center">
-                <h5 className="card-title">Your package is {VND.format(selectedPackage*1000)}</h5>
+                <h5 className="card-title">Your package is {VND.format(selectedPackage * 1000)}</h5>
                 <div className="qr-code">
                   <p><small> Use the MoMo app to scan the QR code below.</small></p>
                   {/* <QRCode value={qrCodeValue} /> */}
-                  <QRCode value={"2|99|0886647866|Nguyen Trung Tin||0|0|" + selectedPackage * 1000 + "||transfer_myqr|adf"} />
+                  {isConfirmed ?
+                    <QRCode value={"2|99|0886647866|Nguyen Trung Tin||0|0|" + selectedPackage * 1000 + "||transfer_myqr|adf"} /> :
+                    <>
+                      <div className="col-md-12">
+                        <div className="self-align-center" style={styles.qr} onClick={() => {
+                          if (window.confirm("Are you sure to create a topup request?")) {
+                            setIsConfirmed(true)
+                            sendRequest()
+                          }
+                        }}>Click here to unlock QR code</div>
+                      </div>
+                    </>
+                  }
                 </div>
               </div>
             </div>

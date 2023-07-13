@@ -7,8 +7,10 @@ import axios from "axios"
 import HeaderFE from "../../../components/HeaderFE";
 import FooterFE from "../../../components/FooterFE";
 
-export const UserProfile = () => {
+export const UserDetail = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
+    const queryParameter = new URLSearchParams(window.location.search)
+    const accountId = queryParameter.get('id')
     const navigate = useNavigate();
     const cookies = new Cookies();
     const [isLoading, setIsLoading] = useState(true)
@@ -16,7 +18,7 @@ export const UserProfile = () => {
     const [account, setAccount] = useState([])
 
     const fetchData = async () => {
-        await axios.get('/account/get-user-account')
+        await axios.get('/account/get-account-by-id?id=' + accountId)
             .then((data) => {
                 setAccount(data.data)
                 setIsLoading(false)
@@ -43,7 +45,11 @@ export const UserProfile = () => {
     )
     const profile = (
         <>
+
             {isError ? errorMessage : <div className='p-5'>
+                <button onClick={() => { navigate(-1) }} type="button" className="btn btn-light fw-medium text-uppercase mb-5">
+                    ←Back
+                </button>
                 <div className="row g-3 px-5 h-100">
                     <div className="col-md-6 flex-grow-1 overflow-auto">
                         <div className="col card h-100 bg-body-tertiary">

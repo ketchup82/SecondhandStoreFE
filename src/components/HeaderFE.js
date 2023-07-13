@@ -12,10 +12,8 @@ export default function HeaderFE() {
     const navigate = useNavigate()
     const cookies = new Cookies()
     axios.defaults.baseURL = "https://localhost:7115"
-    const [text, setText] = useState('')
     const [isFetched, setIsFetched] = useState(false)
     const [account, setAccount] = useState([])
-
     const fetchData = async () => {
         await axios.get('/account/get-user-account')
             .then((data) => {
@@ -37,20 +35,10 @@ export default function HeaderFE() {
         }
     }, [])
 
-
-    const handleForm = (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.currentTarget)
-        const data = Object.fromEntries(formData)
-        console.log(data)
-        navigate('/search', { state: data['searchText'], replace: true})
-    }
-
-
     const logged = (
         <>
             <Nav.Link href="/payment-request" className='contact-detail'>
-                <div className='d-flex justify-content-center'>
+                <div className='d-flex justify-content-center btn'>
                     Point: {account.pointBalance}
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
@@ -82,25 +70,33 @@ export default function HeaderFE() {
     )
     return (
         <>
-            <Navbar className='header' >
+            <Navbar className='header'>
                 <Container>
                     <Navbar.Brand draggable='false' href="/" className='logo-container'><img draggable='false' className='logo_header' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className='me-auto col-md-5'>
-                            <Form className="d-flex w-100" onSubmit={handleForm}>
-                                <Form.Control
-                                    name='searchText'
-                                    type="search"
-                                    placeholder="Search"
-                                    className="me-2"
-                                    aria-label="Search"
-                                />
-                                <Button variant="success" type='submit'><ion-icon name="search-outline"></ion-icon></Button>
-                            </Form>
+                        <Nav className='me-auto col-md-4'>
+                                {/* {!window.location.pathname.includes('/search') && <Form className="d-flex w-100" onSubmit={handleForm}>
+                                    <Form.Control
+                                        name='searchText'
+                                        type="search"
+                                        placeholder="Search"
+                                        className="me-2"
+                                        aria-label="Search"
+                                    />
+                                    <Button variant="success" type='submit'><ion-icon name="search-outline"></ion-icon></Button>
+                                </Form>} */}
                         </Nav>
-                        <Nav className='col-md-9 contact'>
-                            <Nav.Link href="/post-create" className='contact-detail'>
+                        <Nav className='col-md-10 contact'>
+                            <Nav.Link href="/search" className='contact-detail'>
+                                <button type="button" className="btn btn-info">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box2-heart-fill" viewBox="0 0 16 16">
+                                        <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6l.5.667Z" />
+                                    </svg>
+                                    <span>All of our product</span>
+                                </button>
+                            </Nav.Link>
+                            <Nav.Link href="/search" className='contact-detail'>
                                 <button type="button" className="btn btn-warning">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box2-heart-fill" viewBox="0 0 16 16">
                                         <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM8.5 4h6l.5.667V5H1v-.333L1.5 4h6V1h1v3ZM8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z" />
@@ -115,7 +111,7 @@ export default function HeaderFE() {
                                 </>
                             }
                             <Nav.Link href="/post-create" className='contact-detail'>
-                                <button type="button" className="btn btn-primary w-15">Post a product</button>
+                                <button type="button" className="btn btn-primary">Post a product</button>
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

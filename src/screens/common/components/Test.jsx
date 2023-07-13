@@ -3,6 +3,7 @@ import { Container, Row, Col, ListGroup, Form, Card, Button } from 'react-bootst
 import FooterFE from "../../../components/FooterFE";
 import HeaderFE from "../../../components/HeaderFE";
 import QRCode from 'react-qr-code';
+import { SocketIO } from "../../../Socket.io";
 
 function PaymentSelection({ onPackageSelect }) {
   const [selectedValue, setSelectedValue] = useState("");
@@ -136,11 +137,12 @@ function Test() {
   function handlePackageSelect(packageValue) {
     setSelectedPackage(packageValue);
   }
-
   return (
     <>
-      <HeaderFE />
-      
+      <ul id="messages"></ul>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
       <h1>THIS IS TEST PAGE</h1>
       <QRCode value="2|99|0886647866|Nguyen Trung Tin||0|0|0||transfer_myqr|abc" />
       <Container className="py-12 d-flex justify-content-center">
@@ -148,7 +150,6 @@ function Test() {
           <PaymentSelection onPackageSelect={handlePackageSelect} />
         </Row>
       </Container>
-      <FooterFE />
     </>
   );
 }

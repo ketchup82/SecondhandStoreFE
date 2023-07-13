@@ -7,6 +7,13 @@ import Cookies from 'universal-cookie'
 import axios from "axios"
 let itemPerPage = 10
 
+const styles = {
+    height: {
+        padding : "0",
+        height: "30px",
+    }
+}
+
 export const RevenueManagement = () => {
     axios.defaults.baseURL = 'https://localhost:7115';
     const cookies = new Cookies();
@@ -27,6 +34,16 @@ export const RevenueManagement = () => {
                 console.log(e)
             })
     }
+    const handle_request = async (topupId) => {
+        const response = await axios({
+            url: "/topup/accept-topup",
+            params: { id:  topupId},
+            method: "put"
+        })
+        alert("Success")
+        window.location.reload()
+    }
+
     useEffect(() => {
         setIsLoading(true)
         let cookie = cookies.get('jwt_authorization')
@@ -51,23 +68,29 @@ export const RevenueManagement = () => {
                 <table className="table custom-table">
                     <thead>
                         <tr className='mb-1'>
-                            <th scope="col" className='text-center'>Index</th>
                             <th scope="col">Order Id</th>
                             <th scope="col">Account Id</th>
                             <th scope="col">Top-up Point</th>
                             <th scope="col">Price</th>
                             <th scope="col">Date</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {currTableData.map((revenue, index) => (
+                        {currTableData.map((revenue) => (
                             <tr>
-                                <th scope="row" className='text-center'>{index}</th>
                                 <td>{revenue.orderId}</td>
                                 <td>{revenue.accountId}</td>
                                 <td>{revenue.topUpPoint}</td>
                                 <td>{revenue.price}</td>
                                 <td className='text-secondary'>{revenue.topUpDate}</td>
+                                <td className='align-self-start'>{revenue.topUpStatus === "Pending" ? 
+                                <button className='btn btn-primary' onClick={()=>{
+                                    if(window.confirm("Are you sure to switch this request to complete")){
+                                        handle_request(revenue.orderId)
+                                    }
+                                }} style={styles.height}>Pending
+                                </button> : <div>Completed</div>}</td>
                             </tr>
                         ))}
                     </tbody>

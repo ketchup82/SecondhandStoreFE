@@ -1,28 +1,28 @@
-import Headphone from "../../../assets/images/headphone.png";
-import ShirtMU from "../../../assets/images/shirt-mu.png";
-import ShirtGame from "../../../assets/images/shirt-game.png";
-import ShirtT1 from "../../../assets/images/shirt-t1.png";
 import React from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import Cookies from 'universal-cookie'
 import axios from "axios"
+import jwt from 'jwt-decode'
 import HeaderFE from "../../../components/HeaderFE";
 import FooterFE from "../../../components/FooterFE";
 
 export const PostDetail = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
-    const location = useLocation()
-    const postId = location.state
+    const queryParameter = new URLSearchParams(window.location.search)
+    const postId = queryParameter.get("id")
     const navigate = useNavigate();
     const cookies = new Cookies();
-    const [isLoading, setIsLoading] = useState(true)
+    const [Owner, setOwner] = useState('')
     const [post, setPost] = useState([])
+    let VND = new Intl.NumberFormat('vn-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
     const fetchData = async () => {
-        await axios.get('/posts/get-user-post-by-id', { params: { id: postId } })
+        await axios.get('/posts/get-post-by-id', { params: { id: postId } })
             .then((data) => {
                 setPost(data.data)
-                console.log(post)
             })
             .catch(e => console.log(e))
     }
@@ -31,6 +31,7 @@ export const PostDetail = () => {
         let cookie = cookies.get('jwt_authorization')
         if (cookie !== undefined) {
             axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
+            setOwner(jwt(cookie)['accountId'])
             fetchData()
         }
         else {
@@ -41,11 +42,9 @@ export const PostDetail = () => {
         <>
             <HeaderFE />
             <div className='p-5'>
-                <Link to="/post-list">
-                    <button type="button" className="btn btn-light fw-medium text-uppercase mb-5">
-                        ←Back
-                    </button>
-                </Link>
+                <button onClick={()=>{navigate(-1)}} type="button" className="btn btn-light fw-medium text-uppercase mb-5">
+                    ←Back
+                </button>
                 <div className="row g-3 px-5">
                     <div className="col-md-6">
                         <div className="col card mb-5 bg-body-tertiary">
@@ -59,7 +58,7 @@ export const PostDetail = () => {
                     <div className="col-md-6 px-5">
                         <h3 className='title'>Product Name: {post.productName}</h3>
                         <div className="row">
-                            <h5 className="col">Price: {post.price}</h5>
+                            <h5 className="col">Price: {VND.format(post.price)}</h5>
                             <h5 className="col">Category: {post.categoryName}</h5>
                         </div>
                         <h3 className='title'>Description</h3>
@@ -69,7 +68,10 @@ export const PostDetail = () => {
                         <h3 className='text-danger'>Email: {post.email}</h3>
                     </div>
                 </div>
-                <button className="btn btn-light">Update Product</button>
+                {Owner === post.accountId ? 
+                <button onClick={() => { navigate('/post-edit', { state: post.postId }) }} className="btn btn-light">Update Product</button> : 
+                <button onClick={()=>{navigate('/user-detail?id='+post.accountId)}} className="btn btn-light">Go to seller's profile</button>
+                }
             </div >
             <FooterFE />
         </>

@@ -30,6 +30,9 @@ import { ExchangeRequest } from "../screens/common/components/ExchangeRequest";
 import { PaymentHistory } from "../screens/common/components/PaymentHistory";
 import { Search } from "../screens/common/components/Search";
 import Test from "../screens/common/components/Test";
+import { PostEdit } from "../screens/common/components/PostEdit";
+import { UserDetail } from "../screens/common/components/UserDetail";
+import { Chat } from "../screens/common/components/Chat";
 
 
 export const appRouter = createBrowserRouter([
@@ -50,10 +53,10 @@ export const appRouter = createBrowserRouter([
         path: 'post-detail',
         element: <PostDetail />
     },
-    // {
-    //     path: 'post-edit',
-    //     element: <Post />
-    // },
+    {
+        path: 'post-edit',
+        element: <PostEdit />
+    },
     {
         path: 'post-list',
         element: <PostListManagement />
@@ -65,6 +68,10 @@ export const appRouter = createBrowserRouter([
     {
         path: 'user-profile',
         element: <UserProfile />
+    },
+    {
+        path: 'user-detail',
+        element: <UserDetail />
     },
     {
         path: 'search',
@@ -89,6 +96,10 @@ export const appRouter = createBrowserRouter([
     {
         path: 'exchange-request',
         element: <ExchangeRequest />
+    },
+    {
+        path: 'chat',
+        element: <Chat />
     },
     {
         path: "/auth",

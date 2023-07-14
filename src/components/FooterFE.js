@@ -10,7 +10,8 @@ export default function FooterFE() {
                 <Row>
                     <Col md={4} sm={12}>
                         <div className="footer-left">
-                            <Navbar.Brand href="/" className='logo-container'><img className="logo-footer" src={Logo} alt='SeconhandStore' /></Navbar.Brand>
+                            <a href="/" className="font-weight-bold h1">FPT OSE Service</a>
+                            {/* <Navbar.Brand href="/" className='logo-container'><img className="logo-footer" src={Logo} alt='SeconhandStore' /></Navbar.Brand> */}
                             <div className="left-content">
 
                             </div>

@@ -17,8 +17,13 @@ export const PostListManagement = () => {
     const [isError, setIsError] = useState(false)
     const [currentPage, setCurrentPage] = useState(NaN)
 
+    let VND = new Intl.NumberFormat('vn-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+
     const fetchData = async () => {
-        await axios.get('/posts/get-user-posts')
+        await axios.get('/posts/get-own-posts')
             .then((data) => {
                 setPosts(data.data)
                 setCurrentPage(1)
@@ -74,7 +79,7 @@ export const PostListManagement = () => {
                         {currTableData.map((post) => (
                             <tr>
                                 <td>{post.productName}</td>
-                                <td>{post.pointCost}</td>
+                                <td>{VND.format(post.price)}</td>
                                 <td>{post.postTypeName}</td>
                                 <td>{post.categoryName}</td>
                                 <td>{post.postStatusName}</td>

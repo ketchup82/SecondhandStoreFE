@@ -76,7 +76,7 @@ export default function HeaderFE() {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className='me-auto col-md-4'>
-                                {/* {!window.location.pathname.includes('/search') && <Form className="d-flex w-100" onSubmit={handleForm}>
+                            {/* {!window.location.pathname.includes('/search') && <Form className="d-flex w-100" onSubmit={handleForm}>
                                     <Form.Control
                                         name='searchText'
                                         type="search"
@@ -106,12 +106,14 @@ export default function HeaderFE() {
                             </Nav.Link>
                             {isFetched ? logged :
                                 <>
-                                    <Nav.Link href="/auth/login" className='contact-detail'>Login</Nav.Link>
-                                    <Nav.Link href="/auth/register" className='contact-detail'>Sign up</Nav.Link>
+                                    <Nav.Link href="/auth/login" className='contact-detail font-weight-bold'>Login</Nav.Link>
+                                    <Nav.Link href="/auth/register" className='contact-detail font-weight-bold'>Sign up</Nav.Link>
                                 </>
                             }
                             <Nav.Link href="/post-create" className='contact-detail'>
-                                <button type="button" className="btn btn-primary">Post a product</button>
+                                <button type="button" className="btn btn-light"><span>
+                                    Post a product
+                                </span></button>
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

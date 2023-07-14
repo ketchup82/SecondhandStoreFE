@@ -6,12 +6,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import '../styles/search.css'
 
+
+const styles = {
+    footer: {
+        position: "fixed",
+        left: "0",
+        bottom: "0",
+        width: "100 %"
+    }
+}
+
 export const Search = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
     const navigate = useNavigate()
     const location = useLocation()
     const [filter, setFilter] = useState(location.state || "")
-    const [isError, setIsError] = useState(false)
     const [query, setQuery] = useState('')
     const [items, setItems] = useState([]);
     const [filteredList, setFilteredList] = new useState([]);
@@ -110,8 +119,8 @@ export const Search = () => {
                     "Result for " + query + "(" + filteredList.length + " items found)"
             }</h1>
             <div class="row justify-content-md-center">
-                <div class="col-md-auto">
-                    <input className='me-2' type='text' placeholder='type in your search here' onChange={(e) => { filterBySearch(e) }} ></input>
+                <div class="col-md-auto form-outline">
+                    <input className='me-2 form-control' type='text' placeholder='type in your search here' onChange={(e) => { filterBySearch(e) }} ></input>
                 </div>
             </div>
             <div className="container">
@@ -142,7 +151,7 @@ export const Search = () => {
                         </ul>
                     </div>
                     {paginatedItems.length === 0 ? <div className='md-3'></div> : <div className="">
-                        <div class="dropdown m-bottom-3 mx-5 d-flex justify-content-end">
+                        {/* <div class="dropdown m-bottom-3 mx-5 d-flex justify-content-end">
                             <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                 Sort by
                             </button>
@@ -152,7 +161,7 @@ export const Search = () => {
                                 <p class="dropdown-item" onClick={() => handleSortType("priceAZ")} style={{ cursor: "pointer" }}>Price(a-z)</p>
                                 <p class="dropdown-item" onClick={() => handleSortType("priceZA")} style={{ cursor: "pointer" }}>Price(z-a)</p>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="row row-cols-3 g-5 mx-5">
                             {paginatedItems.map((item) => (
                                 <div key={item.postId} className="col p-3">

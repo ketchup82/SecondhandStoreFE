@@ -20,7 +20,6 @@ import { Nav, NavItem } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const data = {
     items: [
         {
@@ -281,7 +280,7 @@ export const UserHome = () => {
                     onSlideChange={() => console.log('slide change')}
                     onSwiper={(swiper) => console.log(swiper)}
                 >
-                    {filteredList.length === 0 ? <div>No available product</div> : filteredList.map((item) => (
+                    {filteredList.length === 0 ? <div>No available product</div> : filteredList.slice(0).reverse().map((item) => (
                         <SwiperSlide
                             onMouseDown={(e) => e.preventDefault()} // ngăn chặn sự kiện mặc định khi nhấn chuột trái
                             onMouseMove={(e) => e.preventDefault()} // ngăn chặn sự kiện mặc định khi di chuyển chuột

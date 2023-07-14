@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
+
 body {
     color: #515151;
     font-family: Roboto, sans-serif;
@@ -58,11 +59,11 @@ body {
 
 
 .footer {
-    background-color: #212121;
-    color: #fff;
-    padding: 25px 0 !important;
+    background-color: white;
+    color: black;
     bottom: 0;
     width: 100%;
+ 
 }
 
 .footer-left {
@@ -71,8 +72,8 @@ body {
     padding: 0 10px;
 }
 
-.logo-footer{
-    color: white;
+.logo-footer {
+    color: black;
 }
 
 .footer-middle,
@@ -101,7 +102,7 @@ body {
 }
 
 .right-content a {
-    color: white;
+    color: black;
 }
 
 .right-content a:hover {

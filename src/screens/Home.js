@@ -1,3 +1,4 @@
+import FooterFE from "../components/FooterFE";
 import DefaultLayout from "../layouts/DefaultLayout";
 import { Container } from "react-bootstrap";
 export default function Home() {

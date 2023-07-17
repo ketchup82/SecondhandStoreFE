@@ -5,14 +5,26 @@ import Cookies from 'universal-cookie'
 import jwt from 'jwt-decode'
 import axios from "axios"
 import cn from 'classnames'
+import '../styles/style.css'
 export const SignUp = () => {
     axios.defaults.baseURL = 'https://localhost:7115';
 
     const navigate = useNavigate()
     const cookies = new Cookies()
-    const [isLoading, setIsLoading] = useState(true)
-    const [isSubmitted, setIsSubmitted] = useState(false)
-    const [aggree, setAggree] = useState(false)
+    const [error, setError] = useState('')
+    const [errorName, setErrorName] = useState('')
+    const [errorEmail, setErrorEmail] = useState('')
+    const [errorDate, setErrorDate] = useState('')
+    const [errorPhone, setErrorPhone] = useState('')
+    const [errorAddress, setErrorAddress] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState('')
+    const [visible, setVisible] = useState(false)
+    const [isFilled, setIsFilled] = useState(false)
+
+    const validEmail = new RegExp(
+        '(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}'
+    )
 
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
@@ -25,7 +37,6 @@ export const SignUp = () => {
                 navigate('/admin/admin-home', { replace: true })
             }
         }
-        setTimeout(() => { setIsLoading(false) }, 2000)
     }, [])
     const fetchToken = async (email, password) => {
         await axios.post("/account/login", {
@@ -35,8 +46,6 @@ export const SignUp = () => {
             let token = data.data.token
             let expireTime = 60 * 60
             cookies.set("jwt_authorization", token, { path: '/', maxAge: expireTime })
-            setIsLoading(false)
-            setIsSubmitted(true)
             setTimeout(() => {
                 let decoded = jwt(token)
                 if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "US") {
@@ -47,9 +56,7 @@ export const SignUp = () => {
                 }
             }, 5000)
         }).catch(e => {
-            console.log(e)
             alert("Wrong email or password")
-            setIsLoading(false)
         })
     }
     const fetchData = async (data) => {
@@ -64,88 +71,177 @@ export const SignUp = () => {
                 fetchToken(data.data.email, data.data.password)
             }, 2000)
         }).catch(e => {
-            console.log(e)
             alert(e)
-            setIsLoading(false)
         })
     }
 
+    function checkValid() {
+        const aggreed = document.getElementById('aggreed').checked
+        console.log(aggreed)
+        let e = errorName + errorEmail + errorDate + errorPhone + errorAddress + errorPassword + errorConfirmPassword
+        console.log(e.length)
+        if (e.length === 0 && aggreed) setIsFilled(true)
+        else setIsFilled(false)
+    }
 
     const onSubmit = (e) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
-        const data = Object.fromEntries(formData)
-        const keys = Object.keys(data)
-        for (let i = 0; i < keys.length; i++) {
-            if (data[keys[i]] === '') {
-                alert("Failed to create an account\n" + keys[i] + " is empty.")
+        for (const value of formData.values()) {
+            if (value === '') {
+                setError("Please fill in the form!")
                 return
             }
         }
-        if (data['pass'] !== data['rePass']) {
-            alert("Failed to create an account\nConfirm password doesn't match password.")
-            return
-        }
-        setIsLoading(true)
-        fetchData(data)
+        const data = Object.fromEntries(formData)
+        console.log('a')
     }
-
     const renderForm = (
-        <form className="form row m-3" onSubmit={onSubmit}>
-            <div className="col-md-6 mb-3">
-                <label for="firstName" className="form-label text-white">First name</label>
-                <input type="text" className="form-control" name="firstName" required />
+        <div id="all">
+            <div id="content">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-3 col-md-6">
+                            <nav aria-label="breadcrumb">
+                            </nav>
+                        </div>
+                        <div className="col-lg-6">
+                            <div className="box form-wrapper">
+                                <h1 className="title">Sign Up</h1>
+                                <hr />
+                                <form onSubmit={(e) => { onSubmit(e) }} className="row mt-3 overflow-auto">
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="fullname">Full name*</label><div className="text-danger">{errorName}</div>
+                                        <input id="fullname" name="fullname" placeholder="NGUYEN VAN A" type="text" onChange={(e) => {
+                                            e.target.value = e.target.value.toLocaleUpperCase()
+                                        }} onBlur={() => {
+                                            let name = document.getElementById('fullname').value
+                                            if (name === '')
+                                                setErrorName(" This field is required")
+                                            else
+                                                setErrorName('')
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="email">Email*</label><div className="text-danger">{errorEmail}</div>
+                                        <input id="email" name="email" type="email" placeholder="your-student-mail (ex: thanhnp172345@fpt.edu.vn)" onBlur={() => {
+                                            let email = document.getElementById('email').value
+                                            if (email.includes('@fpt.edu.vn') || email.includes('@fe.edu.vn'))
+                                                setErrorEmail('')
+                                            else
+                                                setErrorEmail(" Only accept email in FPT Education domain")
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-6 mb-3 form-check flex items-center">
+                                        <div className="form-split">
+                                            <label for="dob">Date of Birth*</label><div className="text-danger">{errorDate}</div>
+                                        </div>
+                                        <input id="dob" name="dob" min="1970-01-01" max="2005-12-31" type="date" onBlur={() => {
+                                            let date = new Date(document.getElementById('dob').value)
+                                            const today = new Date()
+                                            if (date.getTime() < today.getTime() && today.getFullYear() - date.getFullYear() >= 18)
+                                                setErrorDate('')
+                                            else
+                                                setErrorDate(" Invalid date!")
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-6 mb-3 form-check flex items-center">
+                                        <div className="form-split">
+                                            <label for="phone">Phone Number*</label><div className="text-danger">{errorPhone}</div>
+                                        </div>
+                                        <input id="phone" name="phone" placeholder="0381234567" type="tel" onBlur={() => {
+                                            let phone = document.getElementById('phone').value
+                                            if ((phone.length === 10 || phone.length === 11) && phone[0] == '0')
+                                                setErrorPhone('')
+                                            else
+                                                setErrorPhone(' Wrong format!')
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="address">Address*</label><div className="text-danger">{errorAddress}</div>
+                                        <textarea id="address" name="address" type="text" rows='3' placeholder="High-tech park Long Thạnh Mỹ Ward District, Hồ Chí Minh City" onBlur={() => {
+                                            let address = document.getElementById('address').value
+                                            if (address === '')
+                                                setErrorAddress(' This field is required!')
+                                            else
+                                                setErrorAddress('')
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="password">Password &emsp;</label>
+                                        <label className="form-check-label text-bold ">
+                                            <div className="checkbox">
+                                                <input type="checkbox" onChange={() => { setVisible(!visible) }} className="form-check-input" />
+                                                &nbsp;Show password
+                                            </div></label>
+                                        <div className="text-danger">{errorPassword}</div>
+                                        <input id="password" name="password" placeholder="Password must be 5 characters or longer" type={cn(visible ? "text" : "password")} onBlur={() => {
+                                            let password = document.getElementById('password').value
+                                            let confirmPassword = document.getElementById('confirm-password').value
+                                            if (password === '')
+                                                setErrorPassword(' This field is required!')
+                                            else if (password.length <= 4)
+                                                setErrorPassword(' Password must be 5 characters or longer!')
+                                            else
+                                                setErrorPassword('')
+                                            if (password === confirmPassword) {
+                                                setErrorConfirmPassword('')
+                                            }
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center ">
+                                        <label for="confirm-password">Confirm Password*</label>
+                                        <div className="text-danger">{errorConfirmPassword}</div>
+                                        <div className="input-icons">
+                                            <input id="confirm-password" name="confirm-password" placeholder="Ex: 123456789" type={cn(visible ? "text" : "password")} onBlur={() => {
+                                                let confirmPassword = document.getElementById('confirm-password').value
+                                                if (confirmPassword === '')
+                                                    setErrorConfirmPassword(' This field is required!')
+                                                else {
+                                                    const password = document.getElementById('password').value
+                                                    if (errorPassword !== '')
+                                                        setErrorConfirmPassword(" Check your password again!")
+                                                    else if (password === confirmPassword)
+                                                        setErrorConfirmPassword('')
+                                                    else
+                                                        setErrorConfirmPassword(" Password does not match!")
+                                                }
+                                                checkValid()
+                                            }} className="form-control" />
+
+                                        </div>
+
+                                    </div>
+                                    <div className="col-md-8 mb-1 form-check flex items-center">
+                                        <div className="checkbox">
+                                            <input type="checkbox" onClick={() => { checkValid() }} id='aggreed' value='checked' className="form-check-input" />
+                                            <label className="form-check-label text-bold" for="policies">&nbsp;I agree with all <a href="/policy" target="_blank">policies</a>*</label>
+                                        </div>
+                                        <p className="text-muted mb-2">Don't have an account ? <a href="/auth/login">Log in here</a></p>
+                                    </div>
+                                    <div className="d-flex flex-row-reverse col-md-4 md-1 ml-auto ">
+                                        <button type="submit" className={cn("btn btn-primary login-button", !isFilled && 'disabled')}>
+                                            Sign Up
+                                        </button>
+                                    </div>
+                                    <p className="col-md-12 error">{error}</p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="col-md-6 mb-3">
-                <label for="lastName" className="form-label text-white">Last name</label>
-                <input type="text" className="form-control" name="lastName" required />
-            </div>
-            <div className="col-md-6 mb-3">
-                <label for="dob" className="form-label text-white">DoB</label>
-                <input type="date" className="form-control" name="dob" required />
-            </div>
-            <div className="col-md-6 mb-3">
-                <label for="phone" className="form-label text-white">Phone number</label>
-                <input type="text" pattern="[0-9]*" placeholder="123456789" className="form-control" name="phone" required />
-            </div>
-            <div className="col-md-12 mb-3">
-                <label for="email" className="form-label text-white">Email</label>
-                <input type="email" placeholder="abc@fpt.edu.vn" className="form-control" name="email" required />
-            </div>
-            <div className="col-md-12 mb-3">
-                <label for="address" className="form-label text-white">Address</label>
-                <input type="text" className="form-control" name="address" required />
-            </div>
-            <div className="col-md-12 mb-3">
-                <label for="pass" className="form-label text-white">Password</label>
-                <input type="password" minlength="4" maxlength="8" size="8" className="form-control" name="pass" required />
-            </div>
-            <div className="col-md-12 mb-3">
-                <label for="rePass" className="form-label text-white">Confirm password</label>
-                <input type="password" minlength="4" maxlength="8" size="8" className="form-control" name="rePass" required />
-            </div>
-            <div className="col-md-12 mb-3 flex items-center">
-                <input type="checkbox" className="form-check-input" id="policies" onChange={() => {
-                    const t = aggree
-                    setAggree(!t)
-                    }} />
-                <label className="form__check-label" for="policies">I am aggree with all</label>
-                <a className="form-check-label text-warning" href="/policy"> policies</a>
-            </div>
-            <div className="col-md-12 d-flex justify-content-center">
-                <button type="submit" className={cn("btn btn-dark", {disabled: !aggree})}>Sign up</button>
-            </div>
-        </form>
+        </div>
     )
     return (
-        <div className="wrapper">
-            <h1 className="form__heading my-3 text-capitalize">Join our community today!</h1>
-            {isLoading ? <LoadingSpinner /> : <>
-                {isSubmitted ? <div>User has successfully signed up, redirecting back to homepage...</div> : <div className="form-wrapper">
-                    {renderForm}
-                </div>}
-            </>}
-            <a className="link__color my-3 col-md-auto d-flex justify-content-center" href="/auth/login">Already have an account?</a>
+        <div className="auth-form padding-40">
+            {renderForm}
         </div>
     );
 }

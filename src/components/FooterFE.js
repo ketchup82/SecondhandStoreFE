@@ -1,6 +1,6 @@
 import { Container, Col, Row } from "react-bootstrap";
 import Navbar from 'react-bootstrap/Navbar'
-import Logo from "../assets/images/logo1.png"
+import Logo from "../assets/images/logo_transparent.png"
 
 export default function FooterFE() {
 
@@ -10,11 +10,7 @@ export default function FooterFE() {
                 <Row>
                     <Col md={4} sm={12}>
                         <div className="footer-left">
-                            <a href="/" className="font-weight-bold h1">FPT OSE Service</a>
-                            {/* <Navbar.Brand href="/" className='logo-container'><img className="logo-footer" src={Logo} alt='SeconhandStore' /></Navbar.Brand> */}
-                            <div className="left-content">
-
-                            </div>
+                            <Navbar.Brand draggable='false' href="/" className='logo-container'><img draggable='false' className='img-fluid' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                         </div>
                     </Col>
                     <Col md={4} sm={12}>

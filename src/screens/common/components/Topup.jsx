@@ -19,7 +19,6 @@ export const Topup = () => {
   return (
     <>
       <HeaderFE />
-
       <div className='qrpayment'>
         <div className="container">
           <div className="row">

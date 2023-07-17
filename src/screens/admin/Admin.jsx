@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import jwt from 'jwt-decode'
 import Cookies from 'universal-cookie'
+import { Menu } from "./Sidebar";
 export const Admin = () => {
     const navigate = useNavigate();
     const cookies = new Cookies();
@@ -21,6 +22,7 @@ export const Admin = () => {
     }, [])
     return (
         <>
+            <Menu />
             {isLogged && <Outlet />}
         </>
     )

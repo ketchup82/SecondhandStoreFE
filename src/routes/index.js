@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Auth } from "../screens/auth/Auth";
 import { SignUp } from "../screens/auth/components/SignUp";
-import { SignIn } from "../screens/auth/components/SignIn";
+import { LogIn } from "../screens/auth/components/LogIn";
 import { RecoveryRequest } from "../screens/auth/components/RecoverRequest";
 import { RecoveryNotify } from "../screens/auth/components/RecoverNotify";
 
@@ -33,6 +33,7 @@ import Test from "../screens/common/components/Test";
 import { PostEdit } from "../screens/common/components/PostEdit";
 import { UserDetail } from "../screens/common/components/UserDetail";
 import { Chat } from "../screens/common/components/Chat";
+import { TransactionManagement } from "../screens/admin/components/TransactionManagement";
 
 
 export const appRouter = createBrowserRouter([
@@ -106,12 +107,12 @@ export const appRouter = createBrowserRouter([
         element: <Auth />,
         children: [
             {
-                path: "register",
+                path: "signup",
                 element: <SignUp />
             },
             {
                 path: "login",
-                element: <SignIn />
+                element: <LogIn />
             },
             {
                 path: "recovery-request",
@@ -132,11 +133,11 @@ export const appRouter = createBrowserRouter([
                 element: <Deactive />
             },
             {
-                path: "admin-home",
+                path: "dashboard",
                 element: <AdminHome />
             },
             {
-                path: "post-list",
+                path: "post-management",
                 element: <AdminPostListManagement />
             },
             {
@@ -152,7 +153,7 @@ export const appRouter = createBrowserRouter([
                 element: <ReportForm />
             },
             {
-                path: "report-list",
+                path: "report-management",
                 element: <ReportList />
             },
             {
@@ -164,7 +165,11 @@ export const appRouter = createBrowserRouter([
                 element: <UserManagement />
             },
             {
-                path: "user-profile",
+                path: 'transaction-management',
+                element: <TransactionManagement />
+            },
+            {
+                path: "user-detail",
                 element: <AdminUserProfile />
             },
         ]

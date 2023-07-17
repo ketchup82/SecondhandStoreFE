@@ -114,44 +114,45 @@ export const Search = () => {
     return (
         <>
             <HeaderFE />
-            <h1 className="fw-bold fs-1 m-5 text-center">{filteredList.length === 0 ? "No posts found" :
-                query === null || query === "" ? "Result for all items (" + filteredList.length + " items)" :
-                    "Result for " + query + "(" + filteredList.length + " items found)"
-            }</h1>
-            <div class="row justify-content-md-center">
-                <div class="col-md-auto form-outline">
-                    <input className='me-2 form-control' type='text' placeholder='type in your search here' onChange={(e) => { filterBySearch(e) }} ></input>
-                </div>
-            </div>
-            <div className="container">
-                <div className='d-flex'>
-                    <div className="">
-                        <ul className="list-group" style={{ width: "280px" }}>
-                            <li className="list-group-item" onClick={() => { setFilter('') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                <i className="fas fa-tshirt"></i> All
-                            </li>
-                            <li className="list-group-item" onClick={() => { setFilter('Clothes') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                <i className="fas fa-tshirt"></i> Clothes
-                            </li>
-                            <li className="list-group-item" onClick={() => { setFilter('Electrics') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                <i className="fas fa-bolt"></i> Electrics
-                            </li>
-                            <li className="list-group-item" onClick={() => { setFilter('Book') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                <i className="fas fa-book"></i> Books
-                            </li>
-                            <li className="list-group-item" onClick={() => { setFilter('Traditional Instruments') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                <i className="fas fa-guitar"></i> Traditional Instruments
-                            </li>
-                            <li className="list-group-item" onClick={() => { setFilter('Learning Tools') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                <i className="fas fa-pencil-ruler"></i> Learning Tools
-                            </li>
-                            <li className="list-group-item" onClick={() => { setFilter('Others') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                <i className="material-icons"></i> Others
-                            </li>
-                        </ul>
+            <div className='padding-40'>
+                <h1 className="fw-bold fs-1 m-5 text-center">{filteredList.length === 0 ? "No posts found" :
+                    query === null || query === "" ? "Result for all items (" + filteredList.length + " items)" :
+                        "Result for " + query + "(" + filteredList.length + " items found)"
+                }</h1>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-auto form-outline">
+                        <input className='me-2 form-control' type='text' placeholder='type in your search here' onChange={(e) => { filterBySearch(e) }} ></input>
                     </div>
-                    {paginatedItems.length === 0 ? <div className='md-3'></div> : <div className="">
-                        {/* <div class="dropdown m-bottom-3 mx-5 d-flex justify-content-end">
+                </div>
+                <div className="container">
+                    <div className='d-flex'>
+                        <div className="">
+                            <ul className="list-group" style={{ width: "280px" }}>
+                                <li className="list-group-item" onClick={() => { setFilter('') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="fas fa-tshirt"></i> All
+                                </li>
+                                <li className="list-group-item" onClick={() => { setFilter('Clothes') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="fas fa-tshirt"></i> Clothes
+                                </li>
+                                <li className="list-group-item" onClick={() => { setFilter('Electrics') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="fas fa-bolt"></i> Electrics
+                                </li>
+                                <li className="list-group-item" onClick={() => { setFilter('Book') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="fas fa-book"></i> Books
+                                </li>
+                                <li className="list-group-item" onClick={() => { setFilter('Traditional Instruments') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="fas fa-guitar"></i> Traditional Instruments
+                                </li>
+                                <li className="list-group-item" onClick={() => { setFilter('Learning Tools') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="fas fa-pencil-ruler"></i> Learning Tools
+                                </li>
+                                <li className="list-group-item" onClick={() => { setFilter('Others') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="material-icons"></i> Others
+                                </li>
+                            </ul>
+                        </div>
+                        {paginatedItems.length === 0 ? <div className='md-3'></div> : <div className="">
+                            {/* <div class="dropdown m-bottom-3 mx-5 d-flex justify-content-end">
                             <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                 Sort by
                             </button>
@@ -162,38 +163,39 @@ export const Search = () => {
                                 <p class="dropdown-item" onClick={() => handleSortType("priceZA")} style={{ cursor: "pointer" }}>Price(z-a)</p>
                             </div>
                         </div> */}
-                        <div className="row row-cols-3 g-5 mx-5">
-                            {paginatedItems.map((item) => (
-                                <div key={item.postId} className="col p-3">
-                                    <div>{item.postStatusName}</div>
-                                    <div className="card h-100 border-0 text-center">
-                                        <a href={"/post-detail?id=" + item.postId}>
-                                            <img src={item.image} className="card-img-top" alt="..." />
-                                            <div className="card-body">
-                                                <h5 className="card-title">{item.productName}</h5>
-                                                <p className="card-text">{VND.format(item.price)}</p>
-                                            </div>
-                                        </a>
+                            <div className="row row-cols-3 g-5 mx-5">
+                                {paginatedItems.map((item) => (
+                                    <div key={item.postId} className="col p-3">
+                                        <div>{item.postStatusName}</div>
+                                        <div className="card h-100 border-0 text-center">
+                                            <a href={"/post-detail?id=" + item.postId}>
+                                                <img src={item.image} className="card-img-top" alt="..." />
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{item.productName}</h5>
+                                                    <p className="card-text">{VND.format(item.price)}</p>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                            <div className='col-12 d-flex justify-content-center'>
-                                <li class="page-item page-link" onClick={() => {
-                                    if (currentPage != 1) {
-                                        handlePageChange(currentPage - 1)
-                                    }
-                                }}>Previous</li>
-                                <li class="page-item page-link" onClick={() => {
-                                    if (currentPage != Math.round(items.length / 5)) {
-                                        handlePageChange(currentPage + 1)
-                                    }
-                                }}>Next</li>
-                            </div >
-                        </div>
-                    </div>}
+                                ))}
+                                <div className='col-12 d-flex justify-content-center'>
+                                    <li class="page-item page-link" onClick={() => {
+                                        if (currentPage != 1) {
+                                            handlePageChange(currentPage - 1)
+                                        }
+                                    }}>Previous</li>
+                                    <li class="page-item page-link" onClick={() => {
+                                        if (currentPage != Math.round(items.length / 5)) {
+                                            handlePageChange(currentPage + 1)
+                                        }
+                                    }}>Next</li>
+                                </div >
+                            </div>
+                        </div>}
+                    </div>
                 </div>
+                <br />
             </div>
-            <br />
             <FooterFE />
         </>
     )

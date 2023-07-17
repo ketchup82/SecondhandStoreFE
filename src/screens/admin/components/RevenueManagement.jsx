@@ -103,7 +103,6 @@ export const RevenueManagement = () => {
 
     return (
         <div className='d-flex'>
-            <Menu selected='revenue' />
             <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
                 {error && errorMessage}
                 {/* <div className="input-group col-3 border rounded-pill bg-body-secondary search-field my-3">

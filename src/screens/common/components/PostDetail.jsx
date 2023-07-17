@@ -6,6 +6,7 @@ import axios from "axios"
 import jwt from 'jwt-decode'
 import HeaderFE from "../../../components/HeaderFE";
 import FooterFE from "../../../components/FooterFE";
+import { Card } from 'react-bootstrap';
 
 export const PostDetail = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
@@ -20,7 +21,7 @@ export const PostDetail = () => {
         currency: 'VND',
     });
     const fetchData = async () => {
-        await axios.get('/posts/get-post-by-id', { params: { id: postId } })
+        await axios.get('/posts/get-user-post-by-id', { params: { id: postId } })
             .then((data) => {
                 setPost(data.data)
             })
@@ -42,7 +43,7 @@ export const PostDetail = () => {
         <>
             <HeaderFE />
             <div className='p-5'>
-                <button onClick={()=>{navigate(-1)}} type="button" className="btn btn-light fw-medium text-uppercase mb-5">
+                <button onClick={() => { navigate(-1) }} type="button" className="btn btn-light fw-medium text-uppercase mb-5">
                     ←Back
                 </button>
                 <div className="row g-3 px-5">
@@ -50,7 +51,7 @@ export const PostDetail = () => {
                         <div className="col card mb-5 bg-body-tertiary">
                             <div className="card-body text-uppercase card-main">
                                 <h1 className='fs-medium text-center'>
-                                    <img className="img-thumbnail Responsive image" src={post.image}></img>
+                                    <img className="img-thumbnail img-fluid Responsive image" src={post.image}></img>
                                 </h1>
                             </div>
                         </div>
@@ -60,18 +61,23 @@ export const PostDetail = () => {
                         <div className="row">
                             <h5 className="col">Price: {VND.format(post.price)}</h5>
                             <h5 className="col">Category: {post.categoryName}</h5>
+                            <h5 className="col">Date: {String(post.createdDate).substring(0, 10)}</h5>
                         </div>
                         <h3 className='title'>Description</h3>
                         <p>{post.description}</p>
                         <h3 className='text-danger'>Contact: {post.address}</h3>
                         <h3 className='text-danger'>Phone Number: {post.phoneNo}</h3>
                         <h3 className='text-danger'>Email: {post.email}</h3>
+                        {Owner === post.accountId ?
+                            <button onClick={() => { navigate('/post-edit', { state: post.postId }) }} className="btn btn-outline-dark">Update Product</button> :
+                            <>
+                                <button onClick={() => { navigate('/user-detail?id=' + post.accountId) }} className="btn btn-light">Go to seller's profile</button>
+                                <button onClick={() => { navigate('/') }} className="btn btn-light">Request this product</button>
+                            </>
+                        }
                     </div>
                 </div>
-                {Owner === post.accountId ? 
-                <button onClick={() => { navigate('/post-edit', { state: post.postId }) }} className="btn btn-light">Update Product</button> : 
-                <button onClick={()=>{navigate('/user-detail?id='+post.accountId)}} className="btn btn-light">Go to seller's profile</button>
-                }
+
             </div >
             <FooterFE />
         </>

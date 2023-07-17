@@ -1,13 +1,31 @@
 .admin__home_banner {
   height: 270px;
-  background: linear-gradient(
-    180deg,
-    #fec401 0%,
-    rgba(255, 255, 255, 0.58) 69.78%,
-    #fff 100%,
-    #fff 100%
-  );
+  background: linear-gradient(180deg,
+      #fec401 0%,
+      rgba(255, 255, 255, 0.58) 69.78%,
+      #fff 100%,
+      #fff 100%);
 }
+
+.add-btn {
+  background-color: blue !important;
+  border-color: blue !important;
+}
+
+.remove-btn {
+  align-self: center;
+}
+
+.price-option {
+  padding-right: 0px !important;
+}
+
+.pricing-list {
+  width: auto;
+  height: 60%;
+  overflow-y: scroll;
+}
+
 .banner_title {
   font-size: 35px;
   font-style: italic;
@@ -17,9 +35,23 @@
   text-align: left;
 }
 
-.card-color_linear {
-    background: linear-gradient(180deg, #FEC401 0%, #FFFFFF 80.21%, #FFFFFF 100%);
+.post-padding {
+  padding: 10px 0px;
 }
+
+
+.post-image:hover img {
+  width: 10%;
+}
+
+.form-split {
+  height: 30px;
+}
+
+.card-color_linear {
+  background: linear-gradient(180deg, #FEC401 0%, #FFFFFF 80.21%, #FFFFFF 100%);
+}
+
 .carousel-nav-prev,
 .carousel-nav-next {
   position: absolute;
@@ -31,36 +63,37 @@
   font-size: 2.5rem;
   line-height: 1;
 }
+
 .qrpayment {
   .container {
     margin-top: 50px;
   }
-  
+
   .card {
     margin-bottom: 190px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     height: 70%;
   }
-  
+
   .card-title {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
   }
-  
+
   .order-info {
     margin-top: 20px;
   }
-  
+
   .qr-code {
     margin-top: 20px;
   }
-  
+
   .qr-code p {
     margin-bottom: 10px;
   }
-  
+
   .footer {
     position: fixed;
     left: 0;
@@ -72,10 +105,12 @@
     font-size: 14px;
   }
 }
+
 table {
   border: 1px solid black;
   border-radius: 10px;
 }
+
 .custom-table {
   width: 100%;
   border-collapse: collapse;
@@ -100,10 +135,14 @@ table {
 .custom-table tr:first-child:hover {
   background-color: transparent;
 }
+
 .carousel-item img {
-  height: 300px; /* đặt chiều cao của ảnh là 300px */
-  object-fit: cover; /* căn chỉnh ảnh theo tỷ lệ giữa chiều rộng và chiều cao, để ảnh không bị kéo dãn */
+  height: 300px;
+  /* đặt chiều cao của ảnh là 300px */
+  object-fit: cover;
+  /* căn chỉnh ảnh theo tỷ lệ giữa chiều rộng và chiều cao, để ảnh không bị kéo dãn */
 }
+
 .nav-tabs {
   white-space: nowrap;
 }
@@ -111,11 +150,14 @@ table {
 .nav-item {
   display: inline-block;
 }
+
 .nav-tabs .nav-link {
-  width: auto; /* hoặc đặt giá trị cố định, ví dụ: width: 100px */
+  width: auto;
+  /* hoặc đặt giá trị cố định, ví dụ: width: 100px */
   display: inline-block;
   margin-right: 1px;
 }
+
 .product-card {
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -136,9 +178,10 @@ table {
 }
 
 .product-info p {
-  font-size:14px;
+  font-size: 14px;
   margin-bottom: 0px;
 }
+
 .form-label {
   font-weight: bold;
   color: #111;
@@ -223,26 +266,23 @@ table {
   border-color: #e00;
   color: #fff;
 }
+
 .admin__home_banner {
   margin-bottom: 20px;
 }
+
 .container {
-  margin-top: 20px; 
-}
-
-.col-md-3 {
-  padding-right: 10px; 
-}
-
-.col-md-9 {
-  padding-left: 10px; 
-}
-.FooterFE {
   margin-top: 20px;
 }
 
+.col-md-3 {
+  padding-right: 10px;
+}
 
+.col-md-9 {
+  padding-left: 10px;
+}
 
-
-
-
+.FooterFE {
+  margin-top: 20px;
+}

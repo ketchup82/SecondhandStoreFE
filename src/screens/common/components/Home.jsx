@@ -206,7 +206,7 @@ export const UserHome = () => {
                         {filteredList.slice(0, 8).map((item) => (
                             <>
                                 <div class="col-6 col-md-3 post-padding">
-                                    <a href="https://example.com/san-pham/123" style={{ textDecoration: 'none' }}>
+                                    <a href={"/post-detail?id="+item.postId} style={{ textDecoration: 'none' }}>
                                         <Card style={{ width: '16rem' }}>
                                             <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
                                             <Card.Body>

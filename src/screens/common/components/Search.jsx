@@ -5,6 +5,7 @@ import { Pagination } from '../../../components/pagination/Pagination';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import '../styles/search.css'
+import { Card } from 'react-bootstrap';
 
 
 const styles = {
@@ -33,17 +34,18 @@ export const Search = () => {
     const fetchData = async () => {
         await axios.get('/posts/get-post-list')
             .then((data) => {
-                setItems(data.data.slice(0).reverse())
-                setFilteredList(filter === "" ? data.data.slice(0).reverse() : data.data.slice(0).reverse().filter(p => p.categoryName == filter))
+                const list = data.data
+                setItems(list.slice(0).reverse())
+                setFilteredList(filter === "" ? list.slice(0).reverse() : list.slice(0).reverse().filter(p => p.categoryName == filter))
                 setCurrentPage(1)
-                console.log(filter)
-                console.log(data.data)
-                console.log(filteredList)
             })
             .catch(e => console.log(e))
     }
 
     useEffect(() => {
+        console.log(location.state)
+        setQuery(location.state)
+        console.log(query)
         fetchData()
     }, [])
 
@@ -115,16 +117,16 @@ export const Search = () => {
         <>
             <HeaderFE />
             <div className='padding-40'>
-                <h1 className="fw-bold fs-1 m-5 text-center">{filteredList.length === 0 ? "No posts found" :
-                    query === null || query === "" ? "Result for all items (" + filteredList.length + " items)" :
-                        "Result for " + query + "(" + filteredList.length + " items found)"
-                }</h1>
                 <div class="row justify-content-md-center">
                     <div class="col-md-auto form-outline">
                         <input className='me-2 form-control' type='text' placeholder='type in your search here' onChange={(e) => { filterBySearch(e) }} ></input>
                     </div>
                 </div>
-                <div className="container">
+                <h1 className="text-center black-txt"><strong>{filteredList.length === 0 ? "No posts found" :
+                    query === null || query === "" ? "Result for all items (" + filteredList.length + " items)" :
+                        "Result for " + query + "(" + filteredList.length + " items found)"
+                }</strong></h1>
+                <div className="">
                     <div className='d-flex'>
                         <div className="">
                             <ul className="list-group" style={{ width: "280px" }}>
@@ -134,8 +136,11 @@ export const Search = () => {
                                 <li className="list-group-item" onClick={() => { setFilter('Clothes') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
                                     <i className="fas fa-tshirt"></i> Clothes
                                 </li>
+                                <li className="list-group-item" onClick={() => { setFilter('Accessories') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                    <i className="fas fa-tshirt"></i> Accessories
+                                </li>
                                 <li className="list-group-item" onClick={() => { setFilter('Electrics') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-bolt"></i> Electrics
+                                    <i className="fas fa-bolt"></i> Electronics
                                 </li>
                                 <li className="list-group-item" onClick={() => { setFilter('Book') }} style={{ background: "#FFDB58", cursor: "pointer" }}>
                                     <i className="fas fa-book"></i> Books
@@ -165,20 +170,20 @@ export const Search = () => {
                         </div> */}
                             <div className="row row-cols-3 g-5 mx-5">
                                 {paginatedItems.map((item) => (
-                                    <div key={item.postId} className="col p-3">
-                                        <div>{item.postStatusName}</div>
-                                        <div className="card h-100 border-0 text-center">
-                                            <a href={"/post-detail?id=" + item.postId}>
-                                                <img src={item.image} className="card-img-top" alt="..." />
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{item.productName}</h5>
-                                                    <p className="card-text">{VND.format(item.price)}</p>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
+                                        <Card style={{ width: '16rem' }}>
+                                            <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+                                            <Card.Body>
+                                                <Card.Title style={{ color: 'black' }}>{item.productName}</Card.Title>
+                                            </Card.Body>
+                                            <Card.Body>
+                                                <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
+                                                <Card.Link style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price)}</Card.Link>
+                                            </Card.Body>
+                                        </Card>
+                                    </a>
                                 ))}
-                                <div className='col-12 d-flex justify-content-center'>
+                                {/* <div className='col-12 d-flex justify-content-center'>
                                     <li class="page-item page-link" onClick={() => {
                                         if (currentPage != 1) {
                                             handlePageChange(currentPage - 1)
@@ -189,7 +194,7 @@ export const Search = () => {
                                             handlePageChange(currentPage + 1)
                                         }
                                     }}>Next</li>
-                                </div >
+                                </div > */}
                             </div>
                         </div>}
                     </div>

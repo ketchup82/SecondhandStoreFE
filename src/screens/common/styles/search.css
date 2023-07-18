@@ -7,3 +7,6 @@
     -webkit-transform: rotate(45deg);
     background: green;
   }
+  .black-txt{
+    color: black !important;
+  }

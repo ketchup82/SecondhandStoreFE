@@ -34,7 +34,8 @@ import { PostEdit } from "../screens/common/components/PostEdit";
 import { UserDetail } from "../screens/common/components/UserDetail";
 import { Chat } from "../screens/common/components/Chat";
 import { TransactionManagement } from "../screens/admin/components/TransactionManagement";
-
+import { Order } from "../screens/common/components/MyOrder";
+import { Request } from "../screens/common/components/MyRequest";
 
 export const appRouter = createBrowserRouter([
     {
@@ -44,6 +45,14 @@ export const appRouter = createBrowserRouter([
     {
         path: '/test',
         element: <Test />
+    },
+    {
+        path: '/my-order',
+        element: <Order />
+    },
+    {
+        path: '/my-request',
+        element: <Request />
     },
     // fix element later
     {

@@ -13,12 +13,14 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { Search } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
+import { IconButton, InputBase, Paper, TextField } from '@mui/material';
 
 export default function HeaderFE() {
     const navigate = useNavigate()
     const cookies = new Cookies()
     axios.defaults.baseURL = "https://localhost:7115"
     const [isFetched, setIsFetched] = useState(false)
+    const [searchText, setSearchText] = useState('')
     const [account, setAccount] = useState([])
     const fetchData = async () => {
         await axios.get('/account/get-user-account')
@@ -41,6 +43,11 @@ export default function HeaderFE() {
         }
     }, [])
 
+    const onSubmit = (e) => {
+        console.log(searchText)
+        navigate('/search', { state: searchText })
+    }
+
     const logged = (
         <>
             {/* <Nav className='contact-detail'>
@@ -54,10 +61,12 @@ export default function HeaderFE() {
                     <span class="caret"></span>
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <Link draggable='false' className="dropdown-item" to="/post-list">My Post</Link>
-                    <Link draggable='false' className="dropdown-item" to="/exchange-request">My Request</Link>
                     <Link draggable='false' className="dropdown-item" to="/user-profile">Profile</Link>
-                    <Link draggable='false' className="dropdown-item" to="/payment-history">Payment History</Link>
+                    <Link draggable='false' className="dropdown-item" to="/post-list">My Posts</Link>
+                    <Link draggable='false' className="dropdown-item" to="/my-order">My Orders</Link>
+                    <Link draggable='false' className="dropdown-item" to="/my-request">My Requests</Link>
+                    <Link draggable='false' className="dropdown-item" to="/my-purchase">My Purchases</Link>
+                    <Link draggable='false' className="dropdown-item" to="/payment-history">Transaction History</Link>
                     {account.roleId == 'AD' &&
                         <a draggable='false' className="dropdown-item" href="/admin/admin-home">Admin Dashboard</a>
                     }
@@ -77,7 +86,27 @@ export default function HeaderFE() {
             <Navbar className='header'>
                 <Navbar.Brand draggable='false' href="/" className='logo-container'><img draggable='false' className='img-fluid' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                 <Navbar.Toggle className='col-md-1' aria-controls="responsive-navbar-nav" />
-                <div className='col-md-4'></div>
+                <div className='col-md-4'>
+                    <Paper
+                        component='form'
+                        onSubmit={(e) => { onSubmit(e) }}
+                    >
+                        <InputBase
+                            fullWidth
+                            onChange={(e) => {
+                                if (e.target.value === '') setSearchText('')
+                                else setSearchText(e.target.value)
+                                console.log(searchText)
+                            }}
+                            sx={{ ml: 1, flex: 1, width: '500px' }}
+                            placeholder="Search for a product"
+                            inputProps={{ 'aria-label': 'search product' }}
+                        />
+                        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                            <SearchIcon />
+                        </IconButton>
+                    </Paper>
+                </div>
                 <Navbar id="text-muted col-md-auto m align-self-end">
                     <Nav.Link href="/search" className='contact-detail'>
                         <button type="button" className="btn btn-outline-info">

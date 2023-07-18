@@ -12,6 +12,21 @@
   border-color: blue !important;
 }
 
+.yes-btn {
+  background-color: green !important;
+  border-color: green !important;
+}
+.no-btn {
+  background-color: red !important;
+  border-color: red !important;
+}
+.dialog-p{
+  padding: 0px 10px;
+}
+
+.dialog{
+  padding: 0px 30px;
+}
 .remove-btn {
   align-self: center;
 }

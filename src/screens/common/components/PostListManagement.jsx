@@ -6,7 +6,11 @@ import Cookies from 'universal-cookie'
 import axios from "axios"
 import HeaderFE from "../../../components/HeaderFE";
 import FooterFE from "../../../components/FooterFE";
-let itemPerPage = 10
+import { Dialog, DialogTitle, List, ListItem } from '@mui/material';
+
+import cn from 'classnames'
+import { Card } from "react-bootstrap";
+
 
 export const PostListManagement = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
@@ -14,7 +18,10 @@ export const PostListManagement = () => {
     const cookies = new Cookies()
     const [posts, setPosts] = useState([])
     const [isError, setIsError] = useState(false)
-    const [currentPage, setCurrentPage] = useState(NaN)
+    const [filtered, setFiltered] = useState([])
+    const [isActive, setIsActive] = useState('');
+    const [open, setOpen] = useState(false);
+
     let VND = new Intl.NumberFormat('vn-VN', {
         style: 'currency',
         currency: 'VND',
@@ -23,8 +30,8 @@ export const PostListManagement = () => {
     const fetchData = async () => {
         await axios.get('/posts/get-user-posts')
             .then((data) => {
-                setPosts(data.data)
-                setCurrentPage(1)
+                setPosts(data.data.slice(0).reverse())
+                setFiltered(data.data.slice(0).reverse())
             })
             .catch(e => setIsError(e))
     }
@@ -35,66 +42,108 @@ export const PostListManagement = () => {
         axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
         fetchData()
     }, [])
-    // const [type, setType] = useState("");
 
-    // useEffect(() => {
-    //     setItems(
-    //         data.items.filter((item) => item.type.includes(type))
-    //     )
-    // }, [type])
+    const onSubmit = (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const data = Object.fromEntries(formData)
+        console.log(data['keyword'])
+        if (data['date'] !== null) {
+            var updatedList = [...filtered]
+            updatedList = updatedList.filter((item) => {
+                return new Date(item.orderDate).getTime() > new Date(data['date']).getTime()
+            })
+            setFiltered(updatedList)
+        }
+        else setFiltered(filtered)
+        if (data['keyword'] === '') {
+            setFiltered(posts)
+        }
+        else {
+            var updatedList1 = [...posts]
+            updatedList1 = updatedList1.filter((item) => {
+                const product = item.productName.toLowerCase()
+                const isTrue = (product.indexOf((data['keyword'] || '').toLowerCase()) !== -1)
+                return isTrue
+            })
+            setFiltered(updatedList1)
+        }
+    }
 
-    const lastPage = Math.ceil(posts.length / itemPerPage);
-    const currTableData = useMemo(() => {
-        let firstPageIndex = (currentPage - 1) * itemPerPage;
-        let lastPageIndex = firstPageIndex + itemPerPage;
-        return posts.slice(firstPageIndex, lastPageIndex)
-    }, [currentPage])
+    const handleType = (type) => {
+        setIsActive(type)
+        var updatedList = [...posts]
+        updatedList = updatedList.filter((item) => {
+            return String(item.orderStatusName).includes(type)
+        })
+        console.log(updatedList)
+        setFiltered(updatedList)
+    }
 
     const errorMessage = (
         <div className='grey-screen row g-3 mt-3'>Something went wrong. Check connection</div>
     )
 
     const renderPost = (
-        <>
-            {currTableData.length > 0 ? <>
-                <table className="table custom-table">
-                    <thead>
-                        <tr className='mb-1'>
-                            <th scope="col">Product name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Post type</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Upload Date</th>
-                            <th scope="col">View</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currTableData.map((post) => (
-                            <tr>
-                                <td>{post.productName}</td>
-                                <td>{VND.format(post.price)}</td>
-                                <td>{post.isDonated ? 'Donating' : 'Selling'}</td>
-                                <td>{post.categoryName}</td>
-                                <td>{post.statusName}</td>
-                                <td>{post.price}</td>
-                                <td>{String(post.createdDate).substring(0,10)}</td>
-                                <td className='text-center text-warning'>
-                                    <Link to={"/post-detail?id=" + post.postId} >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                        </svg>
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table >
-                <Pagination currentPage={currentPage} lastPage={lastPage} maxLength={7} setCurrentPage={setCurrentPage} />
-            </> : <h5 className="text-dark m-3 text-capitalize">You have no post!</h5>}
-        </>
+        <div className="mb-12 Account_box__yr82T p-6 text-black-600 text-18 mb-12" >
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button onClick={() => {
+                        handleType('')
+                    }} class={cn("nav-link ", isActive == '' && 'active')} id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="">All</button>
+                    <button onClick={() => {
+                        handleType('Pending')
+                    }} class={cn("nav-link ", isActive == 'Pending' && 'active')} id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected=''>Pending Order</button>
+                    <button onClick={() => {
+                        handleType('Cancelled')
+                    }} class={cn("nav-link ", isActive == 'Cancelled' && 'active')} id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected=''>Cancelled Order</button>
+                    <button onClick={() => {
+                        handleType('Completed')
+                    }} class={cn("nav-link ", isActive == 'Completed' && 'active')} id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected=''>Completed Order</button>
+                    <div></div>
+                </div>
+            </nav>
+            <form id="myForm" onSubmit={(e) => onSubmit(e)}>
+                <div class="form-row align-items-center">
+                    <div class="col-sm-3 my-1">
+                        <input type="text" name='keyword' class="form-control" id="inlineFormInputName" placeholder="Enter buyer name here" />
+                    </div>
+                    <div class="col-sm-3 my-1">
+                        <div class="input-group">
+                            <input type="date" name='date' class="form-control" id="inlineFormInputGroupUsername" />
+                        </div>
+                    </div>
+                    <div class="col-auto my-1">
+                        <button onClick={() => {
+                            document.getElementById("myForm").reset()
+                            setFiltered(posts)
+                        }} style={{ marginTop: '1%' }} type="button" class="btn btn-primary">Clear
+                        </button>
+                        <button style={{ marginTop: '1%' }} type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+            {filtered.length === 0 ? <h5 className="text-dark m-3 text-capitalize">You have no post!</h5> : <>
+                <div className="row mx-auto">
+                    {filtered.map((item) => (
+                        <div class="col-6 col-md-3 post-padding">
+                            <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
+                                <Card style={{ width: '16rem' }}>
+                                    <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+                                    <Card.Body>
+                                        <Card.Title style={{ color: 'black' }}>{item.productName}</Card.Title>
+                                    </Card.Body>
+                                    <Card.Body>
+                                        <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
+                                        <Card.Link style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price)}</Card.Link>
+                                    </Card.Body>
+                                </Card>
+                            </a>
+                        </div>
+                    ))}
+                </div>
+            </>}
+        </div>
     )
 
     return (

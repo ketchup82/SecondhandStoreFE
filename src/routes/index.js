@@ -24,7 +24,7 @@ import { PostListManagement } from "../screens/common/components/PostListManagem
 import { UserEdit } from "../screens/common/components/UserEdit";
 import { PostCreate } from "../screens/common/components/PostCreate";
 import { Topup } from "../screens/common/components/Topup";
-import PaymentRequest from "../screens/common/components/PaymentRequest";
+import { PaymentRequest } from "../screens/common/components/PaymentRequest";
 import { ExchangeOrder } from "../screens/common/components/ExchangeOrder";
 import { ExchangeRequest } from "../screens/common/components/ExchangeRequest";
 import { PaymentHistory } from "../screens/common/components/PaymentHistory";

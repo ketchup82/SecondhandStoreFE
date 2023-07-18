@@ -57,14 +57,14 @@ export const Order = () => {
     const formData = new FormData(e.currentTarget)
     const data = Object.fromEntries(formData)
     console.log(data['keyword'])
-    if (data['date'] !== null) {
-      var updatedList = [...filtered]
+    if (data['date'] !== '') {
+      var updatedList = [...orders]
       updatedList = updatedList.filter((item) => {
         return new Date(item.orderDate).getTime() > new Date(data['date']).getTime()
       })
       setFiltered(updatedList)
     }
-    else setFiltered(filtered)
+    else setFiltered(orders)
     if (data['keyword'] === '') {
       setFiltered(orders)
     }

@@ -21,7 +21,7 @@ export const SignUp = () => {
     const [errorConfirmPassword, setErrorConfirmPassword] = useState('')
     const [visible, setVisible] = useState(false)
     const [isFilled, setIsFilled] = useState(false)
-
+    const [completed, setCompleted] = useState(false)
     const validEmail = new RegExp(
         '(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}'
     )
@@ -62,11 +62,12 @@ export const SignUp = () => {
     const fetchData = async (data) => {
         await axios.post("/account/create-new-account", {
             email: data['email'],
-            password: data['pass'],
-            fullname: data['firstName'] + " " + data['lastName'],
+            password: data['password'],
+            fullname: data['fullname'],
             address: data['address'],
             phoneNo: data['phone']
         }).then((data) => {
+            setCompleted(true)
             setTimeout(() => {
                 fetchToken(data.data.email, data.data.password)
             }, 2000)
@@ -94,7 +95,7 @@ export const SignUp = () => {
             }
         }
         const data = Object.fromEntries(formData)
-        console.log('a')
+        fetchData(data)
     }
     const renderForm = (
         <div id="all">
@@ -241,7 +242,10 @@ export const SignUp = () => {
     )
     return (
         <div className="auth-form padding-40">
-            {renderForm}
+            {completed ? <div>
+                <strong>Created account successfully</strong>
+                <div>Redirecting to homepage...</div>
+            </div>: renderForm}
         </div>
     );
 }

@@ -48,7 +48,7 @@ export const PostListManagement = () => {
         const formData = new FormData(e.currentTarget)
         const data = Object.fromEntries(formData)
         console.log(data['keyword'])
-        if (data['date'] !== null) {
+        if (data['date'] !== '') {
             var updatedList = [...filtered]
             updatedList = updatedList.filter((item) => {
                 return new Date(item.orderDate).getTime() > new Date(data['date']).getTime()

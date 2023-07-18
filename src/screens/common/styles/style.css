@@ -1,3 +1,15 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .admin__home_banner {
   height: 270px;
   background: linear-gradient(180deg,
@@ -5,6 +17,80 @@
       rgba(255, 255, 255, 0.58) 69.78%,
       #fff 100%,
       #fff 100%);
+}
+
+.equal-sign {
+  text-align: center;
+  font-size: 50px;
+}
+
+.pending-table {
+  overflow-y: scroll;
+  height: 25em;
+}
+.topup{
+  height: 40em !important;
+}
+.topup-board-l {
+  height: 16em !important;
+}
+
+.topup-board-r {
+  height: 40em !important;
+}
+
+.request-board {
+  height: 50em;
+}
+
+.topup-input {
+  width: 60%;
+}
+
+.topup-btn {
+  padding: 5px 20px;
+  font-size: 20px;
+}
+.teal{
+  color: teal;
+}
+a,
+a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.topup-custom {
+  height: 18em;
+}
+.select-pending{
+  height: auto !important;
+}
+
+.card-custom {
+  background-color: white;
+  border-radius: 10px;
+  height: 40em;
+}
+
+.topup-link {
+  text-decoration: none;
+  color: teal !important;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+
+.topup-link:hover {
+  text-decoration: none;
+  font-size: 150%;
+  background-color: #D82D8B;
+  color: white !important;
+  border-radius: 10px;
+  width: 150%;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 .add-btn {
@@ -16,17 +102,21 @@
   background-color: green !important;
   border-color: green !important;
 }
+
 .no-btn {
   background-color: red !important;
   border-color: red !important;
 }
-.dialog-p{
+
+
+.dialog-p {
   padding: 0px 10px;
 }
 
-.dialog{
+.dialog {
   padding: 0px 30px;
 }
+
 .remove-btn {
   align-self: center;
 }

@@ -7,23 +7,15 @@ import '../styles/style.css'
 
 export const Topup = () => {
   // const [qrCodeValue, setQRCodeValue] = useState('');
-  
-
-  function handlePayment() {
-    // Call payment API to get QR code URL and order information
-    // Set QR code value and expiration time based on response from API
-    // setQRCodeValue('https://example.com');
-
-  }
 
   return (
     <>
       <HeaderFE />
-      <div className='qrpayment'>
+      <div className='qrpayment padding-40'>
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <div className="card">
+              <div className="card-custom">
                 <div className="card-body overflow-auto">
                   <h5 className="card-title">Topup Instruction</h5>
                   <div className="order-info">
@@ -39,22 +31,25 @@ export const Topup = () => {
                       <p className='col-md-12'>Ex: thanhnvse171234@fpt.edu.vn</p>
                       <p className='font-weight-bold'>STEP 4:</p>
                       <p className='col-md-12'>Continue your transaction and wait for an admin to confirm your purchase (est: 1 hour)</p>
-                      <p>For more information, click this link bellow:</p>
-                      <a href='https://momo.vn/chuyen-tien'>How to transfer money on Momo app</a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-md-6">
-              <div className="card">
+              <div className="card-custom">
                 <div className="card-body text-center">
                   <h5 className="card-title">Scan QR code to pay</h5>
                   <div className="qr-code">
                     <p><small> Use the MoMo app to scan the QR code</small></p>
-                    {/* <QRCode value={qrCodeValue} /> */}
                     <img className='w-50' src={QRCode} alt="transaction" />
                   </div>
+                </div>
+                <div className=''>
+                  <p>See your <a href='payment-history' className='font-weight-bold text-info'>transaction request here</a></p>
+                  <p>For more information, click this link bellow:</p>
+                  <p><a className='text-muted topup-link' href='https://momo.vn/chuyen-tien' target='_blank'>How to transfer money on Momo app</a></p>
+                  <br />
                 </div>
               </div>
             </div>

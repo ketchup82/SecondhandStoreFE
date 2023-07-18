@@ -86,7 +86,7 @@ export default function HeaderFE() {
             <Navbar className='header'>
                 <Navbar.Brand draggable='false' href="/" className='logo-container'><img draggable='false' className='img-fluid' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                 <Navbar.Toggle className='col-md-1' aria-controls="responsive-navbar-nav" />
-                <div className='col-md-4'>
+                <div className='col-md-3'>
                     <Paper
                         component='form'
                         onSubmit={(e) => { onSubmit(e) }}
@@ -98,16 +98,16 @@ export default function HeaderFE() {
                                 else setSearchText(e.target.value)
                                 console.log(searchText)
                             }}
-                            sx={{ ml: 1, flex: 1, width: '500px' }}
+                            sx={{ ml: 1, flex: 1, width: '80%' }}
                             placeholder="Search for a product"
                             inputProps={{ 'aria-label': 'search product' }}
                         />
-                        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                        <IconButton type="button" sx={{ p: '10px', width:'10%' }} aria-label="search">
                             <SearchIcon />
                         </IconButton>
                     </Paper>
                 </div>
-                <Navbar id="text-muted col-md-auto m align-self-end">
+                <Navbar id="col-md-auto align-self-end">
                     <Nav.Link href="/search" className='contact-detail'>
                         <button type="button" className="btn btn-outline-info">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box2-heart-fill" viewBox="0 0 16 16">
@@ -134,8 +134,21 @@ export default function HeaderFE() {
                     </Nav.Link>
                     {isFetched ? logged :
                         <>
-                            <Nav.Link href="/auth/login" className='contact-detail font-weight-bold btn btn-outline-dark '><PersonOutlineIcon />&nbsp;Log in</Nav.Link>
-                            <span className='seperator'></span><Nav.Link href="/auth/signup" className='contact-detail font-weight-bold btn-outline-dark'><PersonAddAltIcon />&nbsp;Sign up</Nav.Link>
+                            <Nav.Link href="/auth/login" className='contact-detail font-weight-bold'>
+                                <button type="button" className="btn btn-outline-dark">
+                                    <span>
+                                        <PersonOutlineIcon />&nbsp;Log In
+                                    </span>
+                                </button>
+                            </Nav.Link>
+                            <span className='seperator'></span>
+                            <Nav.Link href="/auth/signup" className='contact-detail font-weight-bold'>
+                                <button type="button" className="btn btn-outline-dark">
+                                    <span>
+                                        <PersonAddAltIcon />&nbsp;Sign Up
+                                    </span>
+                                </button>
+                            </Nav.Link>
                         </>
                     }
                 </Navbar>

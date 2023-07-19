@@ -10,6 +10,70 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.padding-bot {
+  padding-bottom: 30px;
+}
+
+.status-post-completed {
+  color: grey !important;
+}
+
+.status-post-accepted {
+  color: yellowgreen !important;
+}
+
+.status-post-rejected {
+  color: red !important;
+}
+
+.create-post {
+  height: 40em;
+  scale: 3;
+  padding-left: 3%;
+}
+
+.created-post-icon {}
+
+.back-btn {
+  padding-left: 10%;
+}
+
+.to-user-profile {
+  text-decoration: underline;
+}
+
+.to-user-profile:hover {
+  text-decoration: none;
+  font-size: larger;
+  background-color: teal;
+  border-radius: 2px;
+  padding: 5px;
+}
+
+.post-detail-owner {
+  color: #FEC401;
+}
+
+.post-detail-user {
+  color: #e18e07;
+}
+
+.post-detail {
+  padding: 40px 0px;
+}
+
+.post-detail-card {
+  background-color: white;
+  border-radius: 10px;
+  width: 70%;
+  align-content: center;
+}
+
+.post-detail-card:hover img {
+  border: 3px solid black;
+  transition: transform .2s !important;
+}
+
 .admin__home_banner {
   height: 270px;
   background: linear-gradient(180deg,
@@ -19,24 +83,58 @@ input[type=number] {
       #fff 100%);
 }
 
+.search-body {
+  height: 60em;
+}
+
+.search-container {
+  height: 45em !important;
+  position: relative;
+  width: 100%;
+}
+
+.search-pagination {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.search-item {
+  background-color: white;
+  border-radius: 10px;
+  height: 20em;
+  margin-bottom: 20px;
+  width: 23em;
+}
+
+.search-item:hover {
+  transform: scale(1.1);
+}
+
 .equal-sign {
   text-align: center;
   font-size: 50px;
 }
 
+.topup-img {
+  width: 100%;
+}
+
 .pending-table {
   overflow-y: scroll;
-  height: 25em;
+  height: 15em;
 }
-.topup{
-  height: 40em !important;
+
+.topup {
+  height: 42em !important;
 }
+
 .topup-board-l {
   height: 16em !important;
 }
 
 .topup-board-r {
-  height: 40em !important;
+  height: 42em !important;
 }
 
 .request-board {
@@ -51,9 +149,11 @@ input[type=number] {
   padding: 5px 20px;
   font-size: 20px;
 }
-.teal{
+
+.teal {
   color: teal;
 }
+
 a,
 a:visited {
   color: inherit;
@@ -63,7 +163,8 @@ a:visited {
 .topup-custom {
   height: 18em;
 }
-.select-pending{
+
+.select-pending {
   height: auto !important;
 }
 

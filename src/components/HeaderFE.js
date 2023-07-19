@@ -45,7 +45,7 @@ export default function HeaderFE() {
 
     const onSubmit = (e) => {
         console.log(searchText)
-        navigate('/search', { state: searchText })
+        navigate('/selling', { state: searchText })
     }
 
     const logged = (
@@ -99,7 +99,7 @@ export default function HeaderFE() {
                                 console.log(searchText)
                             }}
                             sx={{ ml: 1, flex: 1, width: '80%' }}
-                            placeholder="Search for a product"
+                            placeholder="Search for a user"
                             inputProps={{ 'aria-label': 'search product' }}
                         />
                         <IconButton type="button" sx={{ p: '10px', width:'10%' }} aria-label="search">
@@ -108,7 +108,7 @@ export default function HeaderFE() {
                     </Paper>
                 </div>
                 <Navbar id="col-md-auto align-self-end">
-                    <Nav.Link href="/search" className='contact-detail'>
+                    <Nav.Link href="/selling" className='contact-detail'>
                         <button type="button" className="btn btn-outline-info">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box2-heart-fill" viewBox="0 0 16 16">
                                 <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6l.5.667Z" />
@@ -116,7 +116,7 @@ export default function HeaderFE() {
                             <span>&nbsp;All of our product</span>
                         </button>
                     </Nav.Link>
-                    <Nav.Link href="/search" className='contact-detail'>
+                    <Nav.Link href="/donating" className='contact-detail'>
                         <button type="button" className="btn btn-outline-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box2-heart-fill" viewBox="0 0 16 16">
                                 <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM8.5 4h6l.5.667V5H1v-.333L1.5 4h6V1h1v3ZM8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z" />

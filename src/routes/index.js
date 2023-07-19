@@ -28,7 +28,6 @@ import { PaymentRequest } from "../screens/common/components/PaymentRequest";
 import { ExchangeOrder } from "../screens/common/components/ExchangeOrder";
 import { ExchangeRequest } from "../screens/common/components/ExchangeRequest";
 import { PaymentHistory } from "../screens/common/components/PaymentHistory";
-import { Search } from "../screens/common/components/Search";
 import Test from "../screens/common/components/Test";
 import { PostEdit } from "../screens/common/components/PostEdit";
 import { UserDetail } from "../screens/common/components/UserDetail";
@@ -36,6 +35,8 @@ import { Chat } from "../screens/common/components/Chat";
 import { TransactionManagement } from "../screens/admin/components/TransactionManagement";
 import { Order } from "../screens/common/components/MyOrder";
 import { Request } from "../screens/common/components/MyRequest";
+import { SearchSelling } from "../screens/common/components/SellingProduct";
+import { SearchDonating } from "../screens/common/components/DonatingProduct";
 
 export const appRouter = createBrowserRouter([
     {
@@ -84,8 +85,12 @@ export const appRouter = createBrowserRouter([
         element: <UserDetail />
     },
     {
-        path: 'search',
-        element: <Search />
+        path: 'selling',
+        element: <SearchSelling />
+    },
+    {
+        path: 'donating',
+        element: <SearchDonating />
     },
     {
         path: 'payment-request',

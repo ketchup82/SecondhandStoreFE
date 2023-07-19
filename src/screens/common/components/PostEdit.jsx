@@ -119,7 +119,7 @@ export const PostEdit = () => {
                         </div>
                         <div className="">
                             <div className="box">
-                                <h1>Post Edit</h1>
+                                <h1>Post Editing</h1>
                                 <hr />
                                 <form className="container" onSubmit={onSubmit}>
                                     <div className='row'>

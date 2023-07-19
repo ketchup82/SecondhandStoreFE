@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie'
 import { useNavigate } from 'react-router-dom'
 import '../styles/style.css'
 import { Divider } from "@mui/material";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import QRCode from "../../../assets/images/transaction.png";
 import cn from 'classnames'
 
 export const PaymentRequest = () => {
@@ -194,9 +194,14 @@ export const PaymentRequest = () => {
               </table>
             </div>
           }
-          <div className=''>
-            <p>See your full payment history <a href='payment-history' className='font-weight-bold text-info'>here</a></p>
-            <p>Don't know how to add point? <a href='topup' className='font-weight-bold text-info'>click here</a></p>
+          <div className="row">
+            <div className="col-md-4">
+              <img className="topup-img" src={QRCode}></img>
+            </div>
+            <div className="col-md-auto">
+              <p>See your full payment history <a href='payment-history' className='font-weight-bold text-info'>here</a></p>
+              <p>Don't know how to add point? <a href='topup' className='font-weight-bold text-info'>click here</a></p>
+            </div>
           </div>
         </Card.Body>
       </div>

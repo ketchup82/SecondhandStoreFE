@@ -31,12 +31,12 @@ import { PaymentHistory } from "../screens/common/components/PaymentHistory";
 import Test from "../screens/common/components/Test";
 import { PostEdit } from "../screens/common/components/PostEdit";
 import { UserDetail } from "../screens/common/components/UserDetail";
-import { Chat } from "../screens/common/components/Chat";
 import { TransactionManagement } from "../screens/admin/components/TransactionManagement";
 import { Order } from "../screens/common/components/MyOrder";
 import { Request } from "../screens/common/components/MyRequest";
 import { SearchSelling } from "../screens/common/components/SellingProduct";
 import { SearchDonating } from "../screens/common/components/DonatingProduct";
+import { PostPurchasedManagement } from "../screens/common/components/PostPurchased";
 
 export const appRouter = createBrowserRouter([
     {
@@ -55,7 +55,10 @@ export const appRouter = createBrowserRouter([
         path: '/my-request',
         element: <Request />
     },
-    // fix element later
+    {
+        path: 'my-purchase',
+        element: <PostPurchasedManagement />
+    },
     {
         path: 'post-create',
         element: <PostCreate />
@@ -111,10 +114,6 @@ export const appRouter = createBrowserRouter([
     {
         path: 'exchange-request',
         element: <ExchangeRequest />
-    },
-    {
-        path: 'chat',
-        element: <Chat />
     },
     {
         path: "/auth",

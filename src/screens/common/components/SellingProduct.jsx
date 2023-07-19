@@ -6,6 +6,7 @@ import axios from "axios"
 import '../styles/search.css'
 import { Card } from 'react-bootstrap';
 import { Pagination, Stack } from '@mui/material';
+import { toLowerCaseNonAccentVietnamese } from '../../nonAccentVietnamese.js'
 import cn from 'classnames'
 
 const styles = {
@@ -36,7 +37,6 @@ export const SearchSelling = () => {
 
     const [filteredList, setFilteredList] = new useState([]);
     let VND = new Intl.NumberFormat('vn-VN', {
-        style: 'currency',
         currency: 'VND',
     });
 
@@ -53,7 +53,7 @@ export const SearchSelling = () => {
                 setAccessories(list.filter((item) => item.categoryName == 'Accessories'))
                 setElectronics(list.filter((item) => item.categoryName == 'Electronics'))
                 setBooks(list.filter((item) => item.categoryName == 'Books'))
-                setMusicalInstr(list.filter((item) => item.categoryName == 'Muscial Instruments'))
+                setMusicalInstr(list.filter((item) => item.categoryName == 'Musical Instruments'))
                 setSchools(list.filter((item) => item.categoryName == 'School Supplies'))
                 setOthers(list.filter((item) => item.categoryName == 'Others'))
                 setFilteredList(list)
@@ -97,35 +97,14 @@ export const SearchSelling = () => {
         }
         if (query !== '') {
             updatedList = updatedList.filter((item) => {
-                return item.productName.toLowerCase().indexOf((query || '').toLowerCase()) !== -1
+                let name = toLowerCaseNonAccentVietnamese(item.productName)
+                let search = toLowerCaseNonAccentVietnamese(query)
+                return name.indexOf((search || '')) !== -1
             });
 
         }
         setFilteredList(updatedList);
     }, [query])
-
-    const handleSortType = (type) => {
-        let sortedItems = [];
-
-        switch (type) {
-            case "nameAZ":
-                sortedItems = items.sort((a, b) => a.name.localeCompare(b.name));
-                break;
-            case "nameZA":
-                sortedItems = items.sort((a, b) => b.name.localeCompare(a.name));
-                break;
-            case "priceAZ":
-                sortedItems = items.sort((a, b) => a.price - b.price);
-                break;
-            case "priceZA":
-                sortedItems = items.sort((a, b) => b.price - a.price);
-                break;
-            default:
-                sortedItems = items;
-        }
-        setItems([...sortedItems]);
-
-    }
 
     const [paginatedItems, setPaginatedItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -159,7 +138,7 @@ export const SearchSelling = () => {
                 }</strong></h1>
                 <div className="">
                     <div className='d-flex'>
-                        <div className="">
+                        <div className="pr-2">
                             <ul className="list-group" style={{ width: "280px" }}>
                                 <li className={cn("list-group-item", filter === '' && 'category-active')} onClick={() => {
                                     setFilteredList(all)
@@ -231,14 +210,14 @@ export const SearchSelling = () => {
                         {paginatedItems.length === 0 ? <div className='md-3'></div> : <div className="">
                             <div className="row search-container">
                                 {paginatedItems.map((item) => (
-                                    <div className='col-md-4'>
+                                    <div className='col-md-3 mx-5 px-5'>
                                         <div className='search-item'>
                                             <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
                                                 <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
                                                 <Card.Body>
                                                     <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
                                                     <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
-                                                    <div style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price)}</div>
+                                                    <div style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price).replaceAll(',','.')} VND</div>
                                                     <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : 'text-success')}>{item.statusName === "Completed" ? "Taken" : 'Avaiable'}</div>
                                                 </Card.Body>
                                             </a>

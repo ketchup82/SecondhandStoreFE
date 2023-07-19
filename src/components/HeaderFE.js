@@ -29,7 +29,6 @@ export default function HeaderFE() {
             })
             .catch(e => console.log(e))
     }
-
     const logout = () => {
         cookies.remove('jwt_authorization', { path: '/' });
         alert("Successfully logged out!")
@@ -42,11 +41,6 @@ export default function HeaderFE() {
             setIsFetched(true)
         }
     }, [])
-
-    const onSubmit = (e) => {
-        console.log(searchText)
-        navigate('/selling', { state: searchText })
-    }
 
     const logged = (
         <>
@@ -64,7 +58,7 @@ export default function HeaderFE() {
                     <Link draggable='false' className="dropdown-item" to="/user-profile">Profile</Link>
                     <Link draggable='false' className="dropdown-item" to="/post-list">My Posts</Link>
                     <Link draggable='false' className="dropdown-item" to="/my-order">My Orders</Link>
-                    <Link draggable='false' className="dropdown-item" to="/my-request">My Requests</Link>
+                    <Link draggable='false' className="dropdown-item" to="/my-request">People Requests</Link>
                     <Link draggable='false' className="dropdown-item" to="/my-purchase">My Purchases</Link>
                     <Link draggable='false' className="dropdown-item" to="/payment-history">Transaction History</Link>
                     {account.roleId == 'AD' &&
@@ -83,29 +77,11 @@ export default function HeaderFE() {
     )
     return (
         <>
+
             <Navbar className='header'>
                 <Navbar.Brand draggable='false' href="/" className='logo-container'><img draggable='false' className='img-fluid' src={Logo} alt='SecondhandStore' /></Navbar.Brand>
                 <Navbar.Toggle className='col-md-1' aria-controls="responsive-navbar-nav" />
-                <div className='col-md-3'>
-                    <Paper
-                        component='form'
-                        onSubmit={(e) => { onSubmit(e) }}
-                    >
-                        <InputBase
-                            fullWidth
-                            onChange={(e) => {
-                                if (e.target.value === '') setSearchText('')
-                                else setSearchText(e.target.value)
-                                console.log(searchText)
-                            }}
-                            sx={{ ml: 1, flex: 1, width: '80%' }}
-                            placeholder="Search for a user"
-                            inputProps={{ 'aria-label': 'search product' }}
-                        />
-                        <IconButton type="button" sx={{ p: '10px', width:'10%' }} aria-label="search">
-                            <SearchIcon />
-                        </IconButton>
-                    </Paper>
+                <div className='col-md-3 fixed'>
                 </div>
                 <Navbar id="col-md-auto align-self-end">
                     <Nav.Link href="/selling" className='contact-detail'>
@@ -113,7 +89,7 @@ export default function HeaderFE() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box2-heart-fill" viewBox="0 0 16 16">
                                 <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6l.5.667Z" />
                             </svg>
-                            <span>&nbsp;All of our product</span>
+                            <span>&nbsp;Selling product</span>
                         </button>
                     </Nav.Link>
                     <Nav.Link href="/donating" className='contact-detail'>

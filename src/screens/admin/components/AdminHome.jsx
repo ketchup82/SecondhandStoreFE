@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { VictoryBar } from 'victory'
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from 'victory'
 import DashboardImage from "../../../assets/images/dashboard_img.png"
 import axios from 'axios';
 import Menu from '../Sidebar';
@@ -11,54 +11,66 @@ export const AdminHome = () => {
     const cookies = new Cookies()
     const [accounts, setAccount] = useState([])
     const [posts, setPosts] = useState([])
-    const [revenues, setRevenues] = useState([])
-    const [displayStyle, setDisplayStyle] = useState('none')
-
+    const [topup, setTopup] = useState([])
+    const [error, setError] = useState('')
+    const [date, setDate] = useState([])
+    const [price, setPrice] = useState([])
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(0)
     let VND = new Intl.NumberFormat('vn-VN', {
-        style: 'currency',
         currency: 'VND',
     });
 
-    const fetchAccount = async () => {
+    const fetchData = async () => {
         await axios.get('/account/get-account-list')
             .then(data => {
                 setAccount(data.data)
             })
             .catch((e) => {
-                console.log("failed to fetch accounts")
+                setError("failed to fetch accounts")
+                console.log(e)
             })
-    }
-    const fetchPost = async () => {
         await axios.get('/posts/get-post-list')
             .then(data => {
                 setPosts(data.data)
             })
             .catch(e => {
-                console.log("failed to fetch posts")
+                setError("failed to fetch posts")
+                console.log(e)
             })
-    }
-    const fetchRevenue = async () => {
-        await axios.get("/topup/get-total-revenue")
+        await axios.get("/topup/get-all-topup-order")
             .then((data) => {
-                setRevenues(data.data)
-
+                const list = data.data.slice(0).reverse().filter((item) => {
+                    return item.topUpStatus === 'Completed'
+                })
+                setTopup(list)
             })
             .catch((e) => {
-                console.log("failed to fetch revenue")
+                setError("failed to fetch topup order")
+                console.log(e)
             })
     }
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
         axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
-        fetchAccount()
-        fetchPost()
-        fetchRevenue()
+        fetchData()
     }, [])
-
-    function openMenu(){
-        setDisplayStyle('block')
-    }
-
+    useEffect(() => {
+        let a = Math.max(...topup.map(item => new Date(String(item.topUpDate).substring(0, 10))))
+        let b = Math.min(...topup.map(item => new Date(String(item.topUpDate).substring(0, 10))))
+        var listDate = []
+        var listPrice = []
+        topup.map((item) => {
+            var d = String(item.topUpDate).substring(5, 10)
+            var p = String(item.price)
+            if (listDate.indexOf(d) === -1) listDate = [...listDate, d]
+            if (listPrice.indexOf(p) === -1) listPrice = [...listPrice, p]
+        })
+        setDate(listDate.reverse())
+        setPrice(listPrice.sort((a, b) => a - b))
+        console.log(price)
+        // console.log(new Date(a))
+    }, [topup])
     const errorMessage = (
         <div className='grey-screen row g-3 mt-3'>Something went wrong. Check connection</div>
     )
@@ -76,12 +88,42 @@ export const AdminHome = () => {
                 </div>
                 <div className="col text-center text-dark rounded m-3" style={{ background: "#12e265" }}>
                     <h5 className='m-3 row-md-3'>Total Revenue</h5>
-                    <h1 className='m-3'>{VND.format(revenues)}</h1>
+                    <h1 className='m-3'>{VND.format(topup.reduce((a, v) => a = a + v.price, 0)).replaceAll(',', '.')} VND</h1>
                 </div>
             </div>
             <div className="row d-flex justify-content-center ">
                 <h5 className='col-12 text-uppercase text-dark text-center'>Revenue chart</h5>
-                <div className='graph'></div>
+                <div className='col-12 graph'>
+                    <VictoryChart
+                        domainPadding={1}
+                    >
+                        <VictoryAxis dependentAxis
+                            tickValues={
+                                price
+                            }
+                            tickFormat={(x) => {
+                                return VND.format(x).replaceAll(',', '.') + " VND"
+                            }}
+                        />
+                        <VictoryAxis
+                            tickValues={
+                                date
+                            }
+
+                        />
+                        <VictoryBar
+                            style={{ data: { fill: "#c43a31" } }}
+                            data={[
+                                { x: 2, y: 1, y0: 2 },
+                                { x: 3, y: 1, y0: 2 },
+                                { x: 4, y: 1, y0: 3 },
+                                { x: 5, y: 1, y0: 3 },
+                                { x: 6, y: 1, y0: 3 }
+                            ]}
+                        />
+                    </VictoryChart>
+
+                </div>
             </div>
         </div>
     )
@@ -98,7 +140,7 @@ export const AdminHome = () => {
                             <div className="d-flex justify-content-center">
                                 <img className='w-100' src={DashboardImage} alt="" />
                             </div>
-                            {page}
+                            {error !== '' ? error : page}
                         </div>
                     </div>
                 </div>

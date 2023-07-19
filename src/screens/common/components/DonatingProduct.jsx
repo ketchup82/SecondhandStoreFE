@@ -7,7 +7,8 @@ import '../styles/search.css'
 import { Card } from 'react-bootstrap';
 import { Pagination, Stack } from '@mui/material';
 import cn from 'classnames'
-
+import { toLowerCaseNonAccentVietnamese } from '../../nonAccentVietnamese.js'
+    
 const styles = {
     footer: {
         position: "fixed",
@@ -45,15 +46,16 @@ export const SearchDonating = () => {
         await axios.get('/posts/get-post-list')
             .then((data) => {
                 const list = data.data.slice(0).reverse()
-                    .filter((item) => { return item.isDonated })
+                    .filter((item) => { return item.isDonated == true })
                     .filter((item) => { return item.statusName === 'Accepted' || item.statusName === 'Completed' })
                     .filter((item) => { return new Date().getFullYear() - new Date(String(item.createdDate).substring(0, 10)).getFullYear() === 0 })
+                console.log(list)
                 setAll(list)
                 setClothes(list.filter((item) => item.categoryName == 'Clothes'))
                 setAccessories(list.filter((item) => item.categoryName == 'Accessories'))
                 setElectronics(list.filter((item) => item.categoryName == 'Electronics'))
                 setBooks(list.filter((item) => item.categoryName == 'Books'))
-                setMusicalInstr(list.filter((item) => item.categoryName == 'Muscial Instruments'))
+                setMusicalInstr(list.filter((item) => item.categoryName == 'Musical Instruments'))
                 setSchools(list.filter((item) => item.categoryName == 'School Supplies'))
                 setOthers(list.filter((item) => item.categoryName == 'Others'))
                 setFilteredList(list)
@@ -97,7 +99,9 @@ export const SearchDonating = () => {
         }
         if (query !== '') {
             updatedList = updatedList.filter((item) => {
-                return item.productName.toLowerCase().indexOf((query || '').toLowerCase()) !== -1
+                let name = toLowerCaseNonAccentVietnamese(item.productName)
+                let search = toLowerCaseNonAccentVietnamese(query)
+                return name.indexOf((search || '')) !== -1
             });
 
         }
@@ -159,7 +163,7 @@ export const SearchDonating = () => {
                 }</strong></h1>
                 <div className="">
                     <div className='d-flex'>
-                        <div className="">
+                        <div className="pr-2">
                             <ul className="list-group" style={{ width: "280px" }}>
                                 <li className={cn("list-group-item", filter === '' && 'category-active')} onClick={() => {
                                     setFilteredList(all)
@@ -212,7 +216,7 @@ export const SearchDonating = () => {
                             </ul>
                             <br />
                             <ul className="list-group" style={{ width: "280px" }}>
-                                <li onClick={()=>{navigate('/selling')}} className={cn("list-group-item")} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                <li onClick={() => { navigate('/selling') }} className={cn("list-group-item")} style={{ background: "#FFDB58", cursor: "pointer" }}>
                                     <i className="fas fa-tshirt"></i> Selling Section
                                 </li>
                                 <li className={cn("list-group-item category-active")} style={{ background: "#FFDB58", cursor: "pointer" }}>
@@ -231,14 +235,14 @@ export const SearchDonating = () => {
                         {paginatedItems.length === 0 ? <div className='md-3'></div> : <div className="">
                             <div className="row search-container">
                                 {paginatedItems.map((item) => (
-                                    <div className='col-md-4'>
+                                    <div className='col-md-3 mx-5 px-5'>
                                         <div className='search-item'>
                                             <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
                                                 <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
                                                 <Card.Body>
                                                     <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
                                                     <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
-                                                    <div style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price)}</div>
+                                                    <div style={{ color: 'orange', fontSize: '20px' }}>Donating</div>
                                                     <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : 'text-success')}>{item.statusName === "Completed" ? "Taken" : 'Avaiable'}</div>
                                                 </Card.Body>
                                             </a>

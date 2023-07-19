@@ -129,7 +129,7 @@ export const PostDetail = () => {
                                     Owner:&nbsp;
                                     <a className='to-user-profile' href={'/user-detail?id=' + post.accountId}>
                                         <span className={cn(post.accountId == Owner ? "post-detail-owner" : "post-detail-user")}>
-                                            {post.accountId == Owner ? "You" : post.accountId}
+                                            {post.accountId == Owner ? "You" : post.fullname}
                                         </span>
                                     </a>
                                 </strong>

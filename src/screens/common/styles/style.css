@@ -10,6 +10,19 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.post-list-card {
+  background-color: white;
+  border-radius: 5px;
+  height: 20em;
+  margin: 20px;
+  border: 1px solid black
+}
+
+.post-list-card:hover {
+  scale: 1.2;
+
+}
+
 .padding-bot {
   padding-bottom: 30px;
 }
@@ -62,6 +75,12 @@ input[type=number] {
   padding: 40px 0px;
 }
 
+.list-box {
+  height: 450px;
+  overflow-y: scroll !important;
+}
+
+
 .post-detail-card {
   background-color: white;
   border-radius: 10px;
@@ -99,12 +118,18 @@ input[type=number] {
   bottom: 0;
 }
 
+.list-box {
+  background-color: white;
+  border: 1px solid grey;
+}
+
 .search-item {
   background-color: white;
   border-radius: 10px;
   height: 20em;
   margin-bottom: 20px;
-  width: 23em;
+  width: 22em;
+  border: 1px solid black
 }
 
 .search-item:hover {

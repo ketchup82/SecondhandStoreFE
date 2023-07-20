@@ -1,3 +1,4 @@
+import FooterFE from "../components/FooterFE";
 import DefaultLayout from "../layouts/DefaultLayout";
 import { Container } from "react-bootstrap";
 export default function Home() {
@@ -5,7 +6,7 @@ export default function Home() {
         <DefaultLayout>
             {/* Có thể xóa container đi để thêm content vào đấy */}
             <Container fluid >
-                <div className="test" style={{height: '56vh'}}>Middle</div>
+                <div className="test" style={{ height: '56vh' }}>Middle</div>
             </Container>
         </DefaultLayout>
     )

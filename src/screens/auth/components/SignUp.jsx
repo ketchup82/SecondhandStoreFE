@@ -1,52 +1,235 @@
+import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { LoadingSpinner } from "../../../components/loading/LoadingSpinner"
+import Cookies from 'universal-cookie'
+import jwt from 'jwt-decode'
+import axios from "axios"
+import cn from 'classnames'
+import '../styles/style.css'
 export const SignUp = () => {
-    return (
-        <div className="wrapper">
-            <h1 className="form__heading my-3 text-capitalize">Join our community today!</h1>
-            <div className="form-wrapper">
-                <form className="form row m-3">
-                    <div className="col-md-6 mb-3">
-                        <label for="firstName" className="form-label text-white">First name</label>
-                        <input type="text" className="form-control" id="firstName" />
-                    </div>
-                    <div className="col-md-6 mb-3">
-                        <label for="lastName" className="form-label text-white">Last name</label>
-                        <input type="text" className="form-control" id="lastName" />
-                    </div>
-                    <div className="col-md-6 mb-3">
-                        <label for="dob" className="form-label text-white">DoB</label>
-                        <input type="date" className="form-control" id="dob" />
-                    </div>
-                    <div className="col-md-6 mb-3">
-                        <label for="gender" className="form-label text-white">Gender</label>
-                        <input type="text" className="form-control" id="gender" />
-                    </div>
-                    <div className="col-md-12 mb-3">
-                        <label for="username" className="form-label text-white">Username</label>
-                        <input type="text" className="form-control" id="username" />
-                    </div>
-                    <div className="col-md-12 mb-3">
-                        <label for="address" className="form-label text-white">Address</label>
-                        <input type="text" className="form-control" id="address" />
-                    </div>
-                    <div className="col-md-12 mb-3">
-                        <label for="address" className="form-label text-white">Password</label>
-                        <input type="text" className="form-control" id="address" />
-                    </div>
-                    <div className="col-md-12 mb-3">
-                        <label for="address" className="form-label text-white">Confirm password</label>
-                        <input type="text" className="form-control" id="address" />
-                    </div>
-                    <div className="col-md-12 mb-3 form-check flex items-center">
-                        <input type="checkbox" className="form-check-input" id="policies" />
-                        <label className="form-check-label form__check-label" for="policies">I am aggree with all <a className="text-warning" href="/policy">policies</a></label>
-                    </div>
-                    <div className="col-md-12 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-dark">Sign up</button>
-                    </div>
-                </form>
-            </div>
+    axios.defaults.baseURL = 'https://localhost:7115';
 
-            <label className="my-3 link__color" for="policies">Already have an account? <a className="fw-bolder link__color text-bold" href="/auth/login">Sign in</a></label>
+    const navigate = useNavigate()
+    const cookies = new Cookies()
+    const [error, setError] = useState('')
+    const [errorName, setErrorName] = useState('')
+    const [errorEmail, setErrorEmail] = useState('')
+    const [errorDate, setErrorDate] = useState('')
+    const [errorPhone, setErrorPhone] = useState('')
+    const [errorAddress, setErrorAddress] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState('')
+    const [visible, setVisible] = useState(false)
+    const [isFilled, setIsFilled] = useState(false)
+    const [completed, setCompleted] = useState(false)
+    const validEmail = new RegExp(
+        '(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}'
+    )
+
+    useEffect(() => {
+        let cookie = cookies.get('jwt_authorization')
+        if (cookie !== undefined) {
+            let decoded = jwt(cookie)
+            if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "US") {
+                navigate('/', { replace: true })
+            }
+            else if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "AD") {
+                navigate('/admin/admin-home', { replace: true })
+            }
+        }
+    }, [])
+    const fetchToken = async (email, password) => {
+        await axios.post("/account/login", {
+            email: email,
+            password: password
+        }).then((data) => {
+            let token = data.data.token
+            let expireTime = 60 * 60
+            cookies.set("jwt_authorization", token, { path: '/', maxAge: expireTime })
+            setTimeout(() => {
+                let decoded = jwt(token)
+                if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "US") {
+                    navigate('/', { replace: true })
+                }
+                else if (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "AD") {
+                    navigate('/admin/admin-home', { replace: true })
+                }
+            }, 5000)
+        }).catch(e => {
+            alert("Wrong email or password")
+        })
+    }
+    const fetchData = async (data) => {
+        await axios.post("/account/create-new-account", {
+            email: data['email'],
+            password: data['password'],
+            fullname: data['fullname'],
+            address: data['address'],
+            phoneNo: data['phone']
+        }).then((data) => {
+            setCompleted(true)
+            setTimeout(() => {
+                fetchToken(data.data.email, data.data.password)
+            }, 2000)
+        }).catch(e => {
+            alert(e)
+        })
+    }
+
+    function checkValid() {
+        const aggreed = document.getElementById('aggreed').checked
+        console.log(aggreed)
+        let e = errorName + errorEmail + errorDate + errorPhone + errorAddress + errorPassword + errorConfirmPassword
+        console.log(e.length)
+        if (e.length === 0 && aggreed) setIsFilled(true)
+        else setIsFilled(false)
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        for (const value of formData.values()) {
+            if (value === '') {
+                setError("Please fill in the form!")
+                return
+            }
+        }
+        const data = Object.fromEntries(formData)
+        fetchData(data)
+    }
+    const renderForm = (
+        <div id="all">
+            <div id="content">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-3 col-md-6">
+                            <nav aria-label="breadcrumb">
+                            </nav>
+                        </div>
+                        <div className="col-lg-6">
+                            <div className="box form-wrapper">
+                                <h1 className="title">Sign Up</h1>
+                                <hr />
+                                <form onSubmit={(e) => { onSubmit(e) }} className="row mt-3 overflow-auto">
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="fullname">Full name*</label><div className="text-danger">{errorName}</div>
+                                        <input id="fullname" name="fullname" placeholder="NGUYEN VAN A" type="text" onChange={(e) => {
+                                            e.target.value = e.target.value.toLocaleUpperCase()
+                                        }} onBlur={() => {
+                                            let name = document.getElementById('fullname').value
+                                            if (name === '')
+                                                setErrorName(" This field is required")
+                                            else
+                                                setErrorName('')
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="email">Email*</label><div className="text-danger">{errorEmail}</div>
+                                        <input id="email" name="email" type="email" placeholder="your-student-mail (ex: thanhnp172345@fpt.edu.vn)" onBlur={() => {
+                                            let email = document.getElementById('email').value
+                                            if (email.includes('@fpt.edu.vn') || email.includes('@fe.edu.vn'))
+                                                setErrorEmail('')
+                                            else
+                                                setErrorEmail(" Only accept email in FPT Education domain")
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="phone">Phone Number*</label><div className="text-danger">{errorPhone}</div>
+                                        <input id="phone" name="phone" placeholder="0381234567" type="tel" onBlur={() => {
+                                            let phone = document.getElementById('phone').value
+                                            if ((phone.length === 10 || phone.length === 11) && phone[0] == '0')
+                                                setErrorPhone('')
+                                            else
+                                                setErrorPhone(' Wrong format!')
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="address">Address*</label><div className="text-danger">{errorAddress}</div>
+                                        <textarea id="address" name="address" type="text" rows='3' placeholder="High-tech park Long Thạnh Mỹ Ward District, Hồ Chí Minh City" onBlur={() => {
+                                            let address = document.getElementById('address').value
+                                            if (address === '')
+                                                setErrorAddress(' This field is required!')
+                                            else
+                                                setErrorAddress('')
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="password">Password &emsp;</label>
+                                        <label className="form-check-label text-bold ">
+                                            <div className="checkbox">
+                                                <input type="checkbox" onChange={() => { setVisible(!visible) }} className="form-check-input" />
+                                                &nbsp;Show password
+                                            </div></label>
+                                        <div className="text-danger">{errorPassword}</div>
+                                        <input id="password" name="password" placeholder="Password must be 5 characters or longer" type={cn(visible ? "text" : "password")} onBlur={() => {
+                                            let password = document.getElementById('password').value
+                                            let confirmPassword = document.getElementById('confirm-password').value
+                                            if (password === '')
+                                                setErrorPassword(' This field is required!')
+                                            else if (password.length <= 4)
+                                                setErrorPassword(' Password must be 5 characters or longer!')
+                                            else
+                                                setErrorPassword('')
+                                            if (password === confirmPassword) {
+                                                setErrorConfirmPassword('')
+                                            }
+                                            checkValid()
+                                        }} className="form-control" />
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center ">
+                                        <label for="confirm-password">Confirm Password*</label>
+                                        <div className="text-danger">{errorConfirmPassword}</div>
+                                        <div className="input-icons">
+                                            <input id="confirm-password" name="confirm-password" placeholder="Ex: 123456789" type={cn(visible ? "text" : "password")} onBlur={() => {
+                                                let confirmPassword = document.getElementById('confirm-password').value
+                                                if (confirmPassword === '')
+                                                    setErrorConfirmPassword(' This field is required!')
+                                                else {
+                                                    const password = document.getElementById('password').value
+                                                    if (errorPassword !== '')
+                                                        setErrorConfirmPassword(" Check your password again!")
+                                                    else if (password === confirmPassword)
+                                                        setErrorConfirmPassword('')
+                                                    else
+                                                        setErrorConfirmPassword(" Password does not match!")
+                                                }
+                                                checkValid()
+                                            }} className="form-control" />
+
+                                        </div>
+
+                                    </div>
+                                    <div className="col-md-8 mb-1 form-check flex items-center">
+                                        <div className="checkbox">
+                                            <input type="checkbox" onClick={() => { checkValid() }} id='aggreed' value='checked' className="form-check-input" />
+                                            <label className="form-check-label text-bold" for="policies">&nbsp;I agree with all <a href="/policy" target="_blank">policies</a>*</label>
+                                        </div>
+                                        <p className="text-muted mb-2">Have an account ? <a href="/auth/login">Log in here</a></p>
+                                    </div>
+                                    <div className="d-flex flex-row-reverse col-md-4 md-1 ml-auto ">
+                                        <button type="submit" className={cn("btn btn-primary login-button", !isFilled && 'disabled')}>
+                                            Sign Up
+                                        </button>
+                                    </div>
+                                    <p className="col-md-12 error">{error}</p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+    return (
+        <div className="auth-form padding-40">
+            {completed ? <div>
+                <strong>Created account successfully</strong>
+                <div>Redirecting to homepage...</div>
+            </div> : renderForm}
         </div>
     );
 }

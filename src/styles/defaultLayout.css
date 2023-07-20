@@ -1,89 +1,276 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+
 body {
     color: #515151;
-    font-family: Roboto,sans-serif;
+    font-family: Roboto, sans-serif;
     font-style: normal;
     font-weight: 400;
     overflow-x: hidden;
     font-size: 14px;
 }
 
-.header {
-    background-color: #f2b705;
-    height: 80px;
+h1 {
+    color: #fff;
 }
+
+.lead {
+    color: #aaa;
+}
+
+.wrapper {
+    margin: 10vh
+}
+
+
+.card {
+    border: none;
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    overflow: hidden;
+    border-radius: 20px;
+    min-height: 450px;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.2);
+
+    @media (max-width: 768px) {
+        min-height: 350px;
+    }
+
+    @media (max-width: 420px) {
+        min-height: 300px;
+    }
+
+    &.card-has-bg {
+        transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+        background-size: 120%;
+        background-repeat: no-repeat;
+        background-position: center center;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: inherit;
+            -webkit-filter: grayscale(1);
+            -moz-filter: grayscale(100%);
+            -ms-filter: grayscale(100%);
+            -o-filter: grayscale(100%);
+            filter: grayscale(100%);
+        }
+
+        &:hover {
+            transform: scale(0.98);
+            box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.3);
+            background-size: 130%;
+            transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+
+            .card-img-overlay {
+                transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+                background: rgb(255, 186, 33);
+                background: linear-gradient(0deg, rgba(255, 186, 33, 0.5) 0%, rgba(255, 186, 33, 1) 100%);
+            }
+        }
+    }
+
+    .card-footer {
+        background: none;
+        border-top: none;
+
+        .media {
+            img {
+                border: solid 3px rgba(255, 255, 255, 0.3);
+            }
+        }
+    }
+
+    .card-title {
+        font-weight: 800
+    }
+
+    .card-meta {
+        color: rgba(0, 0, 0, 0.3);
+        text-transform: uppercase;
+        font-weight: 500;
+        letter-spacing: 2px;
+    }
+
+    .card-body {
+        transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+
+
+    }
+
+    &:hover {
+        .card-body {
+            margin-top: 30px;
+            transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        cursor: pointer;
+        transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .card-img-overlay {
+        transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+        background: rgb(255, 186, 33);
+        background: linear-gradient(0deg, rgba(255, 186, 33, 0.3785889355742297) 0%, rgba(255, 186, 33, 1) 100%);
+    }
+}
+
+@media (max-width: 767px) {}
+
+
+.seperator {
+    width: 6px;
+    height: 20px;
+    background-color: black;
+}
+
+.padding-40 {
+    padding: 40px 0px;
+}
+
+.header-title {
+    width: 65%;
+}
+
+.header {
+    background-color: white;
+    color: black;
+    top: 0;
+    margin: 0px;
+    border-bottom: 1px solid #515151 ;
+}
+
+.header-button {
+    background-color: teal;
+    width: auto;
+    height: 100%;
+}
+
+.logo {
+    width: 30%;
+    display: block;
+    text-indent: -9999px;
+}
+
 .logo-container {
     width: 200px;
 }
-.logo-container img{
-    width: 100%;
+
+.logo-container img {
+    width: 70%;
+    height: 40%;
 }
+
 .header img {
     max-width: 100%;
     vertical-align: middle;
 }
+
+.seperator {
+    width: 3px;
+    height: 25px;
+    align-self: center;
+    background-color: black;
+}
+
 .contact {
     justify-content: end;
     color: #fff;
 }
+
 .contact .contact-detail {
     color: black !important;
     padding-right: 20px;
     transition: color 0.2s linear;
+    display: flexbox;
+    justify-content: center;
+    align-self: center;
 }
 
 .contact .contact-detail:hover {
-     color: white !important;
+    color: white !important;
 }
 
-.footer {
-    background-color: #212121;
-    color: #fff;
-    padding: 25px 0 !important;
+.user-avt img {
+    width: 50px;
+    height: 50px;
 }
-.footer-left{
+
+
+
+#dropdownMenuButton {
+    box-shadow: none;
+}
+
+
+.footer {
+    background-color: white;
+    color: black;
+    bottom: 0;
+    width: 100%;
+    float: left;
+}
+
+.footer-left {
     font-size: 14px;
     font-weight: 500;
     padding: 0 10px;
 }
-.footer-middle, .footer-right {
+
+.logo-footer {
+    color: black;
+}
+
+.footer-middle,
+.footer-right {
     margin-top: 30px;
 }
-.left-content   {
+
+.left-content {
     margin-top: 10px;
 }
 
-.middle-content, .right-content{
+.middle-content,
+.right-content {
     margin-top: 20px;
 }
 
-.middle-title, .right-title{
+.middle-title,
+.right-title {
     font-weight: 700;
     font-size: 20px;
 }
 
-.middle-content ion-icon{
+.middle-content ion-icon {
     color: #f2b705;
     padding-right: 10px;
 }
 
-.right-content a{
-    color: white;
+.right-content a {
+    color: black;
 }
-.right-content a:hover{
+
+.right-content a:hover {
     text-decoration: none;
     color: #f2b705;
     transition: color 0.1s linear;
 }
-.footer-footer{
+
+.footer-footer {
     text-align: center;
     font-size: 14px;
-    
+
 }
+
 @keyframes changeColor {
     from {
         color: black;
     }
+
     to {
         color: #fff;
     }

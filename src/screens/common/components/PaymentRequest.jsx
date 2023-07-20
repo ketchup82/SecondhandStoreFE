@@ -215,7 +215,7 @@ export const PaymentRequest = () => {
           <Divider />
           {pay === 0 ? <div>No current transaction</div> : <div className="row">
             <div className="col-md-6 text-left"><h5 className="text-dark"><strong>Total point awaiting: {pay}</strong></h5></div>
-            <div className="col-md-6 text-right"><h5 className="text-dark"><strong>Pending fee: {VND.format(pay).replaceAll(',', '.')} VND</strong></h5></div>
+            <div className="col-md-6 text-right"><h5 className="text-dark"><strong>Pending fee: {VND.format(pay*1000).replaceAll(',', '.')} VND</strong></h5></div>
           </div>}
           <br />
           <div className={cn(resultCancel.includes('Something') ? 'text-danger' : 'text-success')}>

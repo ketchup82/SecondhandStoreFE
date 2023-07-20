@@ -38,7 +38,7 @@ export const PostDetail = () => {
         })
     }
     const sendRequest = async () => {
-        await axios.post('/send-exchange-request', {
+        await axios.post('/buyer-send-exchange-request', {
             'postId': postId,
         }).then((data) => {
             setResult(data.data)
@@ -135,7 +135,7 @@ export const PostDetail = () => {
                         </div>
                         <br />
                         <div className='row justify-content-md-center'>
-                            {Owner === post.accountId ?
+                            {Owner == post.accountId ?
                                 <div className='row'>
                                     {/* <div className='col-4'>
                                         <button className="btn-outline-dark text-danger h3">&nbsp;Delete Post</button>
@@ -180,7 +180,7 @@ export const PostDetail = () => {
                             <h5 className="col-3"><div className='h3 text-info'>Category</div><div className='h4'>{post.categoryName}</div></h5>
                             <h5 className="col-6"><div className='h3 text-info'>Last modified</div><div className='h4'>{String(post.createdDate).substring(0, 10)}</div></h5>
                         </div>
-                        <h4 className='text-info'><strong>Description</strong></h4>
+                        <h4 className='text-info'>Description</h4>
                         <div className='col-md-12'>
                             <p className='h4 post-desc'>{post.description}</p>
                         </div>

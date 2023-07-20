@@ -45,7 +45,7 @@ export const SearchDonating = () => {
 
 
     const fetchData = async () => {
-        await axios.get('/posts/get-post-list')
+        await axios.get('/posts/get-all-active-post-list')
             .then((data) => {
                 const list = data.data.slice(0).reverse()
                     .filter((item) => { return item.isDonated == true })
@@ -249,7 +249,8 @@ export const SearchDonating = () => {
                                                             <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
                                                             <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
                                                             <div style={{ color: 'orange', fontSize: '20px' }}>Donating</div>
-                                                            <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : 'text-success')}>{item.statusName === "Completed" ? "Taken" : 'Avaiable'}</div>
+                                                            <div className={cn('text-success'
+                                                            )}>{item.statusName === 'Accepted' && 'Available'}</div>
                                                         </Card.Body>
                                                     </a>
                                                 </div>

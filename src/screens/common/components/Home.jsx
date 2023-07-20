@@ -30,11 +30,10 @@ export const UserHome = () => {
     });
 
     const fetchData = async () => {
-        await axios.get("/posts/get-post-list")
+        await axios.get("/posts/get-all-active-post-list")
             .then((data) => {
                 setItems(data.data.slice(0).reverse())
                 setFilteredList(data.data.slice(0).reverse())
-
             })
             .catch((e) => { console.log(e) })
     }
@@ -205,7 +204,7 @@ export const UserHome = () => {
                         {filteredList.slice(0, 8).map((item) => (
                             <>
                                 <div class="col-6 col-md-3 post-padding">
-                                    <a href={"/post-detail?id="+item.postId} style={{ textDecoration: 'none' }}>
+                                    <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
                                         <Card style={{ width: '16rem' }}>
                                             <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
                                             <Card.Body>
@@ -213,7 +212,7 @@ export const UserHome = () => {
                                             </Card.Body>
                                             <Card.Body>
                                                 <a href={'/post-detail?id=' + item.postId} style={{ textDecoration: 'none' }}>
-                                                    <Card.Link style={{ color: 'orange', fontSize: '20px' }}>{item.isDonated ? "Donating" : VND.format(item.price).replaceAll(',','.')+" VND"}</Card.Link>
+                                                    <Card.Link style={{ color: 'orange', fontSize: '20px' }}>{item.isDonated ? "Donating" : VND.format(item.price).replaceAll(',', '.') + " VND"}</Card.Link>
                                                 </a>
                                             </Card.Body>
                                         </Card>

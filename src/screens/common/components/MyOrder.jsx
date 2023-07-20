@@ -17,15 +17,46 @@ export const Order = () => {
   const [cancelled, setCancelled] = useState([])
   const [completed, setCompleted] = useState([])
   const [filteredList, setFilteredList] = useState([])
+  const [selected, setSelected] = useState([])
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState('All');
-
-  const handleClickOpen = () => {
+  const [choice, setChoice] = useState('');
+  const [result, setResult] = useState('');
+  const handleClickOpen = (input) => {
+    setChoice(input)
     setOpen(true);
   };
 
   const handleComplete = () => {
-    setOpen(false);
+    switch (choice) {
+      case 'accept':
+        console.log(selected.orderId)
+        const responseAccept = axios({
+          url: "/seller-accept-request",
+          params: { orderId: selected.orderId },
+          method: 'put'
+        }).then((data) => { setResult(data.data) })
+          .catch((e) => { console.log(e) })
+        break
+      case 'cancel':
+        console.log(selected.orderId)
+        const responseCancel = axios({
+          url: "/seller-cancel-exchange",
+          params: { orderId: selected.orderId },
+          method: 'put'
+        }).then((data) => { setResult(data.data) })
+          .catch((e) => { console.log(e) })
+        break
+      case 'complete':
+        console.log(selected.orderId)
+        const responseComplete = axios({
+          url: "/confirm-finished",
+          params: { orderId: selected.orderId },
+          method: 'put'
+        }).then((data) => { setResult(data.data) })
+          .catch((e) => { console.log(e) })
+        break
+    }
   };
 
   const handleClose = () => {
@@ -100,11 +131,25 @@ export const Order = () => {
       <Dialog onClose={handleClose} open={open}>
         <DialogTitle>Are you sure?</DialogTitle>
         <div className='row dialog'>
-          <List>
+          {result !== "" ? <>
+            <DialogTitle></DialogTitle>
             <ListItem>
-              <p className='col-md-12 dialog-p'>Once you have completed this request,
-                the requested post will be marked as 'completed'
-                and sold to the buyer</p>
+              <p className='col-md-12 dialog-p'>
+                {result}
+              </p>
+            </ListItem>
+            <ListItem>
+              <div className='col-md-12'>
+                <button className='btn btn-info' onClick={() => { handleClose() }}>Back</button>
+              </div>
+            </ListItem> </> : <List>
+            <ListItem>
+              {choice === 'complete' ? <p className='col-md-12 dialog-p'>Once you have completed this request,
+                the requested post will be marked as 'Comleted' and your request is done.
+              </p> : choice === 'accept' ? <p className='col-md-12 dialog-p'>Once you have accepted this request,
+                the requested post will be marked as 'Processing' and your post will be hidden
+              </p> : <p> Once you have cancelled this request, the requested user will be announced and the request is cancelled
+              </p>}
             </ListItem>
             <ListItem>
               <div className='col-md-12'>
@@ -112,7 +157,7 @@ export const Order = () => {
                 <button className='btn btn-info col-md-3 no-btn' onClick={() => { handleClose() }}>No</button>
               </div>
             </ListItem>
-          </List>
+          </List>}
         </div>
       </Dialog>
     </>
@@ -220,10 +265,21 @@ export const Order = () => {
                             <td>{String(order.orderDate).substring(0, 10)}</td>
                             <td>{order.orderStatusName}</td>
                             <td className='mx-2'>
-                              {order.orderStatusName === 'Cancelled' || order.orderStatusName === 'Completed' ?
+                              {order.orderStatusName === 'Processing' ? <button style={{ width: "100px ", margin: '10px 0px' }} onClick={() => {
+                                setSelected(order)
+                                handleClickOpen('complete')
+                              }} className='btn btn-info yes-btn'><strong><div>Complete</div><div>this request</div></strong></button> : order.orderStatusName === 'Cancelled' || order.orderStatusName === 'Completed' ?
                                 <button disabled className='btn btn-dark'><div>{order.orderStatusName} &emsp;</div></button> :
-                                <button onClick={() => { handleClickOpen() }} className='btn btn-success add-btn'><strong><div>Accept</div><div>this request</div></strong></button>
-                              }
+                                <>
+                                  <button style={{ width: "100px ", margin: '10px 0px' }} onClick={() => {
+                                    setSelected(order)
+                                    handleClickOpen('accept')
+                                  }} className='btn btn-info yes-btn'><strong><div>Accept</div><div>this request</div></strong></button>
+                                  <button style={{ width: "100px ", margin: '10px 0px' }} onClick={() => {
+                                    setSelected(order)
+                                    handleClickOpen('cancel')
+                                  }} className='btn btn-info no-btn'><strong><div>Cancel</div><div>this request</div></strong></button>
+                                </>}
                             </td>
                           </tr>
                         ))}

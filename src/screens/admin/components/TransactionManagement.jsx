@@ -35,6 +35,7 @@ export const TransactionManagement = () => {
             setError('Something went wrong!')
             console.log(e)
         })
+        window.location.reload()
     }
     const fetchData = async () => {
         await axios.get("/topup/get-all-topup-order")

@@ -84,7 +84,7 @@ export const ExchangeOrderList = () => {
                                         <td>{item.buyerName}({item.buyerEmail})</td>
                                         <td>{item.sellerName}({item.sellerEmail})</td>
                                         <td>{String(item.orderDate).substring(0, 10)}</td>
-                                        <td>{item.orderId}</td>
+                                        <td>{item.orderStatusName}</td>
                                     </tr>
                                 ))}
                             </tbody>

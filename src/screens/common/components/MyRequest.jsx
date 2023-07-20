@@ -29,9 +29,10 @@ export const Request = () => {
   };
 
   const handleComplete = async (requestId) => {
+    console.log(selected.orderId)
     const response = await axios({
       url: '/buyer-cancel-exchange',
-      params: { id: requestId },
+      params: { orderId: selected.orderId },
       method: 'put'
     }).catch((e) => {
       setError("Something went wrong, please try again later!")
@@ -251,6 +252,7 @@ export const Request = () => {
                                   <button disabled className='btn btn-dark'><div>{order.orderStatusName} &emsp;</div></button> :
                                   <button onClick={() => {
                                     setSelected(order)
+                                    console.log(selected)
                                     handleClickOpen()
                                   }} className='btn btn-success add-btn'><strong>Cancel request</strong></button>
                                 }

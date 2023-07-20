@@ -223,7 +223,8 @@ export const SearchSelling = () => {
                                                             <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
                                                             <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
                                                             <div style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price).replaceAll(',', '.')} VND</div>
-                                                            <div className='text-success'>'Avaiable'</div>
+                                                            <div className={cn('text-success'
+                                                            )}>{item.statusName === 'Accepted' && 'Available'}</div>
                                                         </Card.Body>
                                                     </a>
                                                 </div>

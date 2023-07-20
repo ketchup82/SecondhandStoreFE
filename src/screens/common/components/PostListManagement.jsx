@@ -5,7 +5,7 @@ import Cookies from 'universal-cookie'
 import axios from "axios"
 import HeaderFE from "../../../components/HeaderFE";
 import FooterFE from "../../../components/FooterFE";
-import { Dialog, DialogTitle, List, ListItem, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 import { toLowerCaseNonAccentVietnamese } from '../../nonAccentVietnamese.js'
 import cn from 'classnames'
 import { Card, Stack } from "react-bootstrap";
@@ -24,7 +24,7 @@ export const PostListManagement = () => {
     const [isError, setIsError] = useState(false)
     const [filteredList, setFilteredList] = useState([])
     const [status, setStatus] = useState('All');
-
+    const [isLoading, setIsLoading] = useState(true)
     let VND = new Intl.NumberFormat('vn-VN', {
         currency: 'VND',
     });
@@ -39,6 +39,7 @@ export const PostListManagement = () => {
                 setRejected(list.filter((item) => { return item.statusName === 'Rejected' }))
                 setCompleted(list.filter((item) => { return item.statusName === 'Completed' }))
                 setFilteredList(list)
+                setIsLoading(false)
             })
             .catch(e => setIsError(e))
     }
@@ -186,7 +187,7 @@ export const PostListManagement = () => {
                                                 <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
                                                 <div style={{ color: 'black' }}>{String(item.createdDate).substring(0, 10)}</div>
                                                 <div style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price).replaceAll(',', '.')} VND</div>
-                                                <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : 'text-success')}>{item.statusName}</div>
+                                                <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : item.statusName === 'Rejected' ? 'text-danger' : 'text-success')}>{item.statusName}</div>
                                             </Card.Body>
                                         </a>
                                     </div>
@@ -205,7 +206,7 @@ export const PostListManagement = () => {
             <div className='d-flex padding-bot'>
                 <div className='flex-1 container text-white bg-body-tertiary w-100 min-vh-100'>
                     <h5 className='text-dark m-3'>My Posts</h5>
-                    {renderPost}
+                    {isLoading ? <LoadingSpinner /> : renderPost}
                 </div>
             </div>
             <FooterFE />

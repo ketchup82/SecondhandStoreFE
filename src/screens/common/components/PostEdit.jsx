@@ -7,6 +7,9 @@ import Cookies from 'universal-cookie'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { LoadingSpinner } from '../../../components/loading/LoadingSpinner'
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+
 export const PostEdit = () => {
     axios.defaults.baseURL = "https://localhost:7115"
     const cookies = new Cookies()
@@ -30,6 +33,7 @@ export const PostEdit = () => {
     const [errorPrice, setErrorPrice] = useState('')
     const [errorType, setErrorType] = useState('')
     const [errorDescription, setErrorDescription] = useState('')
+    const [success, setSuccess] = useState(false)
 
     let VND = new Intl.NumberFormat('vn-VN', {
         style: 'currency',
@@ -96,11 +100,17 @@ export const PostEdit = () => {
                     "Content-Type": "multipart/form-data",
                 },
                 method: "put",
+            }).then(() => {
+                setSuccess(true)
+                setTimeout(() => {
+                    navigate('/post-detail?id=' + postId)
+                }, 2000)
             })
-            alert("success")
-            navigate('/post-detail?id=' + postId)
-            setIsLoading(false)
-        }, 2000)
+                .catch((e) => {
+                    setError("something went wrong!")
+                    console.log(e)
+                })
+        }, 1000)
     }
 
     const handlePrice = (e) => {
@@ -119,7 +129,7 @@ export const PostEdit = () => {
                         </div>
                         <div className="">
                             <div className="box">
-                                <h1>Post Editing</h1>
+                                <h1 className='text-dark'>Post Editing</h1>
                                 <hr />
                                 <form className="container" onSubmit={onSubmit}>
                                     <div className='row'>
@@ -241,7 +251,22 @@ export const PostEdit = () => {
         <>
             <HeaderFE />
             <div className='padding-40'>
-                {isLoading ? <LoadingSpinner /> : form}
+                {success ? <div className='padding-40'>
+                    <div className='create-post d-flex justify-content-center align-items-center'>
+                        <div className=''>
+                            <span className='col-12'><h1 className='text-success'>Post Updated <CheckCircleIcon /></h1>
+                            </span>
+                            <div className='col-12'>Redirecting to updated post...</div>
+                        </div>
+                    </div>
+                </div> : <>
+                    <div className='col-2 back-btn'>
+                        <button onClick={() => { navigate(-1) }} type="button" className="btn btn-light fw-medium text-uppercase mb-5">
+                            ←Back
+                        </button>
+                    </div>
+                    {form}
+                </>}
             </div>
             <FooterFE />
         </>

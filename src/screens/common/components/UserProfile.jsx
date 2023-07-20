@@ -1,76 +1,107 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react'
-import { LoadingSpinner } from "../../../components/loading/LoadingSpinner"
-import Avatar from "../../../assets/images/user.png"
-import Cookies from 'universal-cookie'
-import axios from "axios"
-import HeaderFE from "../../../components/HeaderFE";
-import FooterFE from "../../../components/FooterFE";
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-export const UserProfile = () => {
-    axios.defaults.baseURL = 'https://localhost:7115'
-    const navigate = useNavigate();
-    const cookies = new Cookies();
-    const [isLoading, setIsLoading] = useState(true)
-    const [isError, setIsError] = useState(false)
-    const [account, setAccount] = useState([])
+const UserProfile = () => {
+  const [gender, setGender] = useState(""); // khởi tạo state cho giới tính
 
-    const fetchData = async () => {
-        await axios.get('/account/get-user-account')
-            .then((data) => {
-                setAccount(data.data)
-                setIsLoading(false)
-            })
-            .catch((e) => {
-                console.log(e)
-                setIsError(true)
-                setIsLoading(false)
-            })
-    }
+  const handleGenderChange = (e) => {
+    setGender(e.target.value);
+  };
 
-    useEffect(() => {
-        let cookie = cookies.get('jwt_authorization')
-        if (cookie !== undefined) {
-            axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
-            fetchData()
-        }
-        else {
-            navigate('/', { replace: true })
-        }
-    }, [])
-    const errorMessage = (
-        <div className='grey-screen row g-3 mt-3'>Something went wrong. Check connection</div>
-    )
-    const profile = (
-        <>
-            {isError ? errorMessage : <div className='p-5'>
-                <div className="row g-3 px-5 h-100">
-                    <div className="col-md-6 flex-grow-1 overflow-auto">
-                        <div className="col card h-100 bg-body-tertiary">
-                            <div style={{ background: "#FEC401" }} className="card-body rounded text-uppercase card-main d-flex flex-column align-items-center">
-                                <img className='profile-avt' src={Avatar} alt="" />
-                                <h1 className='fs-medium text-center'>{account.fullname}</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6 px-5 flex-grow-1 overflow-auto">
-                        <h3 className='title text-center'>User Information</h3>
-                        <p className=''>NAME : {account.fullname}</p>
-                        <p className=''>ADRESS : {account.address}</p>
-                        <p className=''>PHONE NUMBER : {account.phoneNo}</p>
-                        <p className=''>GMAIL : {account.email}</p>
-                        {isNaN(account.reportReporters) && <p className=''>REASON: Scam, toxic, flake, unreal prices</p>}
-                    </div>
-                </div>
+  return (
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card mt-5">
+            <div className="card-body d-flex align-items-center">
+              <img
+                src="https://via.placeholder.com/150"
+                alt="User Avatar"
+                className="rounded-circle mr-3"
+              />
+              <div>
+                <h5 className="card-title mb-0">John Doe</h5>
+                <p className="card-text">john.doe@example.com</p>
+              </div>
             </div>
-            }
-        </>
-    )
-    return (
-        <>
-            <HeaderFE />
-            {isLoading ? <LoadingSpinner /> : profile}
-            <FooterFE />
-        </>
-    )
-}
+            <div className="card-body d-flex flex-column">
+              <div className="flex-grow-1">
+                <div className="d-flex align-items-center mb-3">
+                  <label className="font-weight-bold mr-3">Location:</label>
+                  <div class="col-sm-7 my-1">
+            <input type="text" class="form-control" id="inlineFormInputName" placeholder="Enter Your Address" />
+          </div>
+                </div>
+                <div className="d-flex align-items-center mb-3">
+                  <label className="font-weight-bold mr-3">Gender:</label>
+                  <div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        id="male"
+                        onChange={handleGenderChange}
+                        checked={gender === "male"} // đánh dấu tích chọn nếu giới tính là male
+                      />
+                      <label className="form-check-label rounded-circle" htmlFor="male">
+                        Male
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        id="female"
+                        onChange={handleGenderChange}
+                        checked={gender === "female"} // đánh dấu tích chọn nếu giới tính là female
+                      />
+                      <label className="form-check-label rounded-circle" htmlFor="female">
+                        Female
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="gender"
+                        value="other"
+                        id="other"
+                        onChange={handleGenderChange}
+                        checked={gender === "other"} // đánh dấu tích chọn nếu giới tính là other
+                      />
+                      <label className="form-check-label rounded-circle" htmlFor="other">
+                        Others
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="d-flex align-items-center mb-3">
+                  <label className="font-weight-bold mr-3">Date Of Birth:</label>
+                  <div class="col-sm-5 my-1">
+            <div class="input-group">
+              <input type="date" class="form-control" id="inlineFormInputGroupUsername" />
+            </div>
+          </div>
+                </div>
+              
+                <div className="d-flex align-items-center mb-3">
+              <label className="font-weight-bold mr-2">Introduction:</label>
+              <div class="col-12 col-md-9 my-1">
+                <textarea class="form-control" id="inlineFormInputName" rows="3" placeholder="Enter referrals"></textarea>
+              </div>
+            </div>
+              <button className="btn btn-primary align-self-end">Edit Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserProfile;

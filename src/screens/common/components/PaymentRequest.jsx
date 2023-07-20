@@ -46,8 +46,7 @@ export const PaymentRequest = () => {
       setResultCancel('Something went wrong!')
       console.log(e)
     })
-    console.log(response)
-    if (response.status === 200) {
+    if (resultCancel === '') {
       setResultCancel('Cancel successfully!')
       getPending()
     }
@@ -92,7 +91,7 @@ export const PaymentRequest = () => {
     <div className="request-board topup-custom">
       <div className="card-custom topup-board-l">
         <Card.Body>
-          <h4>Topup Request (max: 10.000 points/request)</h4>
+          <h4 className="teal">Topup Request (max: 10.000 points/request)</h4>
           <Divider />
           <form className="row" onSubmit={(e) => onSubmit(e)}>
             <div className="form-group col-md-12 mb-3 form-check">
@@ -147,7 +146,7 @@ export const PaymentRequest = () => {
     <div className="request-board topup-custom">
       <div className="card-custom topup-board-r">
         <Card.Body>
-          <h4>Pending Request</h4>
+          <h4 className="teal">Pending Request</h4>
           <Divider />
           <form id="myForm" onSubmit={(e) => onSubmitDate(e)}>
             <div class="form-row align-items-center">
@@ -212,11 +211,11 @@ export const PaymentRequest = () => {
     <div className="">
       <div className="card-custom select-pending">
         <Card.Body>
-          <h4>Pending Point</h4>
+          <h4 className="teal">Pending Point</h4>
           <Divider />
           {pay === 0 ? <div>No current transaction</div> : <div className="row">
-            <div className="col-md-6 text-left"><h5 className="teal"><strong>Total point awaiting: {pay}</strong></h5></div>
-            <div className="col-md-6 text-right"><h5 className="teal"><strong>Total cost: {VND.format(pay).replaceAll(',', '.')} VND</strong></h5></div>
+            <div className="col-md-6 text-left"><h5 className="text-dark"><strong>Total point awaiting: {pay}</strong></h5></div>
+            <div className="col-md-6 text-right"><h5 className="text-dark"><strong>Pending fee: {VND.format(pay).replaceAll(',', '.')} VND</strong></h5></div>
           </div>}
           <br />
           <div className={cn(resultCancel.includes('Something') ? 'text-danger' : 'text-success')}>

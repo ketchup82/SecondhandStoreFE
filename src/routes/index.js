@@ -17,7 +17,7 @@ import { AdminUserProfile } from "../screens/admin/components/AdminUserProfile";
 import { AdminPostDetail } from "../screens/admin/components/PostDetail";
 import { AdminPostListManagement } from "../screens/admin/components/PostListManagement";
 
-import { UserProfile } from "../screens/common/components/UserProfile";
+import { UserProfile } from "../screens/common/components/old-UserProfile";
 import { UserHome } from "../screens/common/components/Home";
 import { PostDetail } from "../screens/common/components/PostDetail";
 import { PostListManagement } from "../screens/common/components/PostListManagement";
@@ -25,8 +25,6 @@ import { UserEdit } from "../screens/common/components/UserEdit";
 import { PostCreate } from "../screens/common/components/PostCreate";
 import { Topup } from "../screens/common/components/Topup";
 import { PaymentRequest } from "../screens/common/components/PaymentRequest";
-import { ExchangeOrder } from "../screens/common/components/ExchangeOrder";
-import { ExchangeRequest } from "../screens/common/components/ExchangeRequest";
 import { PaymentHistory } from "../screens/common/components/PaymentHistory";
 import Test from "../screens/common/components/Test";
 import { PostEdit } from "../screens/common/components/PostEdit";
@@ -37,6 +35,7 @@ import { Request } from "../screens/common/components/MyRequest";
 import { SearchSelling } from "../screens/common/components/SellingProduct";
 import { SearchDonating } from "../screens/common/components/DonatingProduct";
 import { PostPurchasedManagement } from "../screens/common/components/PostPurchased";
+import { ExchangeOrderList } from "../screens/admin/components/ExchangeOrderList";
 
 export const appRouter = createBrowserRouter([
     {
@@ -108,14 +107,6 @@ export const appRouter = createBrowserRouter([
         element: <Topup />
     },
     {
-        path: 'exchange-order',
-        element: <ExchangeOrder />
-    },
-    {
-        path: 'exchange-request',
-        element: <ExchangeRequest />
-    },
-    {
         path: "/auth",
         element: <Auth />,
         children: [
@@ -185,6 +176,10 @@ export const appRouter = createBrowserRouter([
                 path: "user-detail",
                 element: <AdminUserProfile />
             },
+            {
+                path: 'exchange-order',
+                element: <ExchangeOrderList />
+            }
         ]
     }
 ])

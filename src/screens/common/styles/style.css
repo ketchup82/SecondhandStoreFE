@@ -225,8 +225,8 @@ a:visited {
 }
 
 .yes-btn {
-  background-color: green !important;
-  border-color: green !important;
+  background-color: rgb(0, 207, 0) !important;
+  border-color: rgb(0, 207, 0) !important;
 }
 
 .no-btn {
@@ -234,6 +234,15 @@ a:visited {
   border-color: red !important;
 }
 
+.yes-btn:hover {
+  background-color: green !important;
+  border-color: green !important;
+}
+
+.no-btn:hover {
+  background-color: rgb(197, 0, 0) !important;
+  border-color: rgb(197, 0, 0) !important;
+}
 
 .dialog-p {
   padding: 0px 10px;

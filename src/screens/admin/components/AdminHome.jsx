@@ -41,7 +41,7 @@ export const AdminHome = () => {
         await axios.get("/topup/get-all-topup-order")
             .then((data) => {
                 const list = data.data.slice(0).reverse().filter((item) => {
-                    return item.topUpStatus === 'Completed'
+                    return item.topUpStatus === 'Accepted'
                 })
                 setTopup(list)
             })

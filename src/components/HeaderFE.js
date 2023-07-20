@@ -21,13 +21,29 @@ export default function HeaderFE() {
     axios.defaults.baseURL = "https://localhost:7115"
     const [isFetched, setIsFetched] = useState(false)
     const [searchText, setSearchText] = useState('')
+    const [post, setPost] = useState(0)
+    const [request, setRequest] = useState(0)
+    const [order, setOrder] = useState(0)
+    const [purchased, setPurchased] = useState(0)
     const [account, setAccount] = useState([])
     const fetchData = async () => {
         await axios.get('/account/get-user-account')
             .then((data) => {
                 setAccount(data.data)
+                setIsFetched(true)
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                setIsFetched(false)
+                console.log(e)
+            })
+    }
+    const fetchNumber = () => {
+        if (account.roleId !== 'AD') {
+            axios.get('/posts/get-user-posts').then((data) => { setPost(data.data.length) }).catch((e) => { console.log(e) })
+            axios.get('/get-all-request-list').then((data) => { setRequest(data.data.length) }).catch((e) => { console.log(e) })
+            axios.get('/get-all-order-list').then((data) => { setOrder(data.data.length) }).catch((e) => { console.log(e) })
+            axios.get('/get-purchased-post').then((data) => { setPurchased(data.data.length) }).catch((e) => { console.log(e) })
+        }
     }
     const logout = () => {
         cookies.remove('jwt_authorization', { path: '/' });
@@ -38,7 +54,7 @@ export default function HeaderFE() {
         if (cookie !== undefined) {
             axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
             fetchData()
-            setIsFetched(true)
+            fetchNumber()
         }
     }, [])
 
@@ -55,14 +71,16 @@ export default function HeaderFE() {
                     <span class="caret"></span>
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <Link draggable='false' className="dropdown-item" to="/user-profile">Profile</Link>
-                    <Link draggable='false' className="dropdown-item" to="/post-list">My Posts</Link>
-                    <Link draggable='false' className="dropdown-item" to="/my-order">My Orders</Link>
-                    <Link draggable='false' className="dropdown-item" to="/my-request">People Requests</Link>
-                    <Link draggable='false' className="dropdown-item" to="/my-purchase">My Purchases</Link>
-                    <Link draggable='false' className="dropdown-item" to="/payment-history">Transaction History</Link>
-                    {account.roleId == 'AD' &&
-                        <a draggable='false' className="dropdown-item" href="/admin/admin-home">Admin Dashboard</a>
+                    {account.roleId == 'AD' ?
+                        <a draggable='false' className="dropdown-item" href="/admin/dashboard">Admin Dashboard</a> :
+                        <>
+                            <Link draggable='false' className="dropdown-item" to="/user-profile">Profile</Link>
+                            <Link draggable='false' className="dropdown-item" to="/post-list">My Posts ({post})</Link>
+                            <Link draggable='false' className="dropdown-item" to="/my-order">My Orders ({order})</Link>
+                            <Link draggable='false' className="dropdown-item" to="/my-request">My Requests ({request})</Link>
+                            <Link draggable='false' className="dropdown-item" to="/my-purchase">My Purchases ({purchased})</Link>
+                            <Link draggable='false' className="dropdown-item" to="/payment-history">Transaction History</Link>
+                        </>
                     }
                     <a href='/' className="dropdown-item" onClick={() => { logout() }}>Log out</a>
                 </div>

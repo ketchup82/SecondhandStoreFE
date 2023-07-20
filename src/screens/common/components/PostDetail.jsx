@@ -17,6 +17,7 @@ export const PostDetail = () => {
     const navigate = useNavigate();
     const cookies = new Cookies();
     const [isSented, setIsSented] = useState(false)
+    const [isRequested, setIsRequested] = useState(false)
     const [Owner, setOwner] = useState('')
     const [result, setResult] = useState('')
     const [error, setError] = useState('')
@@ -30,6 +31,11 @@ export const PostDetail = () => {
                 setPost(data.data)
             })
             .catch(e => setError(error))
+        await axios.get('/get-all-request-list').then((data) => {
+            data.data.map((item) => {
+                if (String(item.postId) === postId) setIsRequested(true)
+            })
+        })
     }
     const sendRequest = async () => {
         await axios.post('/send-exchange-request', {
@@ -62,8 +68,12 @@ export const PostDetail = () => {
         setOpen(true);
     };
 
-    const handleComplete = () => {
+    const handleReqComplete = () => {
         sendRequest()
+    };
+
+    const handleDelComplete = () => {
+
     };
 
     const handleClose = () => {
@@ -73,20 +83,38 @@ export const PostDetail = () => {
     };
 
 
-    const Rusure = (
+    const requestDialog = (
         <List>
             <ListItem>
-                <p className='col-md-12 dialog-p'>You are about to create a request for this product. The seller can see your request and contact with you. Or you can try to contact them first.
+                <p className='col-md-12 dialog-p'>
+                    You are about to create a request for this product. The seller can see your request and contact with you. Or you can try to contact them first.
                 </p>
             </ListItem>
             <ListItem>
                 <div className='col-md-12'>
-                    <button className='btn btn-info col-md-3 yes-btn' onClick={() => { handleComplete() }}>Yes</button>
+                    <button className='btn btn-info col-md-3 yes-btn' onClick={() => { handleReqComplete() }}>Yes</button>
                     <button className='btn btn-info col-md-3 no-btn' onClick={() => { handleClose() }}>No</button>
                 </div>
             </ListItem>
         </List>
     )
+
+    // const deleteDialog = (
+    //     <List>
+    //         <ListItem>
+    //             <p className='col-md-12 dialog-p'>
+    //                 You are about to complete this post. It won't show on display anymore and all request about this product will be cancelled. 
+    //             </p>
+    //         </ListItem>
+    //         <ListItem>
+    //             <div className='col-md-12'>
+    //                 <button className='btn btn-info col-md-3 yes-btn' onClick={() => { handleDelComplete() }}>Yes</button>
+    //                 <button className='btn btn-info col-md-3 no-btn' onClick={() => { handleClose() }}>No</button>
+    //             </div>
+    //         </ListItem>
+    //     </List>
+    // )
+
     return (
         <>
             <HeaderFE />
@@ -108,10 +136,22 @@ export const PostDetail = () => {
                         <br />
                         <div className='row justify-content-md-center'>
                             {Owner === post.accountId ?
-                                <button onClick={() => { navigate('/post-edit', { state: post.postId }) }} className="btn-outline-dark text-warning h3">Update Product</button> :
+                                <div className='row'>
+                                    {/* <div className='col-4'>
+                                        <button className="btn-outline-dark text-danger h3">&nbsp;Delete Post</button>
+                                    </div> */}
+                                    <div className='col-4'></div>
+                                    <div className='col-4'>
+                                        <button onClick={() => { navigate('/post-edit', { state: post.postId }) }} className="btn-outline-dark text-warning h3">Update Post</button>
+                                    </div>
+                                </div>
+                                :
                                 <>
-                                    <button onClick={() => { navigate('/user-detail?id=' + post.accountId) }} className="btn-outline-dark text-warning h3">Go to seller's profile</button>
-                                    <button onClick={() => { handleClickOpen() }} className="btn-outline-dark text-warning h3">Request this product</button>
+                                    <div className='col-5'></div>
+                                    {isRequested ?
+                                        <strong className='col-6 btn-secondary text-warning h5 text-center'>You've already requested this product</strong> :
+                                        <button onClick={() => { handleClickOpen() }} className="col-6 btn-outline-dark text-warning h3">Request this product</button>
+                                    }
                                 </>
                             }
                         </div>
@@ -120,10 +160,10 @@ export const PostDetail = () => {
                         <div className='row'>
                             <h3 className='title col-4'>{post.productName}</h3>
                             <h3 className={cn('title col-auto',
-                                post.statusName == "Completed" && 'status-post-completed',
+                                post.statusName == "Completed" || post.statusName == "Pending" && 'status-post-completed',
                                 post.statusName == "Accepted" && 'status-post-accepted',
-                                post.statusName == "Rejected" || post.statusName == "Inactive"  && 'status-post-rejected',
-                            )}>{post.statusName == "Accepted" ? "Available" : post.statusName == "Rejected" || post.statusName == "Inactive" ? "Unavailable" : "Taken"}</h3>
+                                post.statusName == "Rejected" || post.statusName == "Inactive" && 'status-post-rejected',
+                            )}>{post.statusName == "Accepted" ? "Available" : (post.statusName == "Rejected" || post.statusName == "Inactive" ? "Unavailable" : post.statusName)}</h3>
                             <h4 className='col-md-12'>
                                 <strong>
                                     Owner:&nbsp;
@@ -144,7 +184,7 @@ export const PostDetail = () => {
                         <div className='col-md-12'>
                             <p className='h4 post-desc'>{post.description}</p>
                         </div>
-                        <h5><span className='h3 text-info'>Contact: </span><span className='h4'>{post.address}</span></h5>
+                        <h5><span className='h3 text-info'>Address: </span><span className='h4'>{post.address}</span></h5>
                         <h5><span className='h3 text-info'>Phone Number: </span><span className='h4'>{post.phoneNo}</span></h5>
                         <h5><span className='h3 text-info'>Email: </span><span className='h4'>{post.email}</span></h5>
                     </div>
@@ -152,7 +192,15 @@ export const PostDetail = () => {
                 <Dialog onClose={handleClose} open={open}>
                     <DialogTitle>Are you sure?</DialogTitle>
                     <div className='row dialog'>
-                        {isSented ? <div>{result}</div> : Rusure}
+                        {Owner === post.accountId ?
+                            <>
+                                {/* {isDeleted ? <div>{result}</div> : deleteDialog} */}
+                            </>
+                            :
+                            <>
+                                {isSented ? <div>{result}</div> : requestDialog}
+                            </>
+                        }
                     </div>
                 </Dialog>
             </div >

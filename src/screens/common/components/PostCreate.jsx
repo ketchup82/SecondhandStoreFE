@@ -131,7 +131,7 @@ export const PostCreate = () => {
                         setError("something went wrong!")
                         console.log(e)
                     })
-            }, 1000)
+            }, 2000)
         }
         else {
             if (!selectedImage) setError('Image is not selected!')
@@ -208,12 +208,12 @@ export const PostCreate = () => {
                                         <div className="form-group col-md-6 mb-3 form-check flex items-center">
                                             <label htmlFor="type" className="form-label">Post type</label><br />
                                             <div className="form-check">
-                                                <input type="radio" id="PostTypeId_1" name="PostTypeId" value="1" className="form-check-input" />
-                                                <label htmlFor="PostTypeId_1" onClick={() => { setIsDonating(false) }} className="form-check-label">Selling</label>
+                                                <input type="radio" id="PostTypeId_1" checked={!isDonating} onClick={() => { setIsDonating(false) }} name="PostTypeId" value="1" className="form-check-input" />
+                                                <label htmlFor="PostTypeId_1" className="form-check-label">Selling</label>
                                             </div>
                                             <div className="form-check">
-                                                <input type="radio" id="PostTypeId_2" name="PostTypeId" value="2" className="form-check-input" />
-                                                <label htmlFor="PostTypeId_2" onClick={() => { setIsDonating(true) }} className="form-check-label">Donating</label>
+                                                <input type="radio" id="PostTypeId_2" checked={isDonating} onClick={() => { setIsDonating(true) }} name="PostTypeId" value="2" className="form-check-input" />
+                                                <label htmlFor="PostTypeId_2" className="form-check-label">Donating</label>
                                             </div>
                                         </div>
                                     </div>

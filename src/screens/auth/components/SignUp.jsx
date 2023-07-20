@@ -135,24 +135,8 @@ export const SignUp = () => {
                                             checkValid()
                                         }} className="form-control" />
                                     </div>
-                                    <div className="form-group col-md-6 mb-3 form-check flex items-center">
-                                        <div className="form-split">
-                                            <label for="dob">Date of Birth*</label><div className="text-danger">{errorDate}</div>
-                                        </div>
-                                        <input id="dob" name="dob" min="1970-01-01" max="2005-12-31" type="date" onBlur={() => {
-                                            let date = new Date(document.getElementById('dob').value)
-                                            const today = new Date()
-                                            if (date.getTime() < today.getTime() && today.getFullYear() - date.getFullYear() >= 18)
-                                                setErrorDate('')
-                                            else
-                                                setErrorDate(" Invalid date!")
-                                            checkValid()
-                                        }} className="form-control" />
-                                    </div>
-                                    <div className="form-group col-md-6 mb-3 form-check flex items-center">
-                                        <div className="form-split">
-                                            <label for="phone">Phone Number*</label><div className="text-danger">{errorPhone}</div>
-                                        </div>
+                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                                        <label for="phone">Phone Number*</label><div className="text-danger">{errorPhone}</div>
                                         <input id="phone" name="phone" placeholder="0381234567" type="tel" onBlur={() => {
                                             let phone = document.getElementById('phone').value
                                             if ((phone.length === 10 || phone.length === 11) && phone[0] == '0')
@@ -224,7 +208,7 @@ export const SignUp = () => {
                                             <input type="checkbox" onClick={() => { checkValid() }} id='aggreed' value='checked' className="form-check-input" />
                                             <label className="form-check-label text-bold" for="policies">&nbsp;I agree with all <a href="/policy" target="_blank">policies</a>*</label>
                                         </div>
-                                        <p className="text-muted mb-2">Don't have an account ? <a href="/auth/login">Log in here</a></p>
+                                        <p className="text-muted mb-2">Have an account ? <a href="/auth/login">Log in here</a></p>
                                     </div>
                                     <div className="d-flex flex-row-reverse col-md-4 md-1 ml-auto ">
                                         <button type="submit" className={cn("btn btn-primary login-button", !isFilled && 'disabled')}>
@@ -245,7 +229,7 @@ export const SignUp = () => {
             {completed ? <div>
                 <strong>Created account successfully</strong>
                 <div>Redirecting to homepage...</div>
-            </div>: renderForm}
+            </div> : renderForm}
         </div>
     );
 }

@@ -124,7 +124,11 @@ export const Order = () => {
         {dialog}
         <div className="exchange-order-container" style={{ padding: '10px' }}>
           <section className="bg0 p-t-75 p-b-120" style={{ height: '600px', padding: '0 20%' }}>
-            <h3 class="mb-12 Account_box__yr82T p-6 text-black-600 text-18 mb-12"><strong>My Order</strong><h6>*People's request sent to you!</h6></h3>
+            <h3 class="mb-12 Account_box__yr82T p-6 text-black-600 text-18 mb-12">
+              <strong>
+                My Order
+              </strong>
+              <h6>*People order sent to you!</h6></h3>
             <div class="mb-12 px-8 py-12 bg-white">
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -185,7 +189,6 @@ export const Order = () => {
                   <table className="table custom-table">
                     <thead>
                       <tr className='mb-1'>
-                        <th scope="col">Index</th>
                         <th scope="col">Post</th>
                         <th scope="col">Price</th>
                         <th scope="col">Buyer Name</th>
@@ -199,37 +202,36 @@ export const Order = () => {
                       {
                         filteredList.map((order, index) => (
                           <tr>
-                            <th>{index}</th>
-                            <th>
+                            <td>
                               <div>
                                 <div>{order.productName}</div>
                                 <button onClick={() => { navigate('/post-detail?id=' + order.postId) }} className='btn btn-info'>View Post</button>
                               </div>
-                            </th>
-                            <th>{order.price}</th>
-                            <th>
-                              <div>{order.buyerName}</div>
-                              <button onClick={() => { navigate('/user-detail?id=' + order.buyerId) }} className='btn btn-info'>View Buyer Profile</button>
-                            </th>
-                            <th>
+                            </td>
+                            <td>{order.price}</td>
+                            <td className=''>
+                              <div className=''>{order.buyerName}</div>
+                              <button onClick={() => { navigate('/user-detail?id=' + order.buyerId) }} className=' btn btn-info'>View Profile</button>
+                            </td>
+                            <td>
                               <div>{order.buyerPhoneNumber}</div>
                               <div>{order.buyerEmail}</div>
-                            </th>
-                            <th>{String(order.orderDate).substring(0, 10)}</th>
-                            <th>{order.orderStatusName}</th>
-                            <th className='mx-2'>
+                            </td>
+                            <td>{String(order.orderDate).substring(0, 10)}</td>
+                            <td>{order.orderStatusName}</td>
+                            <td className='mx-2'>
                               {order.orderStatusName === 'Cancelled' || order.orderStatusName === 'Completed' ?
-                                <button disabled className='btn btn-dark'><div>Done &emsp;</div></button> :
+                                <button disabled className='btn btn-dark'><div>{order.orderStatusName} &emsp;</div></button> :
                                 <button onClick={() => { handleClickOpen() }} className='btn btn-success add-btn'><strong><div>Accept</div><div>this request</div></strong></button>
                               }
-                            </th>
+                            </td>
                           </tr>
                         ))}
                     </tbody>
                   </table>
                 </div>
                 :
-                <strong>No order found!</strong>
+                <strong>You haven't recieved any order yet!</strong>
               }
             </div>
           </section>

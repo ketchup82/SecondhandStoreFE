@@ -8,7 +8,8 @@ import { Card } from 'react-bootstrap';
 import { Pagination, Stack } from '@mui/material';
 import cn from 'classnames'
 import { toLowerCaseNonAccentVietnamese } from '../../nonAccentVietnamese.js'
-    
+import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
+
 const styles = {
     footer: {
         position: "fixed",
@@ -23,6 +24,7 @@ export const SearchDonating = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
     const navigate = useNavigate()
     const location = useLocation()
+    const [isLoading, setIsLoading] = useState(true)
     const [filter, setFilter] = useState(location.state || "")
     const [query, setQuery] = useState('')
     const [items, setItems] = useState([]);
@@ -60,6 +62,7 @@ export const SearchDonating = () => {
                 setOthers(list.filter((item) => item.categoryName == 'Others'))
                 setFilteredList(list)
                 setCurrentPage(1)
+                setIsLoading(false)
             })
             .catch(e => console.log(e))
     }
@@ -152,108 +155,113 @@ export const SearchDonating = () => {
         <>
             <HeaderFE />
             <div className='padding-40 search-body'>
-                <div class="row justify-content-md-center">
-                    <div class="col-md-auto form-outline">
-                        <input id='search' className='me-2 form-control' value={query} type='text' placeholder='type in your search here' onChange={(e) => { setQuery(e.target.value) }} ></input>
-                    </div>
-                </div>
-                <h1 className="text-center black-txt"><strong>{filteredList.length === 0 ? "No posts found" :
-                    query === null || query === "" ? "Result for all items (" + filteredList.length + " items)" :
-                        "Result for " + query + "(" + filteredList.length + " items found)"
-                }</strong></h1>
-                <div className="">
-                    <div className='d-flex'>
-                        <div className="pr-2">
-                            <ul className="list-group" style={{ width: "280px" }}>
-                                <li className={cn("list-group-item", filter === '' && 'category-active')} onClick={() => {
-                                    setFilteredList(all)
-                                    setFilter('')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-tshirt"></i> All ({all.length})
-                                </li>
-                                <li className={cn("list-group-item", filter === 'Clothes' && 'category-active')} onClick={() => {
-                                    setFilteredList(clothes)
-                                    setFilter('Clothes')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-tshirt"></i> Clothes ({clothes.length})
-                                </li>
-                                <li className={cn("list-group-item", filter === 'Accessories' && 'category-active')} onClick={() => {
-                                    setFilteredList(accessories)
-                                    setFilter('Accessories')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-tshirt"></i> Accessories ({accessories.length})
-                                </li>
-                                <li className={cn("list-group-item", filter === 'Electronics' && 'category-active')} onClick={() => {
-                                    setFilteredList(electronics)
-                                    setFilter('Electronics')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-bolt"></i> Electronics ({electronics.length})
-                                </li>
-                                <li className={cn("list-group-item", filter === 'Books' && 'category-active')} onClick={() => {
-                                    setFilteredList(books)
-                                    setFilter('Books')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-book"></i> Books ({books.length})
-                                </li>
-                                <li className={cn("list-group-item", filter === 'Musical Instruments' && 'category-active')} onClick={() => {
-                                    setFilteredList(music)
-                                    setFilter('Musical Instruments')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-guitar"></i> Musical Instruments ({music.length})
-                                </li>
-                                <li className={cn("list-group-item", filter === 'School Supplies' && 'category-active')} onClick={() => {
-                                    setFilteredList(schools)
-                                    setFilter('School Supplies')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-pencil-ruler"></i> School Supplies ({schools.length})
-                                </li>
-                                <li className={cn("list-group-item", filter === 'Others' && 'category-active')} onClick={() => {
-                                    setFilteredList(others)
-                                    setFilter('Others')
-                                }} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="material-icons"></i> Others ({others.length})
-                                </li>
-                            </ul>
-                            <br />
-                            <ul className="list-group" style={{ width: "280px" }}>
-                                <li onClick={() => { navigate('/selling') }} className={cn("list-group-item")} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-tshirt"></i> Selling Section
-                                </li>
-                                <li className={cn("list-group-item category-active")} style={{ background: "#FFDB58", cursor: "pointer" }}>
-                                    <i className="fas fa-tshirt"></i> Donating Section
-                                </li>
-                            </ul>
-                            <br />
-                            <div className=''>
-                                <div className=''>
-                                    <Stack alignItems="center">
-                                        <Pagination sx={{}} count={Math.ceil(filteredList.length / itemsPerPage)} onChange={(e, p) => { handlePageChange(e, p) }} variant="outlined" shape="rounded" />
-                                    </Stack>
-                                </div>
+                {isLoading ?
+                    <LoadingSpinner /> :
+                    <>
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-auto form-outline">
+                                <input id='search' className='me-2 form-control' value={query} type='text' placeholder='type in your search here' onChange={(e) => { setQuery(e.target.value) }} ></input>
                             </div>
                         </div>
-                        {paginatedItems.length === 0 ? <div className='md-3'></div> : <div className="">
-                            <div className="row search-container">
-                                {paginatedItems.map((item) => (
-                                    <div className='col-md-3 mx-5 px-5'>
-                                        <div className='search-item'>
-                                            <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
-                                                <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
-                                                <Card.Body>
-                                                    <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
-                                                    <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
-                                                    <div style={{ color: 'orange', fontSize: '20px' }}>Donating</div>
-                                                    <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : 'text-success')}>{item.statusName === "Completed" ? "Taken" : 'Avaiable'}</div>
-                                                </Card.Body>
-                                            </a>
+                        <h1 className="text-center black-txt"><strong>{filteredList.length === 0 ? "No posts found" :
+                            query === null || query === "" ? "Result for all items (" + filteredList.length + " items)" :
+                                "Result for " + query + "(" + filteredList.length + " items found)"
+                        }</strong></h1>
+                        <div className="">
+                            <div className='d-flex'>
+                                <div className="pr-2">
+                                    <ul className="list-group" style={{ width: "280px" }}>
+                                        <li className={cn("list-group-item", filter === '' && 'category-active')} onClick={() => {
+                                            setFilteredList(all)
+                                            setFilter('')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-tshirt"></i> All ({all.length})
+                                        </li>
+                                        <li className={cn("list-group-item", filter === 'Clothes' && 'category-active')} onClick={() => {
+                                            setFilteredList(clothes)
+                                            setFilter('Clothes')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-tshirt"></i> Clothes ({clothes.length})
+                                        </li>
+                                        <li className={cn("list-group-item", filter === 'Accessories' && 'category-active')} onClick={() => {
+                                            setFilteredList(accessories)
+                                            setFilter('Accessories')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-tshirt"></i> Accessories ({accessories.length})
+                                        </li>
+                                        <li className={cn("list-group-item", filter === 'Electronics' && 'category-active')} onClick={() => {
+                                            setFilteredList(electronics)
+                                            setFilter('Electronics')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-bolt"></i> Electronics ({electronics.length})
+                                        </li>
+                                        <li className={cn("list-group-item", filter === 'Books' && 'category-active')} onClick={() => {
+                                            setFilteredList(books)
+                                            setFilter('Books')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-book"></i> Books ({books.length})
+                                        </li>
+                                        <li className={cn("list-group-item", filter === 'Musical Instruments' && 'category-active')} onClick={() => {
+                                            setFilteredList(music)
+                                            setFilter('Musical Instruments')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-guitar"></i> Musical Instruments ({music.length})
+                                        </li>
+                                        <li className={cn("list-group-item", filter === 'School Supplies' && 'category-active')} onClick={() => {
+                                            setFilteredList(schools)
+                                            setFilter('School Supplies')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-pencil-ruler"></i> School Supplies ({schools.length})
+                                        </li>
+                                        <li className={cn("list-group-item", filter === 'Others' && 'category-active')} onClick={() => {
+                                            setFilteredList(others)
+                                            setFilter('Others')
+                                        }} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="material-icons"></i> Others ({others.length})
+                                        </li>
+                                    </ul>
+                                    <br />
+                                    <ul className="list-group" style={{ width: "280px" }}>
+                                        <li onClick={() => { navigate('/selling') }} className={cn("list-group-item")} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-tshirt"></i> Selling Section
+                                        </li>
+                                        <li className={cn("list-group-item category-active")} style={{ background: "#FFDB58", cursor: "pointer" }}>
+                                            <i className="fas fa-tshirt"></i> Donating Section
+                                        </li>
+                                    </ul>
+                                    <br />
+                                    <div className=''>
+                                        <div className=''>
+                                            <Stack alignItems="center">
+                                                <Pagination sx={{}} count={Math.ceil(filteredList.length / itemsPerPage)} onChange={(e, p) => { handlePageChange(e, p) }} variant="outlined" shape="rounded" />
+                                            </Stack>
                                         </div>
                                     </div>
-                                ))}
+                                </div>
+                                {paginatedItems.length === 0 ? <div className='md-3'></div> : <div className="">
+                                    <div className="row search-container">
+                                        {paginatedItems.map((item) => (
+                                            <div className='col-md-3 mx-5 px-5'>
+                                                <div className='search-item'>
+                                                    <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
+                                                        <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
+                                                        <Card.Body>
+                                                            <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
+                                                            <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
+                                                            <div style={{ color: 'orange', fontSize: '20px' }}>Donating</div>
+                                                            <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : 'text-success')}>{item.statusName === "Completed" ? "Taken" : 'Avaiable'}</div>
+                                                        </Card.Body>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>}
                             </div>
-                        </div>}
-                    </div>
-                </div>
-                <br />
+                        </div>
+                        <br />
+                    </>
+                }
             </div>
             <FooterFE />
         </>

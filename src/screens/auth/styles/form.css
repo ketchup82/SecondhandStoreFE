@@ -5,6 +5,51 @@ body {
 
 
 
+.confirm-btn {
+  background-color: #47e8c8 !important;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
+  margin: 0px 10px !important;
+  cursor: pointer;
+  text-align: center !important;
+  font-size: larger !important;
+  font-weight: bold !important;
+}
+
+.confirm-btn:hover {
+  background-color: #3aa18c !important;
+  border: 0.7px solid #62baa9 !important;
+}
+
+.auth-btn-d {
+  background-color: grey !important;
+
+}
+
+.auth-btn {
+  background-color: orange;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
+  margin: 0px 10px !important;
+  cursor: pointer;
+  text-align: center !important;
+  font-size: larger !important;
+  font-weight: bold !important;
+}
+
+.auth-btn:hover {
+  background-color: rgb(205, 133, 0);
+  border: 2px solid rgb(224, 146, 0) !important;
+}
+
 a,
 button {
   -webkit-transition: all 0.3s;

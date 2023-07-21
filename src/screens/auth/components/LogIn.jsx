@@ -1,17 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import React, { useState, useEffect } from 'react'
 import { LoadingSpinner } from "../../../components/loading/LoadingSpinner"
 import Cookies from 'universal-cookie'
 import jwt from 'jwt-decode'
 import axios from "axios"
-import '../styles/form.css';
+import '../styles/form.css'
+import cn from 'classnames'
 
 export const LogIn = () => {
-    axios.defaults.baseURL = 'https://localhost:7115';
+    axios.defaults.baseURL = 'https://localhost:7115'
 
-    const navigate = useNavigate();
-    const cookies = new Cookies();
+    const navigate = useNavigate()
+    const cookies = new Cookies()
     const [remem, setRemem] = useState(false)
+    const [visible, setVisible] = useState(false)
     const [error, setError] = useState('')
     useEffect(() => {
         let cookie = cookies.get('jwt_authorization')
@@ -57,7 +59,7 @@ export const LogIn = () => {
         const formData = new FormData(e.currentTarget)
         const data = Object.fromEntries(formData)
         if (data.email === "" || data.password === "") {
-            setError("Missing email or password")
+            setError("Email or password is missing!")
         }
         else {
             fetchData(data.email, data.password)
@@ -65,52 +67,49 @@ export const LogIn = () => {
     }
 
     const renderForm = (
-        <div id="all">
-            <div id="content">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-3 col-md-6">
-                            <nav aria-label="breadcrumb">
-                            </nav>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="box">
-                                <h1 className="title">Log in</h1>
-                                <hr />
-                                <form onSubmit={(e) => { onSubmit(e) }} className="row mt-3">
-                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
-                                        <label for="email">Email</label>
-                                        <input id="email" name="email" type="text" className="form-control" />
-                                    </div>
-                                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
-                                        <label for="password">Password</label>
-                                        <input id="password" name="password" type="password" className="form-control" />
-                                    </div>
-                                    <div className="col-md-8 mb-1 form-check flex items-center">
-                                        <div className="checkbox">
-                                            <input onChange={(e) => setRemem(e.target.value)} type="checkbox" className="form-check-input" id="policies" />
-                                            <label className="form-check-label text-bold" for="policies">&nbsp;Remember me</label>
-                                        </div>
-                                        <p className="text-muted mb-2">Don't have an account ? <a href="/auth/signup">Sign up here</a></p>
-                                    </div>
-                                    <div className="d-flex flex-row-reverse col-md-4">
-                                        <button type="submit" className="btn btn-primary login-button">
-                                            Login
-                                        </button>
-                                    </div>
-                                    <p className="col-md-12 error">{error}</p>
-                                </form>
-                            </div>
-                        </div>
+        <div style={{ width: "30%", margin: "auto" }} id="all">
+            <div className="box">
+                <h1 className="title">Log in</h1>
+                <hr />
+                <form onSubmit={(e) => { onSubmit(e) }} className="row mt-3">
+                    <div className="col-md-12 text-left h5">
+                        <label for="email">Email</label>
                     </div>
-                </div>
+                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                        <input id="email" name="email" type="text" className="form-control" />
+                    </div>
+                    <div className="col-md-12 text-left h5">
+                        <label for="password">Password&emsp;
+                            <span className="checkbox text-bold h6">
+                                <input type="checkbox" onChange={() => { setVisible(!visible) }} className="form-check-input" />
+                                Show
+                            </span>
+                        </label>
+                    </div>
+                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                        <input id="password" name="password" type={cn(visible ? "text" : "password")} className="form-control" />
+                    </div>
+                    <div className="form-group col-md-12 mb-3 form-check flex items-center">
+                        <div className="checkbox">
+                            <input onChange={(e) => setRemem(e.target.value)} type="checkbox" className="form-check-input" id="policies" />
+                            <label className="form-check-label text-bold" for="policies">&nbsp;Remember me</label>
+                        </div>
+                        <p className="text-muted mb-2">Don't have an account ? <a style={{ color: 'blue', fontWeight: 'bold' }} href="/auth/signup">Sign up here</a></p>
+                    </div>
+                    <div className="col-12 d-flex justify-content-end">
+                        <button type="submit" className="btn auth-btn">
+                            Login
+                        </button>
+                    </div>
+                    <p style={{ margin: 'auto', padding: '10px 0px 0px 0px' }} className="error">{error}</p>
+                </form>
             </div>
         </div>
     )
 
     return (
-        <div className="auth-form padding-40">
+        <div className="padding-40">
             {renderForm}
         </div>
-    );
+    )
 }

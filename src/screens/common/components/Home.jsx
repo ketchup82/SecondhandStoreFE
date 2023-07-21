@@ -30,7 +30,7 @@ export const UserHome = () => {
     });
 
     const fetchData = async () => {
-        await axios.get("/posts/get-post-list")
+        await axios.get("/posts/get-all-active-post-list")
             .then((data) => {
                 setItems(data.data.slice(0).reverse())
                 setFilteredList(data.data.slice(0).reverse())

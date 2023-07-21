@@ -184,9 +184,6 @@ export const PostDetail = () => {
                         <div className='col-md-12'>
                             <p className='h4 post-desc'>{post.description}</p>
                         </div>
-                        <h5><span className='h3 text-info'>Address: </span><span className='h4'>{post.address}</span></h5>
-                        <h5><span className='h3 text-info'>Phone Number: </span><span className='h4'>{post.phoneNo}</span></h5>
-                        <h5><span className='h3 text-info'>Email: </span><span className='h4'>{post.email}</span></h5>
                     </div>
                 </div>
                 <Dialog onClose={handleClose} open={open}>

@@ -45,7 +45,7 @@ export const SearchDonating = () => {
 
 
     const fetchData = async () => {
-        await axios.get('/posts/get-post-list')
+        await axios.get('/posts/get-all-active-post-list')
             .then((data) => {
                 const list = data.data.slice(0).reverse()
                     .filter((item) => { return item.isDonated == true })
@@ -62,7 +62,9 @@ export const SearchDonating = () => {
                 setOthers(list.filter((item) => item.categoryName == 'Others'))
                 setFilteredList(list)
                 setCurrentPage(1)
-                setIsLoading(false)
+                setTimeout(() => {
+                    setIsLoading(false)
+                }, 2000)
             })
             .catch(e => console.log(e))
     }

@@ -10,6 +10,15 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.post-detail-btn {
+  background-color: cadetblue;
+  color: white;
+}
+
+.post-detail-btn:hover {
+  background-color: rgb(70, 106, 107);
+}
+
 .post-list-card {
   background-color: white;
   border-radius: 5px;
@@ -58,17 +67,12 @@ input[type=number] {
 .to-user-profile:hover {
   text-decoration: none;
   font-size: larger;
-  background-color: teal;
   border-radius: 2px;
   padding: 5px;
 }
 
-.post-detail-owner {
-  color: #FEC401;
-}
-
-.post-detail-user {
-  color: #e18e07;
+.post-detail {
+  color: black;
 }
 
 .post-detail {

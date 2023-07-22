@@ -59,7 +59,9 @@ export const SearchSelling = () => {
                 setOthers(list.filter((item) => item.categoryName == 'Others'))
                 setFilteredList(list)
                 setCurrentPage(1)
-                setIsLoading(false)
+                setTimeout(()=>{
+                    setIsLoading(false)
+                },2000)
             })
             .catch(e => console.log(e))
     }

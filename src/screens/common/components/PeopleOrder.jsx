@@ -3,13 +3,14 @@ import HeaderFE from "../../../components/HeaderFE";
 import FooterFE from "../../../components/FooterFE";
 import Cookies from 'universal-cookie'
 import axios from "axios"
+import jwt from 'jwt-decode'
 import { useNavigate } from 'react-router-dom';
-import { Dialog, DialogContentText, DialogTitle, List, ListItem } from '@mui/material';
+import { Dialog, DialogTitle, List, ListItem } from '@mui/material';
 import cn from 'classnames'
 import { toLowerCaseNonAccentVietnamese } from '../../nonAccentVietnamese.js'
 import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
 
-export const Request = () => {
+export const Order = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const [all, setAll] = useState([])
@@ -21,6 +22,7 @@ export const Request = () => {
   const [selected, setSelected] = useState('')
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState('All');
+  const [choice, setChoice] = useState('');
   const [isLoading, setLoading] = useState(false)
   const [result, setResult] = useState('')
   let VND = new Intl.NumberFormat('vn-VN', {
@@ -31,11 +33,22 @@ export const Request = () => {
     setOpen(true);
   };
 
-  const handleCancel = async () => {
-    setLoading(true)
-    const response = await axios({
-      url: '/buyer-cancel-exchange',
-      params: { orderId: selected },
+  const handleChoice = () => {
+    let urlParam = ''
+    switch (choice) {
+      case 'accept':
+        urlParam = "/seller-accept-request"
+        break
+      case 'cancel':
+        urlParam = "/seller-cancel-exchange"
+        break
+      case 'complete':
+        urlParam = "/confirm-finished"
+        break
+    }
+    const response = axios({
+      url: urlParam,
+      params: { orderId: selected.orderId },
       method: 'put'
     }).then((data) => {
       setResult(data.data)
@@ -55,7 +68,7 @@ export const Request = () => {
 
 
   const fetchData = async () => {
-    await axios.get('/get-all-request-list')
+    await axios.get('/get-all-order-list')
       .then((data) => {
         if (data.data.length > 0) {
           const list = data.data.slice(0).reverse()
@@ -106,20 +119,11 @@ export const Request = () => {
     }
     if (data['keyword'] !== '') {
       updatedList = updatedList.filter((item) => {
-        let query = toLowerCaseNonAccentVietnamese(data['keyword'])
         let pName = toLowerCaseNonAccentVietnamese(item.productName)
-        let aName = toLowerCaseNonAccentVietnamese(item.sellerName)
-        let b = false
-        if (item.orderStatusName !== "Pending" && item.orderStatusName !== "Cancelled") {
-          let phone = toLowerCaseNonAccentVietnamese(item.sellerPhoneNumber)
-          let address = toLowerCaseNonAccentVietnamese(item.sellerAddress)
-          let email = toLowerCaseNonAccentVietnamese(item.sellerEmail)
-          b = phone.indexOf((query || '')) !== -1 || address.indexOf((query || '')) !== -1 || email.indexOf((query || '')) !== -1
-        }
-        return pName.indexOf((query || '')) !== -1 ||
-          aName.indexOf((query || '')) !== -1 || b
+        let aName = toLowerCaseNonAccentVietnamese(item.buyerName)
+        let query = toLowerCaseNonAccentVietnamese(data['keyword'])
+        return pName.indexOf((query || '')) !== -1 || aName.indexOf((query || '')) !== -1
       });
-      console.log(updatedList)
     }
     if (data['date'] !== '') {
       updatedList = updatedList.filter((item) => {
@@ -128,7 +132,6 @@ export const Request = () => {
     }
     setFilteredList(updatedList)
   }
-
 
   const dialog = (
     <>
@@ -142,13 +145,27 @@ export const Request = () => {
                 <>
                   <DialogTitle>Do you want to cancel the request for <strong className='h3'>{selected.productName}</strong>?</DialogTitle>
                   <ListItem>
-                    <p className='col-md-12 dialog-p'>Once you have completed this request,
-                      the requested post will be marked as 'completed'
-                      and sold to the buyer</p>
+                    {choice === 'Complete' ?
+                      <p className='col-md-12 dialog-p'>Once you have completed this request,
+                        the requested post will be marked as 'completed'
+                        and sold to the buyer
+                      </p>
+                      :
+                      choice === 'Accept' ?
+                        <p className='col-md-12 dialog-p'>Once you have accept this request,
+                          this request will be marked as 'Processing' and all other request related to the product will be marked as 'Cancelled'
+                          and your post will be hidden.
+                        </p>
+                        :
+                        <p className='col-md-12 dialog-p'>Once you have cancel this request,
+                          this request will be marked as 'Cancelled' and
+                          the requested user won't be able to request this product anymore
+                        </p>
+                    }
                   </ListItem>
                   <ListItem>
                     <div className='col-md-12'>
-                      <button className='btn btn-info col-md-3 yes-btn' onClick={() => { handleCancel(selected.requestId) }}>Yes</button>
+                      <button className='btn btn-info col-md-3 yes-btn' onClick={() => { handleChoice() }}>Yes</button>
                       <button className='btn btn-info col-md-3 no-btn' onClick={() => { handleClose() }}>No</button>
                     </div>
                   </ListItem>
@@ -167,17 +184,18 @@ export const Request = () => {
       </Dialog>
     </>
   )
-
   return (
     <>
       <HeaderFE />
-      {dialog}
       <div className=''>
+        {dialog}
         <div className="exchange-order-container" style={{ padding: '10px' }}>
           <section className="bg0 p-t-75 p-b-120" style={{ height: '600px', padding: '0 20%' }}>
             <h3 class="mb-12 Account_box__yr82T p-6 text-black-600 text-18 mb-12">
-              <strong>My Request</strong>
-              <h6>*Your request sent to people!</h6></h3>
+              <strong>
+                My Order
+              </strong>
+              <h6>*People order sent to you!</h6></h3>
             <div class="mb-12 px-8 py-12 bg-white">
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -234,9 +252,9 @@ export const Request = () => {
                           setFilteredList(completed)
                           break
                       }
-                    }} style={{ marginTop: '1%' }} type="button" class="btn btn-custom">Clear
+                    }} style={{ marginTop: '1%' }} type="button" class="btn btn-primary">Clear
                     </button>
-                    <button style={{ marginTop: '1%' }} type="submit" class="btn btn-custom">Search</button>
+                    <button style={{ marginTop: '1%' }} type="submit" class="btn btn-primary">Search</button>
                   </div>
                 </div>
               </form>
@@ -246,14 +264,14 @@ export const Request = () => {
                     <thead>
                       <tr className='mb-1'>
                         <th scope="col">Post</th>
-                        <th scope="col">Seller Contact</th>
+                        <th scope="col">Buyer Contact</th>
                         <th scope="col">Created Date</th>
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {
-                        filteredList.map((order) => (
+                        filteredList.map((order, index) => (
                           <>
                             <tr>
                               <td className='text-left' style={{ width: '180px' }}>
@@ -264,28 +282,37 @@ export const Request = () => {
                                 </div>
                               </td>
                               <td className='text-left' style={{ width: '180px' }}>
-                                <div>{order.sellerName}</div>
-                                {order.orderStatusName === "Processing" || order.orderStatusName === 'Completed' ?
-                                  <div className='h5'>
-                                    <div className='py-1'>{order.sellerPhoneNumber}</div>
-                                    <div className='py-1'>{order.sellerEmail}</div>
-                                    <div className='py-1'>{order.sellerAddress}</div>
-                                  </div> :
-                                  <div className='h5 lead'>
-                                    You can only see seller info when they accept your request
-                                  </div>
-                                }
-                                <button style={{ width: '120px', height: '40px' }} onClick={() => { navigate('/user-detail?id=' + order.sellerId) }} className='btn btn-info'>View Profile</button>
+                                <div>{order.buyerName}</div>
+                                <div className='h5'>
+                                  <div className='py-1'>{order.buyerPhoneNumber}</div>
+                                  <div className='py-1'>{order.buyerEmail}</div>
+                                  <div className='py-1'>{order.buyerAddress}</div>
+                                </div>
+                                <button style={{ width: '120px', height: '40px' }} onClick={() => { navigate('/user-detail?id=' + order.buyerId) }} className='btn btn-info'>View Profile</button>
                               </td>
                               <td>{String(order.orderDate).substring(0, 10)}</td>
                               <td className='mx-2'>
-                                <div className='col-12'><strong>{order.orderStatusName === 'Pending' && "Pending"}</strong></div>
+                                <div className='col-12'><strong>{order.orderStatusName === 'Pending' || order.orderStatusName === 'Processing' && order.orderStatusName}</strong></div>
                                 {order.orderStatusName === 'Cancelled' || order.orderStatusName === 'Completed' ?
                                   <button style={{ width: '120px', height: '100px' }} disabled className='btn btn-dark text-center'><strong>{order.orderStatusName}</strong></button> :
-                                  <button style={{ width: '120px', height: '100px' }} onClick={() => {
-                                    setSelected(order.orderId)
-                                    handleClickOpen()
-                                  }} className='btn btn-success no-btn text-center'><strong>Cancel Request</strong></button>
+                                  order.orderStatusName === 'Processing' ?
+                                    <button style={{ width: '120px', height: '100px' }} onClick={() => {
+                                      setSelected(order.orderId)
+                                      setChoice('Complete')
+                                      handleClickOpen()
+                                    }} className='btn btn-success yes-btn text-center'><strong>Complete Order</strong></button> :
+                                    <>
+                                      <button style={{ width: '120px', height: '100px' }} onClick={() => {
+                                        setSelected(order.orderId)
+                                        setChoice('Accept')
+                                        handleClickOpen()
+                                      }} className='btn btn-success yes-btn text-center'><strong>Accept Order</strong></button>
+                                      <button style={{ width: '120px', height: '100px' }} onClick={() => {
+                                        setSelected(order.orderId)
+                                        setChoice('Cancel')
+                                        handleClickOpen()
+                                      }} className='btn btn-success no-btn text-center'><strong>Deny Order</strong></button>
+                                    </>
                                 }
                               </td>
                             </tr>
@@ -295,7 +322,7 @@ export const Request = () => {
                   </table>
                 </div>
                 :
-                <strong>You haven't request anything yet!</strong>
+                <strong>You haven't recieved any order yet!</strong>
               }
             </div>
           </section>

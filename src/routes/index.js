@@ -30,12 +30,14 @@ import Test from "../screens/common/components/Test";
 import { PostEdit } from "../screens/common/components/PostEdit";
 import { UserDetail } from "../screens/common/components/UserDetail";
 import { TransactionManagement } from "../screens/admin/components/TransactionManagement";
-import { Order } from "../screens/common/components/MyOrder";
+import { Order } from "../screens/common/components/PeopleOrder";
 import { Request } from "../screens/common/components/MyRequest";
 import { SearchSelling } from "../screens/common/components/SellingProduct";
 import { SearchDonating } from "../screens/common/components/DonatingProduct";
 import { PostPurchasedManagement } from "../screens/common/components/PostPurchased";
 import { ExchangeOrderList } from "../screens/admin/components/ExchangeOrderList";
+import { ServerDown } from "../screens/common/components/ServerDown";
+import { Page404 } from "../screens/common/components/Page404";
 
 export const appRouter = createBrowserRouter([
     {
@@ -47,7 +49,7 @@ export const appRouter = createBrowserRouter([
         element: <Test />
     },
     {
-        path: '/my-order',
+        path: '/people-order',
         element: <Order />
     },
     {
@@ -105,6 +107,14 @@ export const appRouter = createBrowserRouter([
     {
         path: 'topup',
         element: <Topup />
+    },
+    {
+        path: 'server-down',
+        element: <ServerDown />
+    },
+    {
+        path: '*',
+        element: <Page404/>
     },
     {
         path: "/auth",

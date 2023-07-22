@@ -39,7 +39,6 @@ export const SearchDonating = () => {
 
     const [filteredList, setFilteredList] = new useState([]);
     let VND = new Intl.NumberFormat('vn-VN', {
-        style: 'currency',
         currency: 'VND',
     });
 

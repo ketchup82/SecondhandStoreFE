@@ -26,6 +26,7 @@ export default function HeaderFE() {
     const [order, setOrder] = useState(0)
     const [purchased, setPurchased] = useState(0)
     const [account, setAccount] = useState([])
+    const [error, setError] = useState('')
     const fetchData = async () => {
         await axios.get('/account/get-user-account')
             .then((data) => {
@@ -34,6 +35,7 @@ export default function HeaderFE() {
             })
             .catch(e => {
                 setIsFetched(false)
+                navigate('/server-down')
                 console.log(e)
             })
     }
@@ -76,7 +78,7 @@ export default function HeaderFE() {
                         <>
                             <Link draggable='false' className="dropdown-item" to="/user-profile">Profile</Link>
                             <Link draggable='false' className="dropdown-item" to="/post-list">My Posts ({post})</Link>
-                            <Link draggable='false' className="dropdown-item" to="/my-order">My Orders ({order})</Link>
+                            <Link draggable='false' className="dropdown-item" to="/people-order">People Orders ({order})</Link>
                             <Link draggable='false' className="dropdown-item" to="/my-request">My Requests ({request})</Link>
                             <Link draggable='false' className="dropdown-item" to="/my-purchase">My Purchases ({purchased})</Link>
                             <Link draggable='false' className="dropdown-item" to="/payment-history">Transaction History</Link>

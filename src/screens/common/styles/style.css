@@ -477,20 +477,14 @@ table {
   color: #333;
 }
 
-.btn-primary {
-  background-color: #f90;
-  border-color: #f90;
+.btn-custom {
+  background-color: orange;
+  border-color: orange;
   border-radius: 4px;
   font-size: 16px;
   font-weight: bold;
   padding: 16px 32px;
   margin-top: 32px;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background-color: #f80;
-  border-color: #f80;
   color: #fff;
 }
 

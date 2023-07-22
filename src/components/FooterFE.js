@@ -18,16 +18,14 @@ export default function FooterFE() {
                             <div className="middle-title">Contact</div>
                             <div className="middle-content">
                                 <p>
-                                    <ion-icon name="location"></ion-icon>Đại học FPT
+                                    <ion-icon name="call"></ion-icon>0886647866
                                 </p>
                                 <p>
-                                    <ion-icon name="call"></ion-icon>02345346456
+                                    <ion-icon name="mail"></ion-icon>
+                                    fptoseservice@gmail.com
                                 </p>
                                 <p>
-                                    <ion-icon name="mail"></ion-icon>abc@fpt.edu.vn
-                                </p>
-                                <p>
-                                    <ion-icon name="rocket"></ion-icon>Made by <span style={{ fontWeight: '700px' }}>Group 1 </span>
+                                    <ion-icon name="rocket"></ion-icon>Made by <span style={{ fontWeight: '700px' }}>Group 6 SE1738 </span>
                                 </p>
                             </div>
 
@@ -38,7 +36,6 @@ export default function FooterFE() {
                             {/* <div className="right-title">Follow us</div> */}
                             <div className="right-content">
                                 <p><a href="#gt">Giới thiệu</a></p>
-                                <p><a href="#gt">Chính sách quảng cáo</a></p>
                                 <p><a href="#gt">Chính sách bảo mật</a></p>
                                 <p><a href="#gt">Miễn trừ trách nhiệm</a></p>
                             </div>
@@ -46,7 +43,7 @@ export default function FooterFE() {
                     </Col>
                 </Row>
             </Container>
-            <Container><div className="footer-footer">Copyright @ 2023 <span style={{ fontWeight: '700' }}>Group 1</span></div></Container>
+            <Container><div className="footer-footer">Copyright @ 2023 <span style={{ fontWeight: '700' }}>Group 6 SE1738</span></div></Container>
         </Container>
     )
 }

@@ -43,7 +43,6 @@ export const TransactionManagement = () => {
                 setAll(list)
                 var accountList = []
                 list.map((item) => {
-                    console.log(item.accountId)
                     if (accountList.indexOf(item.accountId) === -1 && item.topUpStatus === 'Pending') accountList = [...accountList, item.accountId]
                 })
                 setUserProcessingList(accountList.sort((a, b) => a - b))

@@ -53,6 +53,9 @@ export const PostDetail = () => {
                 setResult("Something went wrong, try again later!")
             })
         setLoading(false)
+        setTimeout(() => {
+            if (result.indexOf('Something') === -1) window.location.reload()
+        }, 3000)
     }
 
     useEffect(() => {
@@ -188,7 +191,6 @@ export const PostDetail = () => {
             </Dialog>
             <Dialog onClose={() => {
                 handleClose()
-                if (result !== '') window.location.reload()
             }} open={open}>
                 <div className='row dialog'>
                     {isLoading ? <LoadingSpinner /> :
@@ -200,7 +202,6 @@ export const PostDetail = () => {
                                 </DialogTitle>
                                 <button style={{ width: '100px' }} onClick={() => {
                                     handleClose()
-                                    window.location.reload()
                                 }} className='col-4 btn-black py-1'>Back</button>
                             </div>
                     }

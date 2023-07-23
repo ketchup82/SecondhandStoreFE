@@ -34,21 +34,23 @@ export const Order = () => {
   };
 
   const handleChoice = () => {
+    setLoading(true)
     let urlParam = ''
     switch (choice) {
-      case 'accept':
+      case 'Accept':
         urlParam = "/seller-accept-request"
         break
-      case 'cancel':
+      case 'Cancel':
         urlParam = "/seller-cancel-exchange"
         break
-      case 'complete':
+      case 'Complete':
         urlParam = "/confirm-finished"
         break
     }
+    console.log(selected)
     const response = axios({
       url: urlParam,
-      params: { orderId: selected.orderId },
+      params: { orderId: selected },
       method: 'put'
     }).then((data) => {
       setResult(data.data)
@@ -58,8 +60,13 @@ export const Order = () => {
     })
     setLoading(false)
     setTimeout(() => {
-      if (result.indexOf('Something') === -1) window.location.reload()
-    }, 3000)
+      if (result.indexOf('Something') !== -1) window.location.reload()
+      else {
+        setTimeout(() => {
+          setResult('')
+        }, 2000)
+      }
+    }, 4000)
   };
 
   const handleClose = () => {
@@ -292,9 +299,9 @@ export const Order = () => {
                               </td>
                               <td>{String(order.orderDate).substring(0, 10)}</td>
                               <td className='mx-2'>
-                                <div className='col-12'><strong>{order.orderStatusName === 'Pending' || order.orderStatusName === 'Processing' && order.orderStatusName}</strong></div>
+                                <div className='col-12'><strong style={{ fontSize: "32px" }}>{(order.orderStatusName === 'Pending' || order.orderStatusName === 'Processing') && order.orderStatusName}</strong></div>
                                 {order.orderStatusName === 'Cancelled' || order.orderStatusName === 'Completed' ?
-                                  <button style={{ width: '120px', height: '100px' }} disabled className='btn btn-dark text-center'><strong>{order.orderStatusName}</strong></button> :
+                                  <strong style={{ fontSize: "48px" }} className='text-muted lead'>{order.orderStatusName}</strong> :
                                   order.orderStatusName === 'Processing' ?
                                     <button style={{ width: '120px', height: '100px' }} onClick={() => {
                                       setSelected(order.orderId)

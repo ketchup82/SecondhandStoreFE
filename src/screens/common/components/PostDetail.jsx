@@ -19,10 +19,10 @@ export const PostDetail = () => {
     const cookies = new Cookies()
     const [isLoading, setLoading] = useState(false)
     const [showDesc, setShowDesc] = useState(false)
-    const [isRequested, setIsRequested] = useState(false)
     const [Owner, setOwner] = useState('')
     const [result, setResult] = useState('')
     const [error, setError] = useState('')
+    const [request, setRequest] = useState('')
     const [post, setPost] = useState([])
     let VND = new Intl.NumberFormat('vn-VN', {
         currency: 'VND',
@@ -38,7 +38,7 @@ export const PostDetail = () => {
             })
         await axios.get('/get-all-request-list').then((data) => {
             data.data.map((item) => {
-                if (String(item.postId) === postId) setIsRequested(true)
+                if (String(item.postId) === postId && request === '') setRequest(item.orderStatusName)
             })
         })
     }
@@ -156,7 +156,7 @@ export const PostDetail = () => {
                         </div>
                     </div>
                     <div className='row col-md-12'>
-                        {Owner == post.accountId ?
+                        {Owner == post.accountId && post.statusName === 'Accepted' ?
                             <div className='row'>
                                 <div className='col-4'>
                                     <button style={{ width: '150px', borderRadius: '8px' }} onClick={() => { navigate('/post-edit', { state: post.postId }) }} className="post-detail-btn h3">Update Post</button>
@@ -164,19 +164,23 @@ export const PostDetail = () => {
                             </div>
                             :
                             <div className='row'>
-                                {isRequested ?
+                                {request === 'Cancelled' ?
                                     <div className='col-12 row'>
+                                        <strong className='text-dark font-italic h4 text-center'>The seller has cancelled your request</strong>
+                                    </div> :
+                                    request === 'Pending' || request === 'Processing' ?
+                                        <div className='col-12 row'>
+                                            <div className='col-4'>
+                                                <strong className='text-dark font-italic h4 text-center'>You've already requested this product</strong>
+                                            </div>
+                                            <div className='col-3'>
+                                                <button style={{ width: '200px', height: '70px', borderRadius: '8px' }} onClick={() => { navigate('/my-request') }} className="post-detail-btn h3">See request list</button>
+                                            </div>
+                                        </div>
+                                        :
                                         <div className='col-4'>
-                                            <strong className='text-dark font-italic h4 text-center'>You've already requested this product</strong>
+                                            <button style={{ width: '250px', borderRadius: '8px' }} onClick={() => { handleClickOpen() }} className="post-detail-btn h3">Request this product</button>
                                         </div>
-                                        <div className='col-3'>
-                                            <button style={{ width: '200px', height: '70px', borderRadius: '8px' }} onClick={() => { navigate('/my-request') }} className="post-detail-btn h3">See request list</button>
-                                        </div>
-                                    </div>
-                                    :
-                                    <div className='col-4'>
-                                        <button style={{ width: '250px', borderRadius: '8px' }} onClick={() => { handleClickOpen() }} className="post-detail-btn h3">Request this product</button>
-                                    </div>
                                 }
                             </div>
                         }

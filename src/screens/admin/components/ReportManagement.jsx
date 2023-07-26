@@ -74,9 +74,9 @@ export const ReportManagement = () => {
             .then((data) => {
                 const list = data.data.slice(0).reverse()
                 setAll(list)
-                setProcessing(list.filter((item) => { return item.statusName === 'Processing' }))
-                setAccepted(list.filter((item) => { return item.statusName === 'Accepted' }))
-                setRejected(list.filter((item) => { return item.statusName === 'Rejected' }))
+                setProcessing(list.filter((item) => { return item.status === 'Processing' }))
+                setAccepted(list.filter((item) => { return item.status === 'Accepted' }))
+                setRejected(list.filter((item) => { return item.status === 'Rejected' }))
                 setFilteredList(list)
             })
             .catch((e) => {
@@ -174,7 +174,7 @@ export const ReportManagement = () => {
                         }} class={cn("nav-link ", status == 'All' && 'active')} id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="">All ({all.length})</button>
                         <button onClick={() => {
                             setFilteredList(processing)
-                            setStatus('processing')
+                            setStatus('Processing')
                         }} class={cn("nav-link ", status == 'Processing' && 'active')} id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected=''>Processing Post ({processing.length})</button>
                         <button onClick={() => {
                             setFilteredList(accepted)
@@ -232,12 +232,12 @@ export const ReportManagement = () => {
                                 <thead>
                                     <tr className='mb-1'>
                                         <th scope="col" className='text-center'>Report Id</th>
-                                        <th scope="col">Reported Account</th>
+                                        <th scope="col" style={{ width: '50px' }}>Reported Account</th>
                                         <th scope="col">Reporter</th>
                                         <th scope="col">Reason</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Evidence</th>
                                         <th scope="col">Date Created</th>
-                                        <th scope="col">Options</th>
+                                        <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -253,13 +253,17 @@ export const ReportManagement = () => {
                                                 <div>{item.reporterEmail}</div>
                                             </td>
                                             <td>{item.reason}</td>
-                                            <td>{item.status === "Processing" ?
-                                                <div className="text-secondary">Processing</div> :
-                                                item.status === "Accepted" ? <div className="text-primary">Accepted</div> :
-                                                    item.status === "Rejected" && <div className="text-danger">Rejected</div>}
+                                            <td>
+                                                <a href={item.reportImages[0].ImageUrl} target='_blank'>
+                                                    <img style={{ width: '100px', height: '100px' }} src={item.reportImages[0].ImageUrl}></img>
+                                                </a>
                                             </td>
                                             <td>{String(item.reportDate).substring(0, 10)}</td>
                                             <td className='text-center'>
+                                                {item.status === "Processing" ?
+                                                    <div className="text-secondary">Processing</div> :
+                                                    item.status === "Accepted" ? <div className="text-primary">Accepted</div> :
+                                                        item.status === "Rejected" && <div className="text-danger">Rejected</div>}
                                                 {item.status === 'Processing' &&
                                                     <>
                                                         <button type="button" style={{ marginTop: "0px", paddingTop: "0px" }} className="btn btn-info yes-btn" onClick={() => {

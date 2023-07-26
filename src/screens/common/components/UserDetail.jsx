@@ -37,7 +37,7 @@ export const UserDetail = () => {
     const [description, setDescription] = useState('');
     const [choice, setChoice] = useState('')
     const [isOpen, setOpen] = useState(false)
-    const [evidence, setEvidence] = useState([])
+    const [selectedImage, setSelectedImage] = useState(null);
     const [result, setResult] = useState('')
     const createComment = async () => {
         await axios.post('/submit-review', {
@@ -59,9 +59,7 @@ export const UserDetail = () => {
         await axios.post('/report/sending-report-form', {
             "reportedAccountId": accountId,
             "Reason": reason,
-            "ImageUploadRequest": evidence[0],
-            "ImageUploadRequest": evidence[1],
-            "ImageUploadRequest": evidence[2],
+            "ImageUploadRequest": selectedImage,
         }, {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -73,7 +71,7 @@ export const UserDetail = () => {
                 setOpen(false)
                 setTimeout(() => {
                     window.location.reload()
-                }, 3000)
+                }, 1000)
             })
             .catch((e) => {
                 console.log(e)
@@ -139,7 +137,7 @@ export const UserDetail = () => {
         e.preventDefault()
         setErrorReport('')
         if (reason === '') setErrorReport("Reason is empty!")
-        else if (evidence.length === 0) setErrorReport("You must have evidences to report this user!")
+        else if (selectedImage.length === 0) setErrorReport("You must have evidences to report this user!")
         else {
             setChoice('report')
             handleOpen()
@@ -166,25 +164,11 @@ export const UserDetail = () => {
     }
 
 
-    function handleImage(e) {
-        setErrorReport("")
-        var select = evidence
-        var files = e.target.files
-        for (let i = 0; i < files.length; i++) {
-            if (select.indexOf(files[i]) === -1) select = [...select, files[i]]
-        }
-        if (select.length > 3) setErrorReport("Maximum 3 pictures")
-        setEvidence(select.slice(0, 3))
+    const handle_image = (e) => {
+        const img = e.target.files
+        setSelectedImage(img[0])
     }
 
-    function deleteImage(item) {
-        var select = evidence
-        select = select.filter((i) => {
-            return i !== item
-        })
-        setEvidence(select)
-        document.getElementById("evidence").value = "";
-    }
     const commentDialog = (
         <>
             <List>
@@ -248,12 +232,13 @@ export const UserDetail = () => {
                     <div className="card-body d-flex flex-column">
                         {Owner === accountId ?
                             <>
-                                <h3 className="py-2">Date Of Birth: {String(account.dob).substring(0, 10)}</h3>
                                 <h3 className="py-2">Phone Number: {account.phoneNo}</h3>
                                 <h3 className="py-2" style={{ wordBreak: "break-all" }}>Address: {account.Address}</h3>
                                 <h3 className="py-2">Credibility Point: {account.credibilityPoint}</h3>
                                 <h3 className="py-2">Point Balance: {account.pointBalance}</h3>
-                                <button className="btn btn-primary align-self-end">Edit Profile</button>
+                                <div className="row col-12">
+                                    <button onClick={() => { navigate('/user-edit') }} className="col-4 btn btn-primary">Edit Contact</button>
+                                </div>
                             </> :
                             <>
                                 <h3>You can only view this user contact via your exchange order with them!</h3>
@@ -262,27 +247,18 @@ export const UserDetail = () => {
                                 <form className="pl-2" onSubmit={(e) => { submitReport(e) }}>
                                     <label className="col-12">Reason*</label>
                                     <textarea className="col-12" name="reason" value={reason} onChange={(e) => { setReason(e.target.value) }} placeholder="Write your reason here" rows={2} />
-                                    <label className="col-12">Evidence* (2-3 images as evidence) </label>
-                                    {evidence.length !== 0 &&
-                                        <div style={{ height: "200px", overflowY: "scroll" }}>
-                                            {evidence.map((item, index) => (
-                                                <div className="col-12 row">
-                                                    <div className="col-9">
-                                                        <img
-                                                            alt="not found"
-                                                            style={{ width: '50px', height: '50px' }}
-                                                            src={URL.createObjectURL(item)}
-                                                        />
-                                                        &emsp;{item.name}
-                                                    </div>
-                                                    <div className="col-2 text-right">
-                                                        <div className="btn btn-info no-btn" onClick={() => { deleteImage(item) }}>X</div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
+                                    <label className="col-12">Evidence* </label>
+                                    {selectedImage &&
+                                        <a href={URL.createObjectURL(selectedImage)} target='_blank'>
+                                            <img
+                                                className='col-12'
+                                                alt="not found"
+                                                style={{ width: '170px', height: '170px' }}
+                                                src={URL.createObjectURL(selectedImage)}
+                                            />
+                                        </a>
                                     }
-                                    <input type="file" id='evidence' name="evidence" onChange={(e) => { handleImage(e) }} className="col-12 py-2" accept="image/jpeg, image/png" multiple></input>
+                                    <input type="file" className="form-control" id="ImageUploadRequest" name="ImageUploadRequest" accept="image/jpeg, image/png" onChange={handle_image} />
                                     <button className="btn btn-info no-btn" type="submit">Report this user</button> <span className="text-danger">{errorReport}</span>
                                 </form>
                             </>

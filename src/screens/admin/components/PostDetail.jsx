@@ -1,9 +1,8 @@
 import React from 'react'
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import Cookies from 'universal-cookie'
 import axios from "axios"
-import cn from 'classnames';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';

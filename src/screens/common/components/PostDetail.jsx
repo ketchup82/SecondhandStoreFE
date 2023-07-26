@@ -10,6 +10,11 @@ import { Card } from 'react-bootstrap'
 import { Dialog, DialogTitle, List, ListItem } from '@mui/material'
 import cn from 'classnames'
 import { LoadingSpinner } from '../../../components/loading/LoadingSpinner'
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
 
 export const PostDetail = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
@@ -24,6 +29,7 @@ export const PostDetail = () => {
     const [error, setError] = useState('')
     const [request, setRequest] = useState('')
     const [post, setPost] = useState([])
+    const [images, setImages] = useState([])
     let VND = new Intl.NumberFormat('vn-VN', {
         currency: 'VND',
     })
@@ -31,6 +37,8 @@ export const PostDetail = () => {
         await axios.get('/posts/get-post-by-id', { params: { id: postId } })
             .then((data) => {
                 setPost(data.data)
+                setImages(data.data.images)
+                console.log(data.data)
             })
             .catch((e) => {
                 console.log(e)
@@ -106,7 +114,7 @@ export const PostDetail = () => {
     )
 
     const renderPost = (
-        <div className='post-detail '>
+        <div style={{height:'550px'}} className='post-detail padding-40'>
             <div className='row'>
                 <div className='col-2 back-btn'>
                     <button onClick={() => { navigate(-1) }} type="button" className="btn btn-light fw-medium text-uppercase mb-5">
@@ -123,9 +131,13 @@ export const PostDetail = () => {
             <div className="row">
                 <div className="col-md-5 text-right">
                     <div className="row col-md-12 d-flex justify-content-end">
-                        <a className='post-detail-card d-flex justify-content-center' href={post.image} target='_blank'>
-                            <img className="img-fluid post-img" src={post.image}></img>
-                        </a>
+                        <div className="row col-md-12 d-flex justify-content-end">
+                            {images.length === 0 ? <div>No available picture</div> :
+                                <a className='post-detail-card d-flex justify-content-center' href={images[0].ImageUrl} target='_blank'>
+                                    <img className="img-fluid post-img" src={images[0].ImageUrl}></img>
+                                </a>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className="col-md-7 px-5">
@@ -178,9 +190,10 @@ export const PostDetail = () => {
                                             </div>
                                         </div>
                                         :
-                                        <div className='col-4'>
-                                            <button style={{ width: '250px', borderRadius: '8px' }} onClick={() => { handleClickOpen() }} className="post-detail-btn h3">Request this product</button>
-                                        </div>
+                                        post.statusName !== "Completed" ? <></> :
+                                            <div className='col-4'>
+                                                <button style={{ width: '250px', borderRadius: '8px' }} onClick={() => { handleClickOpen() }} className="post-detail-btn h3">Request this product</button>
+                                            </div>
                                 }
                             </div>
                         }

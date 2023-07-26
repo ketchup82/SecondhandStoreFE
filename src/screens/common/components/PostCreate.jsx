@@ -221,9 +221,9 @@ export const PostCreate = () => {
                                             <div className="mb-3">
                                                 <label htmlFor="image" className="form-label">Image*</label><br />
                                                 {selectedImage && <img
-                                                    className='col-5'
+                                                    className='col-12'
                                                     alt="not found"
-                                                    width={"250px"}
+                                                    style={{ width: '170px', height: '170px' }}
                                                     src={URL.createObjectURL(selectedImage)}
                                                 />}
                                                 <input type="file" className="form-control" id="ImageUploadRequest" name="ImageUploadRequest" onChange={handle_image} />

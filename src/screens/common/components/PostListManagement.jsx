@@ -182,12 +182,12 @@ export const PostListManagement = () => {
                                 <div class="col-md-3">
                                     <div className="post-list-card">
                                         <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
-                                            <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
+                                            <Card.Img variant="top" className='img-fluid' src={item.images[0].ImageUrl} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
                                             <Card.Body>
                                                 <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
                                                 <div style={{ color: 'black' }}>{String(item.createdDate).substring(0, 10)}</div>
                                                 <div style={{ color: 'orange', fontSize: '20px' }}>{VND.format(item.price).replaceAll(',', '.')} VND</div>
-                                                <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : item.statusName === 'Rejected' ? 'text-danger' : 'text-success')}>{item.statusName}</div>
+                                                <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : item.statusName === 'Rejected' ? 'text-danger' : item.statusName === 'Accepted' ? 'text-success' : 'text-dark')}>{item.statusName}</div>
                                             </Card.Body>
                                         </a>
                                     </div>

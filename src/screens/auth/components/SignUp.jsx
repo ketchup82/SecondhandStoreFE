@@ -134,7 +134,7 @@ export const SignUp = () => {
             isError = true
         }
         else if (pass.length < 5) {
-            setError('Password is too short!')
+            setError('Password must be equal or greater than 5 characters!')
             isError = true
         }
         else if (rePass !== pass) {

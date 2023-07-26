@@ -35,6 +35,7 @@ import { PostPurchasedManagement } from "../screens/common/components/PostPurcha
 import { ExchangeOrderList } from "../screens/admin/components/ExchangeOrderList";
 import { ServerDown } from "../screens/common/components/ServerDown";
 import { Page404 } from "../screens/common/components/Page404";
+import { ChangePass } from "../screens/common/components/ChangePass";
 
 export const appRouter = createBrowserRouter([
     {

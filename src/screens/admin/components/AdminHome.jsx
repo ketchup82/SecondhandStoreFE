@@ -15,8 +15,10 @@ export const AdminHome = () => {
     const [error, setError] = useState('')
     const [date, setDate] = useState([])
     const [price, setPrice] = useState([])
+    const [revenue, setRevenue] = useState(0)
     const [minPrice, setMinPrice] = useState(0)
     const [maxPrice, setMaxPrice] = useState(0)
+    const [graph, setGraph] = useState([])
     let VND = new Intl.NumberFormat('vn-VN', {
         currency: 'VND',
     });
@@ -38,10 +40,19 @@ export const AdminHome = () => {
                 setError("failed to fetch posts")
                 console.log(e)
             })
+        await axios.get("/topup/get-total-revenue")
+            .then((data) => {
+                setRevenue(data.data)
+            })
+            .catch((e) => {
+                setError("failed to fetch revenue")
+                console.log(e)
+            })
+
         await axios.get("/topup/get-all-topup-order")
             .then((data) => {
                 const list = data.data.slice(0).reverse().filter((item) => {
-                    return item.topUpStatus === 'Accepted'
+                    return item.topUpStatus === 'Completed'
                 })
                 setTopup(list)
             })
@@ -56,20 +67,30 @@ export const AdminHome = () => {
         fetchData()
     }, [])
     useEffect(() => {
-        let a = Math.max(...topup.map(item => new Date(String(item.topUpDate).substring(0, 10))))
-        let b = Math.min(...topup.map(item => new Date(String(item.topUpDate).substring(0, 10))))
         var listDate = []
         var listPrice = []
         topup.map((item) => {
-            var d = String(item.topUpDate).substring(5, 10)
-            var p = String(item.price)
+            var d = String(item.topUpDate).substring(0, 10)
             if (listDate.indexOf(d) === -1) listDate = [...listDate, d]
-            if (listPrice.indexOf(p) === -1) listPrice = [...listPrice, p]
         })
+        listDate = [...listDate, '01-01']
         setDate(listDate.reverse())
+        var g = []
+        listDate.map((date) => {
+            let sum = 0
+            topup.map((item) => {
+                var d = String(item.topUpDate).substring(0, 10)
+                if (d === date) sum = sum + item.price
+            })
+            g = [...g, sum]
+            if (listPrice.indexOf(sum) === -1) listPrice = [...listPrice, sum]
+        })
         setPrice(listPrice.sort((a, b) => a - b))
-        console.log(price)
-        // console.log(new Date(a))
+        var d = []
+        g.map((a, index) => {
+            d = ([...d, { x: index + 1, y: 1, y0: a }])
+        })
+        setGraph(d)
     }, [topup])
     const errorMessage = (
         <div className='grey-screen row g-3 mt-3'>Something went wrong. Check connection</div>
@@ -88,7 +109,7 @@ export const AdminHome = () => {
                 </div>
                 <div className="col text-center text-dark rounded m-3" style={{ background: "#12e265" }}>
                     <h5 className='m-3 row-md-3'>Total Revenue</h5>
-                    <h1 className='m-3'>{VND.format(topup.reduce((a, v) => a = a + v.price, 0)).replaceAll(',', '.')} VND</h1>
+                    <h1 className='m-3'>{VND.format(revenue).replaceAll(',', '.')} VND</h1>
                 </div>
             </div>
             <div className="row d-flex justify-content-center ">
@@ -107,22 +128,16 @@ export const AdminHome = () => {
                         />
                         <VictoryAxis
                             tickValues={
-                                date
+                                date.map((date) => {
+                                    return date.substring(5, 10)
+                                })
                             }
-
                         />
                         <VictoryBar
                             style={{ data: { fill: "#c43a31" } }}
-                            data={[
-                                { x: 2, y: 1, y0: 2 },
-                                { x: 3, y: 1, y0: 2 },
-                                { x: 4, y: 1, y0: 3 },
-                                { x: 5, y: 1, y0: 3 },
-                                { x: 6, y: 1, y0: 3 }
-                            ]}
+                            data={graph}
                         />
                     </VictoryChart>
-
                 </div>
             </div>
         </div>

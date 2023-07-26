@@ -63,7 +63,7 @@ export const SearchDonating = () => {
                 setCurrentPage(1)
                 setTimeout(() => {
                     setIsLoading(false)
-                }, 2000)
+                }, 1000)
             })
             .catch(e => console.log(e))
     }
@@ -247,7 +247,7 @@ export const SearchDonating = () => {
                                                     <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
                                                         <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
                                                         <Card.Body>
-                                                            <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
+                                                            <div style={{ color: 'black' }}><strong>{item.images[0].ImageUrl}</strong></div>
                                                             <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>
                                                             <div style={{ color: 'orange', fontSize: '20px' }}>Donating</div>
                                                             <div className={cn(item.statusName === 'Completed' ? 'text-secondary' : 'text-success')}>{item.statusName === "Completed" ? "Taken" : 'Avaiable'}</div>

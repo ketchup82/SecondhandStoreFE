@@ -27,7 +27,6 @@ export const SearchSelling = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [filter, setFilter] = useState(location.state || "")
     const [query, setQuery] = useState('')
-    const [items, setItems] = useState([]);
     const [all, setAll] = useState([]);
     const [clothes, setClothes] = useState([]);
     const [accessories, setAccessories] = useState([]);
@@ -61,7 +60,7 @@ export const SearchSelling = () => {
                 setCurrentPage(1)
                 setTimeout(()=>{
                     setIsLoading(false)
-                },2000)
+                },1000)
             })
             .catch(e => console.log(e))
     }
@@ -220,7 +219,7 @@ export const SearchSelling = () => {
                                             <div className='col-md-3 mx-5 px-5'>
                                                 <div className='search-item'>
                                                     <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
-                                                        <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
+                                                        <Card.Img variant="top" className='img-fluid' src={item.images[0].ImageUrl} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
                                                         <Card.Body>
                                                             <div style={{ color: 'black' }}><strong>{item.productName}</strong></div>
                                                             <Card.Text>{String(item.createdDate).substring(0, 10)}</Card.Text>

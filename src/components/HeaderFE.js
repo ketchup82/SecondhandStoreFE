@@ -10,10 +10,8 @@ import Cookies from "universal-cookie"
 import axios from "axios"
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import { Search } from '@mui/icons-material';
-import SearchIcon from '@mui/icons-material/Search';
+import jwt from 'jwt-decode'
 import AddIcon from '@mui/icons-material/Add';
-import { IconButton, InputBase, Paper, TextField } from '@mui/material';
 
 export default function HeaderFE() {
     const navigate = useNavigate()
@@ -40,7 +38,7 @@ export default function HeaderFE() {
             })
     }
     const fetchNumber = () => {
-        if (account.roleId !== 'AD') {
+        if (account["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] !== 'AD') {
             axios.get('/posts/get-user-posts').then((data) => { setPost(data.data.length) }).catch((e) => { console.log(e) })
             axios.get('/get-all-request-list').then((data) => { setRequest(data.data.length) }).catch((e) => { console.log(e) })
             axios.get('/get-all-order-list').then((data) => { setOrder(data.data.length) }).catch((e) => { console.log(e) })
@@ -55,8 +53,11 @@ export default function HeaderFE() {
         let cookie = cookies.get('jwt_authorization')
         if (cookie !== undefined) {
             axios.defaults.headers.common['Authorization'] = 'bearer ' + cookie;
-            fetchData()
-            fetchNumber()
+            if (jwt(cookie)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === 'AD') navigate('/admin/dashboard')
+            else {
+                fetchData()
+                fetchNumber()
+            }
         }
     }, [])
 
@@ -76,7 +77,7 @@ export default function HeaderFE() {
                     {account.roleId == 'AD' ?
                         <a draggable='false' className="dropdown-item" href="/admin/dashboard">Admin Dashboard</a> :
                         <>
-                            <Link draggable='false' className="dropdown-item" to="/user-profile">Profile</Link>
+                            <Link draggable='false' className="dropdown-item" to={'/user-detail?id=' + account.accountId}>Profile</Link>
                             <Link draggable='false' className="dropdown-item" to="/post-list">My Posts ({post})</Link>
                             <Link draggable='false' className="dropdown-item" to="/people-order">People Orders ({order})</Link>
                             <Link draggable='false' className="dropdown-item" to="/my-request">My Requests ({request})</Link>

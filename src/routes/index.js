@@ -9,15 +9,12 @@ import { Admin } from "../screens/admin/Admin";
 import { Deactive } from "../screens/admin/components/Deactive";
 import { AdminHome } from "../screens/admin/components/AdminHome";
 import { PostVerification } from "../screens/admin/components/PostVerification";
-import { ReportForm } from "../screens/admin/components/ReportForm";
-import { ReportList } from "../screens/admin/components/ReportList";
-import { RevenueManagement } from "../screens/admin/components/RevenueManagement";
+import { ReportManagement } from "../screens/admin/components/ReportManagement";
 import { UserManagement } from "../screens/admin/components/UserManagement";
 import { AdminUserProfile } from "../screens/admin/components/AdminUserProfile";
 import { AdminPostDetail } from "../screens/admin/components/PostDetail";
 import { AdminPostListManagement } from "../screens/admin/components/PostListManagement";
 
-import { UserProfile } from "../screens/common/components/old-UserProfile";
 import { UserHome } from "../screens/common/components/Home";
 import { PostDetail } from "../screens/common/components/PostDetail";
 import { PostListManagement } from "../screens/common/components/PostListManagement";
@@ -81,10 +78,6 @@ export const appRouter = createBrowserRouter([
         element: <UserEdit />
     },
     {
-        path: 'user-profile',
-        element: <UserProfile />
-    },
-    {
         path: 'user-detail',
         element: <UserDetail />
     },
@@ -114,7 +107,7 @@ export const appRouter = createBrowserRouter([
     },
     {
         path: '*',
-        element: <Page404/>
+        element: <Page404 />
     },
     {
         path: "/auth",
@@ -163,16 +156,8 @@ export const appRouter = createBrowserRouter([
                 element: <PostVerification />
             },
             {
-                path: "report",
-                element: <ReportForm />
-            },
-            {
                 path: "report-management",
-                element: <ReportList />
-            },
-            {
-                path: "revenue",
-                element: <RevenueManagement />
+                element: <ReportManagement />
             },
             {
                 path: "user-management",

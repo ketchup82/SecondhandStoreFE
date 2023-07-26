@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import FooterFE from '../../../components/FooterFE'
 import HeaderFE from '../../../components/HeaderFE'
-import ImageBanner from "../../../assets/images/banner_image.svg";
-import ShirtMU from "../../../assets/images/shirt-mu.png";
-import ShirtGame from "../../../assets/images/shirt-game.png";
-import ShirtT1 from "../../../assets/images/shirt-t1.png";
-import Headphone from "../../../assets/images/headphone.png";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectFade, Navigation } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
-import { Carousel } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
 import axios from 'axios';
@@ -50,46 +44,6 @@ export const UserHome = () => {
         else updatedList = items
         setFilteredList(updatedList)
     }, [type])
-
-    const handleSortType = (category) => {
-        let sortedItems = [];
-
-        switch (category) {
-            case "nameAZ":
-                sortedItems = items.sort((a, b) => a.name.localeCompare(b.name));
-                break;
-            case "nameZA":
-                sortedItems = items.sort((a, b) => b.name.localeCompare(a.name));
-                break;
-            case "priceAZ":
-                sortedItems = items.sort((a, b) => a.price - b.price);
-                break;
-            case "priceZA":
-                sortedItems = items.sort((a, b) => b.price - a.price);
-                break;
-            default:
-                sortedItems = items;
-        }
-        setItems([...sortedItems]);
-
-    }
-    const [paginatedItems, setPaginatedItems] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6;
-    const paginate = (items, currentPage, itemsPerPage) => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        return items.slice(startIndex, startIndex + itemsPerPage);
-    }
-    const handlePageChange = (newPage) => {
-        setCurrentPage(newPage);
-    };
-    useEffect(() => {
-        setCurrentPage(1);
-        setPaginatedItems(paginate(items, currentPage, itemsPerPage));
-    }, [items])
-    useEffect(() => {
-        setPaginatedItems(paginate(items, currentPage, itemsPerPage));
-    }, [currentPage])
 
     const oldOne = (
         <div className='padding-40'>
@@ -156,17 +110,6 @@ export const UserHome = () => {
                 </div>
             </div>
             <div className="container my-3">
-                {/* <Tabs
-                    defaultActiveKey="profile"
-                    id="justify-tab-example"
-                    className="mb-8"
-                >
-                    <Tab onClick={() => { setType("") }} eventKey="all" title="all">
-                    </Tab>
-                    <Tab onClick={() => { setType("Donate") }} eventKey="donating" title="donating">
-                    </Tab>
-                </Tabs> */}
-
                 <Swiper
                     modules={[Navigation]}
                     slidesPerView={4}
@@ -184,7 +127,7 @@ export const UserHome = () => {
                             onMouseUp={(e) => e.preventDefault()} // ngăn chặn sự kiện mặc định khi thả chuột trái
                         >
                             <a className='post-image' href={'/post-detail?id=' + item.postId}>
-                                <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+                                <Card.Img variant="top" className='img-fluid' src={item.images[0].ImageUrl} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
                             </a>
                         </SwiperSlide>
                     ))}
@@ -205,15 +148,15 @@ export const UserHome = () => {
                         {filteredList.slice(0, 8).map((item) => (
                             <>
                                 <div class="col-6 col-md-3 post-padding">
-                                    <a href={"/post-detail?id="+item.postId} style={{ textDecoration: 'none' }}>
+                                    <a href={"/post-detail?id=" + item.postId} style={{ textDecoration: 'none' }}>
                                         <Card style={{ width: '16rem' }}>
-                                            <Card.Img variant="top" className='img-fluid' src={item.image} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+                                            <Card.Img variant="top" className='img-fluid' src={item.images[0].ImageUrl} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
                                             <Card.Body>
                                                 <Card.Title style={{ color: 'black' }}>{item.productName}</Card.Title>
                                             </Card.Body>
                                             <Card.Body>
                                                 <a href={'/post-detail?id=' + item.postId} style={{ textDecoration: 'none' }}>
-                                                    <Card.Link style={{ color: 'orange', fontSize: '20px' }}>{item.isDonated ? "Donating" : VND.format(item.price).replaceAll(',','.')+" VND"}</Card.Link>
+                                                    <Card.Link style={{ color: 'orange', fontSize: '20px' }}>{item.isDonated ? "Donating" : VND.format(item.price).replaceAll(',', '.') + " VND"}</Card.Link>
                                                 </a>
                                             </Card.Body>
                                         </Card>

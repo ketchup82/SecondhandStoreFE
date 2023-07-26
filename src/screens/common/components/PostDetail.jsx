@@ -166,7 +166,7 @@ export const PostDetail = () => {
                             <div className='row'>
                                 {request === 'Cancelled' ?
                                     <div className='col-12 row'>
-                                        <strong className='text-dark font-italic h4 text-center'>The seller has cancelled your request</strong>
+                                        <strong className='text-dark font-italic h4 text-center'>Your exchange order has been cancelled</strong>
                                     </div> :
                                     request === 'Pending' || request === 'Processing' ?
                                         <div className='col-12 row'>

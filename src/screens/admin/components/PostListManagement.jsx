@@ -8,6 +8,12 @@ import axios from "axios"
 import Menu from "../Sidebar";
 import cn from 'classnames'
 import { Stack } from "react-bootstrap";
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import Card from 'react-bootstrap/Card';
 
 const itemsPerPage = 8;
 
@@ -236,8 +242,40 @@ export const AdminPostListManagement = () => {
                                                         }
                                                     </div>
                                                     <div className="col-6">
-                                                        <img style={{ width: '150px', height: '170px' }} src={item.image}></img>
+                                                        <div className="row">
+                                                            {item['images'].length === 0 ? <div>No available picture</div> :
+                                                                <a href={item['images'][0].ImageUrl} target='_blank'>
+                                                                    <img style={{ width: '150px', height: '170px' }} src={item['images'][0].ImageUrl}></img>
+                                                                </a>
+                                                            }
+                                                        </div>
                                                     </div>
+                                                </div>
+                                                <div style={{ width: '400px' }} className="row my-3">
+                                                    <Swiper
+                                                        modules={[Navigation]}
+                                                        slidesPerView={2}
+                                                        spaceBetween={15}
+                                                        navigation
+                                                        grabCursor={true} // bật tính năng hiển thị con trỏ kéo chuột
+                                                        mousewheel={true} // bật tính năng kéo chuột bằng bánh xe
+                                                        onSlideChange={() => console.log('slide change')}
+                                                        onSwiper={(swiper) => console.log(swiper)}
+                                                    >
+                                                        <>
+                                                            {item['images'].slice(1).map((image) => (
+                                                                <SwiperSlide
+                                                                    onMouseDown={(e) => e.preventDefault()} // ngăn chặn sự kiện mặc định khi nhấn chuột trái
+                                                                    onMouseMove={(e) => e.preventDefault()} // ngăn chặn sự kiện mặc định khi di chuyển chuột
+                                                                    onMouseUp={(e) => e.preventDefault()} // ngăn chặn sự kiện mặc định khi thả chuột trái
+                                                                >
+                                                                    <a href={image.ImageUrl} target='_blank'>
+                                                                        <Card.Img variant="top" className='img-fluid' src={image.ImageUrl} style={{ width: '50px', height: '50px' }} />
+                                                                    </a>
+                                                                </SwiperSlide>
+                                                            ))}
+                                                        </>
+                                                    </Swiper>
                                                 </div>
                                             </td>
                                             <td style={{ width: '250px' }}>

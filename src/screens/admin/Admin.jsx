@@ -22,8 +22,10 @@ export const Admin = () => {
     }, [])
     return (
         <>
-            <Menu />
-            {isLogged && <Outlet />}
+            {isLogged && <>
+                <Menu />
+                <Outlet />
+            </>}
         </>
     )
 }

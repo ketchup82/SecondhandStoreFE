@@ -50,7 +50,6 @@ export const PostCreate = () => {
     const handle_image = (e) => {
         const img = e.target.files
         setSelectedImage(img[0])
-        console.log(selectedImage   )
     }
 
     const handlePrice = (e) => {

@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from 'react'
-import { LoadingSpinner } from '../../../components/loading/LoadingSpinner';
-import { Pagination } from '../../../components/pagination/Pagination';
 import Cookies from 'universal-cookie'
 import axios from "axios"
 import Menu from "../Sidebar";
 import { toLowerCaseNonAccentVietnamese } from '../../nonAccentVietnamese.js'
+import { Pagination } from '@mui/material';
+import { Stack } from "react-bootstrap";
 
+const itemsPerPage = 8;
 
 export const ExchangeOrderList = () => {
     axios.defaults.baseURL = 'https://localhost:7115'
     const cookies = new Cookies();
     const [all, setAll] = useState([])
     const [filteredList, setFilteredList] = useState([])
-    const [currentPage, setCurrentPage] = useState(NaN)
     const [query, setQuery] = useState('')
     let VND = new Intl.NumberFormat('vn-VN', {
         currency: 'VND',
@@ -56,11 +56,34 @@ export const ExchangeOrderList = () => {
         fetchData()
     }, [])
 
+    const [paginatedItems, setPaginatedItems] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const paginate = (filteredList, currentPage, itemsPerPage) => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        return filteredList.slice(startIndex, startIndex + itemsPerPage);
+    }
+    const handlePageChange = (event, page) => {
+        setCurrentPage(page);
+    };
+    useEffect(() => {
+        setCurrentPage(1);
+        setPaginatedItems(paginate(filteredList, currentPage, itemsPerPage));
+    }, [filteredList])
+    useEffect(() => {
+        setPaginatedItems(paginate(filteredList, currentPage, itemsPerPage));
+    }, [currentPage])
 
     const renderAccount = (
         <>
-            <div class="col-sm-7 my-1">
-                <input value={query} onChange={(e) => { setQuery(e.target.value) }} type="text" name='keyword' class="form-control" id="inlineFormInputName" placeholder="Search for an order here" />
+            <div className="row">
+                <div class="col-sm-7 my-1">
+                    <input value={query} onChange={(e) => { setQuery(e.target.value) }} type="text" name='keyword' class="form-control" id="inlineFormInputName" placeholder="Search for an order here" />
+                </div>
+                <div className="col-auto my-1">
+                    <Stack alignItems="center">
+                        <Pagination sx={{}} count={Math.ceil(filteredList.length / itemsPerPage)} onChange={(e, p) => { handlePageChange(e, p) }} variant="outlined" shape="rounded" />
+                    </Stack>
+                </div>
             </div>
             {
                 filteredList.length > 0 ?
@@ -77,14 +100,20 @@ export const ExchangeOrderList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredList.map((item) => (
+                                {paginatedItems.map((item) => (
                                     <tr>
                                         <td>{item.orderId}</td>
                                         <td><div>{item.productName}</div><div>{VND.format(item.price).replaceAll(',', '.')}VND</div></td>
-                                        <td>{item.buyerName}({item.buyerEmail})</td>
-                                        <td>{item.sellerName}({item.sellerEmail})</td>
+                                        <td>
+                                            <div>{item.buyerName}</div>
+                                            <div>({item.buyerEmail})</div>
+                                        </td>
+                                        <td>
+                                            <div>{item.sellerName}</div>
+                                            <div>({item.sellerEmail})</div>
+                                        </td>
                                         <td>{String(item.orderDate).substring(0, 10)}</td>
-                                        <td>{item.orderId}</td>
+                                        <td>{item.orderStatusName}</td>
                                     </tr>
                                 ))}
                             </tbody>

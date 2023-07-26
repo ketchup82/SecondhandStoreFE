@@ -39,6 +39,7 @@ export const UserEdit = () => {
     }
   }, [])
 
+
   const profile = (
     <div className="container">
       <div className="row justify-content-center">
@@ -57,7 +58,7 @@ export const UserEdit = () => {
             </div>
             <div className="card-body d-flex flex-column">
               <div className="flex-grow-1">
-                
+
                 <div className="d-flex align-items-center mb-3">
                   <label className="font-weight-bold mr-3">Gender:</label>
                 </div>
